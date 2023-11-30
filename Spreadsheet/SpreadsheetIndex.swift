@@ -2,13 +2,13 @@
 
 import Foundation
 
-public struct SpreadsheetIndex: Hashable {
+public struct SheetIndex: Hashable {
 	var col: Int
 	var row: Int
 	var index: Int
 }
 
-extension SpreadsheetIndex: CustomDebugStringConvertible {
+extension SheetIndex: CustomDebugStringConvertible {
 	public var debugDescription: String {
 		return "{Index \(col), \(row), \(index)}"
 	}

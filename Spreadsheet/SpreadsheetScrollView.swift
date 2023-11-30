@@ -2,7 +2,7 @@
 
 import UIKit
 
-class SpreadsheetScrollView: UIScrollView {
+class SheetScrollView: UIScrollView {
 	private var maxQueue = 0
 
 	var colCount = 0
@@ -12,14 +12,14 @@ class SpreadsheetScrollView: UIScrollView {
 
 	var reuseIndex = 0
 
-	var visibleCells = [SpreadsheetIndex: UIView]()
+	var visibleCells = [SheetIndex: UIView]()
 
 	var visibleColCount = 0
 	var visibleRowCount = 0
 	var visibleLeftColumn = 0
 	var visibleTopRow = 0
 
-	weak var sheet: SpreadsheetView!
+	weak var sheet: SheetView!
 
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -74,7 +74,7 @@ class SpreadsheetScrollView: UIScrollView {
 			height: CGFloat(rowCount) * estRowHeight)
 	}
 
-	private func makeIndex(_ x: Int, _ y: Int) -> SpreadsheetIndex {
+	private func makeIndex(_ x: Int, _ y: Int) -> SheetIndex {
 		return .init(col: x, row: y, index: x + y * colCount)
 	}
 }

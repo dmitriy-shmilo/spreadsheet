@@ -3,17 +3,17 @@
 import UIKit
 
 @IBDesignable
-public class SpreadsheetView: UIView {
+public class SheetView: UIView {
 	private static let defaultColWidth: CGFloat = 100.0
 	private static let defaultRowHeight: CGFloat = 30.0
 
-	public weak var dataSource: SpreadsheetDataSource? {
+	public weak var dataSource: SheetDataSource? {
 		didSet {
 			refreshContentMeasurements()
 		}
 	}
 
-	private var scrollView: SpreadsheetScrollView!
+	private var scrollView: SheetScrollView!
 
 	private var estColWidth: CGFloat = defaultColWidth
 	private var estRowHeight: CGFloat = defaultRowHeight
@@ -30,8 +30,8 @@ public class SpreadsheetView: UIView {
 		setup()
 	}
 
-	func cellFor(_ index: SpreadsheetIndex) -> UIView {
-		guard let cell = dataSource?.spreadsheet(self, cellFor: index) else {
+	func cellFor(_ index: SheetIndex) -> UIView {
+		guard let cell = dataSource?.Sheet(self, cellFor: index) else {
 			// TODO: default cell implementation
 			return UIView()
 		}
@@ -58,10 +58,10 @@ public class SpreadsheetView: UIView {
 	}
 
 	private func refreshContentMeasurements() {
-		estColWidth = dataSource?.spreadsheetColumnWidth(self) ?? Self.defaultColWidth
-		estRowHeight = dataSource?.spreadsheetRowHeight(self) ?? Self.defaultRowHeight
-		colCount = dataSource?.spreadsheetNumberOfColumns(self) ?? 0
-		rowCount = dataSource?.spreadsheetNumberOfRows(self) ?? 0
+		estColWidth = dataSource?.SheetColumnWidth(self) ?? Self.defaultColWidth
+		estRowHeight = dataSource?.SheetRowHeight(self) ?? Self.defaultRowHeight
+		colCount = dataSource?.SheetNumberOfColumns(self) ?? 0
+		rowCount = dataSource?.SheetNumberOfRows(self) ?? 0
 
 		scrollView.estColWidth = estColWidth
 		scrollView.estRowHeight = estRowHeight

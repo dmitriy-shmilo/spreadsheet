@@ -2,11 +2,11 @@
 
 import UIKit
 
-public protocol SpreadsheetDataSource: AnyObject {
+public protocol SheetDataSource: AnyObject {
 	// TODO: support variable column and row sizes
-	func spreadsheetColumnWidth(_ sheet: SpreadsheetView) -> CGFloat
-	func spreadsheetRowHeight(_ sheet: SpreadsheetView) -> CGFloat
-	func spreadsheetNumberOfColumns(_ sheet: SpreadsheetView) -> Int
-	func spreadsheetNumberOfRows(_ sheet: SpreadsheetView) -> Int
-	func spreadsheet(_ sheet: SpreadsheetView, cellFor index: SpreadsheetIndex) -> UIView
+	func SheetColumnWidth(_ sheet: SheetView) -> CGFloat
+	func SheetRowHeight(_ sheet: SheetView) -> CGFloat
+	func SheetNumberOfColumns(_ sheet: SheetView) -> Int
+	func SheetNumberOfRows(_ sheet: SheetView) -> Int
+	func Sheet(_ sheet: SheetView, cellFor index: SheetIndex) -> UIView
 }
