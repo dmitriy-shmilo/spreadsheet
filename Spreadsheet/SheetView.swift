@@ -31,7 +31,7 @@ public class SheetView: UIView {
 	}
 
 	func cellFor(_ index: SheetIndex) -> UIView {
-		guard let cell = dataSource?.Sheet(self, cellFor: index) else {
+		guard let cell = dataSource?.sheet(self, cellFor: index) else {
 			// TODO: default cell implementation
 			return UIView()
 		}
@@ -58,10 +58,10 @@ public class SheetView: UIView {
 	}
 
 	private func refreshContentMeasurements() {
-		estColWidth = dataSource?.SheetColumnWidth(self) ?? Self.defaultColWidth
-		estRowHeight = dataSource?.SheetRowHeight(self) ?? Self.defaultRowHeight
-		colCount = dataSource?.SheetNumberOfColumns(self) ?? 0
-		rowCount = dataSource?.SheetNumberOfRows(self) ?? 0
+		estColWidth = dataSource?.sheetColumnWidth(self) ?? Self.defaultColWidth
+		estRowHeight = dataSource?.sheetRowHeight(self) ?? Self.defaultRowHeight
+		colCount = dataSource?.sheetNumberOfColumns(self) ?? 0
+		rowCount = dataSource?.sheetNumberOfRows(self) ?? 0
 
 		scrollView.estColWidth = estColWidth
 		scrollView.estRowHeight = estRowHeight
