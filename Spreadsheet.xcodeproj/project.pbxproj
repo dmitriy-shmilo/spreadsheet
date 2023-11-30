@@ -16,6 +16,7 @@
 		2CCD17042B1868820041929F /* SpreadSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCD17032B1868820041929F /* SpreadSheetView.swift */; };
 		2CCD17072B186B030041929F /* SpreadsheetScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCD17062B186B030041929F /* SpreadsheetScrollView.swift */; };
 		2CCD17092B186B280041929F /* SpreadsheetIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCD17082B186B280041929F /* SpreadsheetIndex.swift */; };
+		2CCD170B2B186E5D0041929F /* SpreadsheetDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCD170A2B186E5D0041929F /* SpreadsheetDataSource.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		2CCD17052B1869DA0041929F /* Spreadsheet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Spreadsheet.entitlements; sourceTree = "<group>"; };
 		2CCD17062B186B030041929F /* SpreadsheetScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpreadsheetScrollView.swift; sourceTree = "<group>"; };
 		2CCD17082B186B280041929F /* SpreadsheetIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpreadsheetIndex.swift; sourceTree = "<group>"; };
+		2CCD170A2B186E5D0041929F /* SpreadsheetDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpreadsheetDataSource.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +76,7 @@
 				2CCD17062B186B030041929F /* SpreadsheetScrollView.swift */,
 				2CCD17032B1868820041929F /* SpreadSheetView.swift */,
 				2CCD16F32B1868730041929F /* ViewController.swift */,
+				2CCD170A2B186E5D0041929F /* SpreadsheetDataSource.swift */,
 			);
 			path = Spreadsheet;
 			sourceTree = "<group>";
@@ -154,6 +157,7 @@
 				2CCD16F02B1868730041929F /* AppDelegate.swift in Sources */,
 				2CCD16F22B1868730041929F /* SceneDelegate.swift in Sources */,
 				2CCD17072B186B030041929F /* SpreadsheetScrollView.swift in Sources */,
+				2CCD170B2B186E5D0041929F /* SpreadsheetDataSource.swift in Sources */,
 				2CCD17092B186B280041929F /* SpreadsheetIndex.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
