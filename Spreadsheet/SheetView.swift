@@ -2,6 +2,12 @@
 
 import UIKit
 
+struct SheetColumnDefinition {
+	var index: Int = -1
+	var width: CGFloat = 0.0
+	var offset: CGFloat = 0.0
+}
+
 @IBDesignable
 public class SheetView: UIView {
 	static let defaultColWidth: CGFloat = 100.0
@@ -13,9 +19,9 @@ public class SheetView: UIView {
 		}
 	}
 
-	private var scrollView: SheetScrollView!
+	var columns = [SheetColumnDefinition]()
 
-	private var estColWidth: CGFloat = defaultColWidth
+	private var scrollView: SheetScrollView!
 	private var estRowHeight: CGFloat = defaultRowHeight
 	private var colCount = 0
 	private var rowCount = 0
@@ -59,14 +65,22 @@ public class SheetView: UIView {
 	}
 
 	private func refreshContentMeasurements() {
-		estColWidth = dataSource?.sheetColumnWidth(self) ?? Self.defaultColWidth
+		let columnCount = dataSource?.sheetNumberOfColumns(self) ?? 0
+		if columnCount > 0 {
+			columns.reserveCapacity(columnCount)
+			var offset = 0.0
+			for i in 0..<columnCount {
+				let width = dataSource?.sheetColumnWidth(self, at: i) ?? Self.defaultColWidth
+				columns.append(.init(index: i, width: width, offset: offset))
+				offset += width
+			}
+		}
+
 		estRowHeight = dataSource?.sheetRowHeight(self) ?? Self.defaultRowHeight
 		colCount = dataSource?.sheetNumberOfColumns(self) ?? 0
 		rowCount = dataSource?.sheetNumberOfRows(self) ?? 0
 
-		scrollView.estColWidth = estColWidth
 		scrollView.estRowHeight = estRowHeight
-		scrollView.colCount = colCount
 		scrollView.rowCount = rowCount
 		scrollView.refreshContentMeasurements()
 	}

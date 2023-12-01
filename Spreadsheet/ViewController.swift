@@ -12,8 +12,8 @@ class ViewController: UIViewController {
 }
 
 extension ViewController: SheetDataSource {
-	func sheetColumnWidth(_ sheet: SheetView) -> CGFloat {
-		return 300.0
+	func sheetColumnWidth(_ sheet: SheetView, at index: Int) -> CGFloat {
+		return 100.0 + CGFloat(index % 3) * 150.0
 	}
 
 	func sheetNumberOfColumns(_ sheet: SheetView) -> Int {

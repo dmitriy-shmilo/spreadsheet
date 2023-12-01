@@ -3,8 +3,7 @@
 import UIKit
 
 public protocol SheetDataSource: AnyObject {
-	// TODO: support variable column and row sizes
-	func sheetColumnWidth(_ sheet: SheetView) -> CGFloat
+	func sheetColumnWidth(_ sheet: SheetView, at index: Int) -> CGFloat
 	func sheetRowHeight(_ sheet: SheetView) -> CGFloat
 	func sheetNumberOfColumns(_ sheet: SheetView) -> Int
 	func sheetNumberOfRows(_ sheet: SheetView) -> Int
@@ -12,7 +11,7 @@ public protocol SheetDataSource: AnyObject {
 }
 
 extension SheetDataSource {
-	func sheetColumnWidth(_ sheet: SheetView) -> CGFloat {
+	func sheetColumnWidth(_ sheet: SheetView, at index: Int) -> CGFloat {
 		return SheetView.defaultColWidth
 	}
 
