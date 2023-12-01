@@ -12,7 +12,7 @@ class SheetScrollView: UIScrollView {
 
 	var reuseIndex = 0
 
-	var visibleCells = [SheetIndex: UIView]()
+	var visibleCells = [SheetIndex: SheetViewCell]()
 
 	var visibleColCount = 0
 	var visibleRowCount = 0

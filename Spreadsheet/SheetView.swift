@@ -4,8 +4,8 @@ import UIKit
 
 @IBDesignable
 public class SheetView: UIView {
-	private static let defaultColWidth: CGFloat = 100.0
-	private static let defaultRowHeight: CGFloat = 30.0
+	static let defaultColWidth: CGFloat = 100.0
+	static let defaultRowHeight: CGFloat = 45.0
 
 	public weak var dataSource: SheetDataSource? {
 		didSet {
@@ -30,16 +30,17 @@ public class SheetView: UIView {
 		setup()
 	}
 
-	func cellFor(_ index: SheetIndex) -> UIView {
+	func cellFor(_ index: SheetIndex) -> SheetViewCell {
 		guard let cell = dataSource?.sheet(self, cellFor: index) else {
-			// TODO: default cell implementation
-			return UIView()
+			return SheetViewCell(index: index)
 		}
+		cell.sheetIndex = index
 		return cell
 	}
 
-	func freeCell(_ cell: UIView) {
+	func freeCell(_ cell: SheetViewCell) {
 		// TODO: enqueue for reuse
+		cell.sheetIndex = .invalid
 		cell.removeFromSuperview()
 	}
 
