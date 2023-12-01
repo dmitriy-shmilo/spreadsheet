@@ -19,12 +19,19 @@ public class SheetView: UIView {
 		}
 	}
 
+	public weak var delegate: SheetViewDelegate?
+	internal(set) public var selection = SheetSelection.none {
+		didSet {
+			delegate?.sheet(
+				self,
+				didChangeSelection: selection,
+				from: oldValue)
+		}
+	}
+
 	var columns = [SheetColumnDefinition]()
 
 	private var scrollView: SheetScrollView!
-	private var estRowHeight: CGFloat = defaultRowHeight
-	private var colCount = 0
-	private var rowCount = 0
 
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -34,6 +41,18 @@ public class SheetView: UIView {
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
 		setup()
+	}
+
+	public func makeIndex(_ col: Int, _ row: Int) -> SheetIndex {
+		return .init(col: col, row: row, index: row * columns.count + col)
+	}
+
+	public func reloadCellsAt(index: SheetIndex) {
+		scrollView.reloadCellsAt(indices: [index])
+	}
+
+	public func reloadCellsAt(indices: [SheetIndex]) {
+		scrollView.reloadCellsAt(indices: indices)
 	}
 
 	func cellFor(_ index: SheetIndex) -> SheetViewCell {
@@ -76,12 +95,8 @@ public class SheetView: UIView {
 			}
 		}
 
-		estRowHeight = dataSource?.sheetRowHeight(self) ?? Self.defaultRowHeight
-		colCount = dataSource?.sheetNumberOfColumns(self) ?? 0
-		rowCount = dataSource?.sheetNumberOfRows(self) ?? 0
-
-		scrollView.estRowHeight = estRowHeight
-		scrollView.rowCount = rowCount
+		scrollView.estRowHeight = dataSource?.sheetRowHeight(self) ?? Self.defaultRowHeight
+		scrollView.rowCount = dataSource?.sheetNumberOfRows(self) ?? 0
 		scrollView.refreshContentMeasurements()
 	}
 }

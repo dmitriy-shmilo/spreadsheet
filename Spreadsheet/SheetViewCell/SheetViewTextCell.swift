@@ -5,6 +5,37 @@ import UIKit
 public class SheetViewTextCell: SheetViewCell {
 	private static let spacing = 8.0
 
+	public var normalBorderColor = UIColor.systemGray2 {
+		didSet {
+			refreshColors()
+		}
+	}
+
+	public var selectedBorderColor = UIColor.systemBlue {
+		didSet {
+			refreshColors()
+		}
+	}
+
+	public var normalBackgroundColor: UIColor? {
+		didSet {
+			refreshColors()
+		}
+	}
+
+	public var selectedBackgroundColor: UIColor? {
+		didSet {
+			refreshColors()
+		}
+	}
+
+	public override var selection: SheetSelection {
+		didSet {
+			refreshColors()
+		}
+	}
+	
+
 	private(set) public var label = UILabel()
 
 	public override init(frame: CGRect) {
@@ -17,13 +48,23 @@ public class SheetViewTextCell: SheetViewCell {
 		setup()
 	}
 
-	private func setup() {
-		layer.borderWidth = 1.0
-		layer.borderColor = UIColor.systemGray2.cgColor
-		backgroundColor = .systemBackground
-
-		label.translatesAutoresizingMaskIntoConstraints = false
+	private func refreshColors() {
 		label.textColor = .label
+		if case .none = selection {
+			layer.borderColor = normalBorderColor.cgColor
+			backgroundColor = normalBackgroundColor
+		} else {
+			layer.borderColor = selectedBorderColor.cgColor
+			backgroundColor = selectedBackgroundColor
+		}
+	}
+
+	private func setup() {
+		isUserInteractionEnabled = false
+
+		refreshColors()
+		layer.borderWidth = 1.0
+		label.translatesAutoresizingMaskIntoConstraints = false
 		
 		addSubview(label)
 		NSLayoutConstraint.activate([

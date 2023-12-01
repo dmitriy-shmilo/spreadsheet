@@ -8,6 +8,7 @@ class ViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		sheet.dataSource = self
+		sheet.delegate = self
 	}
 }
 
@@ -27,6 +28,14 @@ extension ViewController: SheetDataSource {
 	func sheet(_ sheet: SheetView, cellFor index: SheetIndex) -> SheetViewCell {
 		let cell = SheetViewTextCell()
 		cell.label.text = "\(index)"
+		cell.selectedBackgroundColor = .systemBlue.withAlphaComponent(0.3)
+		if sheet.selection.contains(index) {
+			cell.selection = sheet.selection
+		}
 		return cell
 	}
+}
+
+extension ViewController: SheetViewDelegate {
+	
 }

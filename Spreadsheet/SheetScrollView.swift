@@ -3,14 +3,19 @@
 import UIKit
 
 class SheetScrollView: UIScrollView {
-	private var maxQueue = 0
-
 	var rowCount = 0
 	var estRowHeight: CGFloat = 1.0
-	var visibleCells = [SheetIndex: SheetViewCell]()
+
 	var visibleRowCount = 0
 
 	weak var sheet: SheetView!
+
+	private var visibleCells = [SheetIndex: SheetViewCell]()
+	private var leftColumn = 0
+	private var rightColumn = 0
+	private var topRow = 0
+	private var bottomRow = 0
+	private var lastSelection = SheetSelection.none
 
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -18,6 +23,35 @@ class SheetScrollView: UIScrollView {
 
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
+	}
+
+	public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+		guard let touch = touches.first else {
+			return
+		}
+
+		let point = touch.location(in: self)
+		guard let colIndex = sheet.columns[leftColumn..<rightColumn].first(where: {
+			$0.offset <= point.x && ($0.offset + $0.width) >= point.x
+		}) else {
+			return
+		}
+		let rowIndex = topRow + Int(point.y / estRowHeight)
+		let cellIndex = sheet.makeIndex(colIndex.index, rowIndex)
+
+		for i in visibleIndicesFrom(selection: lastSelection) {
+			visibleCells[i]?.selection = .none
+		}
+		lastSelection = .cell(column: colIndex.index, row: rowIndex)
+
+		if sheet.delegate?.sheet(sheet, shouldSelectCellAt: cellIndex) ?? true {
+			for i in visibleIndicesFrom(selection: lastSelection) {
+				 visibleCells[i]?.selection = lastSelection
+			 }
+			sheet.selection = lastSelection
+		} else {
+			sheet.selection = .none
+		}
 	}
 
 	override var contentOffset: CGPoint {
@@ -44,25 +78,25 @@ class SheetScrollView: UIScrollView {
 				$0.offset <= bottomRight.x && $0.offset + $0.width >= bottomRight.x
 			} ?? sheet.columns.count - 1
 
-			let left = max(0, leftIndex - 1)
-			let right = min(sheet.columns.count - 1, rightIndex + 1)
+			leftColumn = max(0, leftIndex - 1)
+			rightColumn = min(sheet.columns.count - 1, rightIndex + 1)
 
 			visibleRowCount = Int(ceil(frame.height / Double(estRowHeight))) + 2
-			let top = max(0, Int(topLeft.y / estRowHeight) - 1)
-			let bottom = min(rowCount, top + visibleRowCount)
+			topRow = max(0, Int(topLeft.y / estRowHeight) - 1)
+			bottomRow = min(rowCount, topRow + visibleRowCount)
 
 			for index in visibleCells.keys {
-				if index.col < left || index.col > right
-					|| index.row < top || index.row > bottom {
+				if index.col < leftColumn || index.col > rightColumn
+					|| index.row < topRow || index.row > bottomRow {
 					if let cell = visibleCells.removeValue(forKey: index) {
 						sheet.freeCell(cell)
 					}
 				}
 			}
 
-			for x in left..<right {
-				for y in top..<bottom {
-					let index = makeIndex(x, y)
+			for x in leftColumn..<rightColumn {
+				for y in topRow..<bottomRow {
+					let index = sheet.makeIndex(x, y)
 					if visibleCells[index] == nil {
 						let cell = sheet.cellFor(index)
 						addSubview(cell)
@@ -78,6 +112,19 @@ class SheetScrollView: UIScrollView {
 		}
 	}
 
+	func reloadCellsAt(indices: [SheetIndex]) {
+		for i in indices {
+			if let cell = visibleCells[i] {
+				let frame = cell.frame
+				sheet.freeCell(cell)
+				let freshCell = sheet.cellFor(i)
+				addSubview(freshCell)
+				freshCell.frame = frame
+				visibleCells[i] = freshCell
+			}
+		}
+	}
+
 	func refreshContentMeasurements() {
 		// TODO: cache the total width
 		contentSize = .init(
@@ -85,7 +132,26 @@ class SheetScrollView: UIScrollView {
 			height: CGFloat(rowCount) * estRowHeight)
 	}
 
-	private func makeIndex(_ x: Int, _ y: Int) -> SheetIndex {
-		return .init(col: x, row: y, index: x + y * sheet.columns.count)
+	private func visibleIndicesFrom(selection: SheetSelection) -> [SheetIndex] {
+		switch selection {
+		case .none:
+			return []
+		case .column(let col):
+			return (topRow..<bottomRow).map {
+				self.sheet.makeIndex(col, $0)
+			}
+		case .row(let row):
+			return (leftColumn..<rightColumn).map {
+				self.sheet.makeIndex($0, row)
+			}
+		case .cell(let col, let row):
+			return [sheet.makeIndex(col, row)]
+		case .range(let left, let top, let right, let bottom):
+			return (left..<right).flatMap { col in
+				(top..<bottom).map { row in
+					self.sheet.makeIndex(col, row)
+				}
+			}
+		}
 	}
 }
