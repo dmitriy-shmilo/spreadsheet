@@ -30,6 +30,10 @@ class SheetScrollView: UIScrollView {
 			return
 		}
 
+		guard sheet.allowedSelectionModes.contains(.cell) else {
+			return
+		}
+
 		let point = touch.location(in: self)
 		guard let colIndex = sheet.columns[leftColumn..<rightColumn].first(where: {
 			$0.offset <= point.x && ($0.offset + $0.width) >= point.x

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2C73BC662B1A7D5900CE2EE0 /* SheetSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C73BC652B1A7D5900CE2EE0 /* SheetSelection.swift */; };
 		2C73BC682B1A7E1800CE2EE0 /* SheetViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C73BC672B1A7E1800CE2EE0 /* SheetViewDelegate.swift */; };
+		2C73BC6A2B1A94B800CE2EE0 /* SheetSelectionMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C73BC692B1A94B800CE2EE0 /* SheetSelectionMode.swift */; };
 		2CCD16F02B1868730041929F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCD16EF2B1868730041929F /* AppDelegate.swift */; };
 		2CCD16F22B1868730041929F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCD16F12B1868730041929F /* SceneDelegate.swift */; };
 		2CCD16F42B1868730041929F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCD16F32B1868730041929F /* ViewController.swift */; };
@@ -26,6 +27,7 @@
 /* Begin PBXFileReference section */
 		2C73BC652B1A7D5900CE2EE0 /* SheetSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetSelection.swift; sourceTree = "<group>"; };
 		2C73BC672B1A7E1800CE2EE0 /* SheetViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewDelegate.swift; sourceTree = "<group>"; };
+		2C73BC692B1A94B800CE2EE0 /* SheetSelectionMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetSelectionMode.swift; sourceTree = "<group>"; };
 		2CCD16EC2B1868730041929F /* Spreadsheet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Spreadsheet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CCD16EF2B1868730041929F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2CCD16F12B1868730041929F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -83,6 +85,7 @@
 				2CCD17082B186B280041929F /* SheetIndex.swift */,
 				2CCD17062B186B030041929F /* SheetScrollView.swift */,
 				2C73BC652B1A7D5900CE2EE0 /* SheetSelection.swift */,
+				2C73BC692B1A94B800CE2EE0 /* SheetSelectionMode.swift */,
 				2CCD17032B1868820041929F /* SheetView.swift */,
 				2CCD17112B1943B20041929F /* SheetViewCell */,
 				2C73BC672B1A7E1800CE2EE0 /* SheetViewDelegate.swift */,
@@ -179,6 +182,7 @@
 				2CCD17132B1943CF0041929F /* SheetViewTextCell.swift in Sources */,
 				2CCD16F22B1868730041929F /* SceneDelegate.swift in Sources */,
 				2CCD17072B186B030041929F /* SheetScrollView.swift in Sources */,
+				2C73BC6A2B1A94B800CE2EE0 /* SheetSelectionMode.swift in Sources */,
 				2CCD170B2B186E5D0041929F /* SheetDataSource.swift in Sources */,
 				2C73BC662B1A7D5900CE2EE0 /* SheetSelection.swift in Sources */,
 				2C73BC682B1A7E1800CE2EE0 /* SheetViewDelegate.swift in Sources */,

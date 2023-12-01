@@ -29,6 +29,8 @@ public class SheetView: UIView {
 		}
 	}
 
+	public var allowedSelectionModes = SheetSelectionMode.all
+
 	var columns = [SheetColumnDefinition]()
 
 	private var scrollView: SheetScrollView!
