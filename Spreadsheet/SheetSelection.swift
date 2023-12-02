@@ -2,7 +2,7 @@
 
 import Foundation
 
-public enum SheetSelection {
+public enum SheetSelection: Equatable {
 	case none
 	case column(index: Int)
 	case row(index: Int)

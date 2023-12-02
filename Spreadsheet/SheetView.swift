@@ -20,12 +20,9 @@ public class SheetView: UIView {
 	}
 
 	public weak var delegate: SheetViewDelegate?
-	internal(set) public var selection = SheetSelection.none {
-		didSet {
-			delegate?.sheet(
-				self,
-				didChangeSelection: selection,
-				from: oldValue)
+	public var selection: SheetSelection {
+		get {
+			return scrollView.selection
 		}
 	}
 
@@ -43,6 +40,10 @@ public class SheetView: UIView {
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
 		setup()
+	}
+
+	public func setSelection(_ selection: SheetSelection, animated: Bool) {
+		scrollView.setSelection(selection, animated: animated)
 	}
 
 	public func makeIndex(_ col: Int, _ row: Int) -> SheetIndex {
