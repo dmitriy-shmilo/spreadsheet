@@ -38,7 +38,7 @@ public class SheetViewTextCell: SheetViewCell {
 
 	private(set) public var label = UILabel()
 
-	public override init(frame: CGRect) {
+	public required init(frame: CGRect) {
 		super.init(frame: frame)
 		setup()
 	}
@@ -46,6 +46,10 @@ public class SheetViewTextCell: SheetViewCell {
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
 		setup()
+	}
+
+	public override func prepareForReuse() {
+		label.text = ""
 	}
 
 	private func refreshColors() {

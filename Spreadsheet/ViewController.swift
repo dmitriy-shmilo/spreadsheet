@@ -7,6 +7,7 @@ class ViewController: UIViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		sheet.register(SheetViewTextCell.self, forCellReuseIdentifier: "cell")
 		sheet.dataSource = self
 		sheet.delegate = self
 	}
@@ -26,7 +27,9 @@ extension ViewController: SheetDataSource {
 	}
 
 	func sheet(_ sheet: SheetView, cellFor index: SheetIndex) -> SheetViewCell {
-		let cell = SheetViewTextCell()
+		guard let cell = sheet.dequeueReusableCell(withIdentifier: "cell") as? SheetViewTextCell else {
+			return .init()
+		}
 		cell.label.text = "\(index)"
 		cell.selectedBackgroundColor = .systemBlue.withAlphaComponent(0.3)
 		if sheet.selection.contains(index) {

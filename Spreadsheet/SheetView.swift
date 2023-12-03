@@ -10,6 +10,7 @@ struct SheetColumnDefinition {
 
 @IBDesignable
 public class SheetView: UIView {
+	static let minQueueLimit = 100
 	static let defaultColWidth: CGFloat = 100.0
 	static let defaultRowHeight: CGFloat = 45.0
 
@@ -31,6 +32,7 @@ public class SheetView: UIView {
 	var columns = [SheetColumnDefinition]()
 
 	private var scrollView: SheetScrollView!
+	private var cellQueues = [String: SheetViewCellQueue]()
 
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -56,20 +58,6 @@ public class SheetView: UIView {
 
 	public func reloadCellsAt(indices: [SheetIndex]) {
 		scrollView.reloadCellsAt(indices: indices)
-	}
-
-	func cellFor(_ index: SheetIndex) -> SheetViewCell {
-		guard let cell = dataSource?.sheet(self, cellFor: index) else {
-			return SheetViewCell(index: index)
-		}
-		cell.sheetIndex = index
-		return cell
-	}
-
-	func freeCell(_ cell: SheetViewCell) {
-		// TODO: enqueue for reuse
-		cell.sheetIndex = .invalid
-		cell.removeFromSuperview()
 	}
 
 	private func setup() {
@@ -104,4 +92,47 @@ public class SheetView: UIView {
 	}
 }
 
+// MARK: - Cell Lifecycle
+extension SheetView {
+	public func register(_ type: SheetViewCell.Type, forCellReuseIdentifier id: String) {
+		guard cellQueues[id] == nil else {
+			fatalError("\(id) is already registered in \(self)")
+		}
+		let clientLimit = dataSource?.sheet(self, queueLimitForReuseIdentifier: id) ?? -1
+		let limit = clientLimit > -1
+		? clientLimit
+		: max(Int(bounds.width / Self.defaultColWidth), Self.minQueueLimit)
+		cellQueues[id] = .init(id: id, limit: limit, type: type)
+	}
 
+	public func dequeueReusableCell(withIdentifier reuseIdentifier: String) -> SheetViewCell {
+		guard let queue = cellQueues[reuseIdentifier] else {
+			fatalError("\(reuseIdentifier) was not registered for reuse.")
+		}
+
+		return queue.dequeue()
+	}
+
+	func cellFor(_ index: SheetIndex) -> SheetViewCell {
+		guard let cell = dataSource?.sheet(self, cellFor: index) else {
+			return SheetViewCell(index: index)
+		}
+		if selection.contains(index) {
+			cell.selection = selection
+		}
+		cell.sheetIndex = index
+		return cell
+	}
+
+	func releaseCell(_ cell: SheetViewCell) {
+		cell.sheetIndex = .invalid
+		cell.selection = .none
+		cell.removeFromSuperview()
+
+		guard let queue = cellQueues[cell.reuseIdentifier] else {
+			return
+		}
+
+		queue.enqueue(cell)
+	}
+}

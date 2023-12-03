@@ -98,7 +98,7 @@ class SheetScrollView: UIScrollView {
 				if index.col < leftColumn || index.col > rightColumn
 					|| index.row < topRow || index.row > bottomRow {
 					if let cell = visibleCells.removeValue(forKey: index) {
-						sheet.freeCell(cell)
+						sheet.releaseCell(cell)
 					}
 				}
 			}
@@ -125,7 +125,7 @@ class SheetScrollView: UIScrollView {
 		for i in indices {
 			if let cell = visibleCells[i] {
 				let frame = cell.frame
-				sheet.freeCell(cell)
+				sheet.releaseCell(cell)
 				let freshCell = sheet.cellFor(i)
 				addSubview(freshCell)
 				freshCell.frame = frame

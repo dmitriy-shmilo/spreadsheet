@@ -22,6 +22,7 @@
 		2CCD170B2B186E5D0041929F /* SheetDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCD170A2B186E5D0041929F /* SheetDataSource.swift */; };
 		2CCD170F2B187D7A0041929F /* SheetViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCD170E2B187D7A0041929F /* SheetViewCell.swift */; };
 		2CCD17132B1943CF0041929F /* SheetViewTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCD17122B1943CF0041929F /* SheetViewTextCell.swift */; };
+		2CF652A12B1BC278009E95DC /* SheetViewCellQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF652A02B1BC278009E95DC /* SheetViewCellQueue.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 		2CCD170A2B186E5D0041929F /* SheetDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetDataSource.swift; sourceTree = "<group>"; };
 		2CCD170E2B187D7A0041929F /* SheetViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewCell.swift; sourceTree = "<group>"; };
 		2CCD17122B1943CF0041929F /* SheetViewTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewTextCell.swift; sourceTree = "<group>"; };
+		2CF652A02B1BC278009E95DC /* SheetViewCellQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewCellQueue.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +90,7 @@
 				2C73BC692B1A94B800CE2EE0 /* SheetSelectionMode.swift */,
 				2CCD17032B1868820041929F /* SheetView.swift */,
 				2CCD17112B1943B20041929F /* SheetViewCell */,
+				2CF652A02B1BC278009E95DC /* SheetViewCellQueue.swift */,
 				2C73BC672B1A7E1800CE2EE0 /* SheetViewDelegate.swift */,
 				2CCD17052B1869DA0041929F /* Spreadsheet.entitlements */,
 				2CCD16F32B1868730041929F /* ViewController.swift */,
@@ -186,6 +189,7 @@
 				2CCD170B2B186E5D0041929F /* SheetDataSource.swift in Sources */,
 				2C73BC662B1A7D5900CE2EE0 /* SheetSelection.swift in Sources */,
 				2C73BC682B1A7E1800CE2EE0 /* SheetViewDelegate.swift in Sources */,
+				2CF652A12B1BC278009E95DC /* SheetViewCellQueue.swift in Sources */,
 				2CCD17092B186B280041929F /* SheetIndex.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

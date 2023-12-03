@@ -3,11 +3,12 @@
 import UIKit
 
 public class SheetViewCell: UIView {
+	internal(set) public var reuseIdentifier = ""
 	internal(set) public var sheetIndex = SheetIndex.invalid
 
-	public var selection = SheetSelection.none
+	internal(set) public var selection = SheetSelection.none
 
-	public override init(frame: CGRect) {
+	public required override init(frame: CGRect) {
 		super.init(frame: frame)
 		setup()
 	}
@@ -17,8 +18,12 @@ public class SheetViewCell: UIView {
 		sheetIndex = index
 	}
 	
-	required init?(coder: NSCoder) {
+	public required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
+	}
+
+	public func prepareForReuse() {
+		// no-op
 	}
 
 	private func setup() {
