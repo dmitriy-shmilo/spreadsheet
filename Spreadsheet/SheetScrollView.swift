@@ -4,10 +4,6 @@ import UIKit
 
 class SheetScrollView: UIScrollView {
 	private static let selectionPadding = 16.0
-	var rowCount = 0
-	var estRowHeight: CGFloat = 1.0
-
-	var visibleRowCount = 0
 
 	weak var sheet: SheetView!
 
@@ -50,11 +46,16 @@ class SheetScrollView: UIScrollView {
 		}) else {
 			return
 		}
-		let rowIndex = topRow + Int(point.y / estRowHeight)
-		let cellIndex = sheet.makeIndex(colIndex.index, rowIndex)
+
+		guard let rowIndex = sheet.rows[topRow..<bottomRow].first(where: {
+			$0.offset <= point.y && ($0.offset + $0.height) >= point.y
+		}) else {
+			return
+		}
+		let cellIndex = sheet.makeIndex(colIndex.index, rowIndex.index)
 
 		deselectCellsAt(selection)
-		selection = .cell(column: colIndex.index, row: rowIndex)
+		selection = .cell(column: colIndex.index, row: rowIndex.index)
 
 		if sheet.delegate?.sheet(sheet, shouldSelectCellAt: cellIndex) ?? true {
 			selectCellsAt(selection)
@@ -73,6 +74,7 @@ class SheetScrollView: UIScrollView {
 			let bottomRight = CGPoint(x: contentOffset.x + frame.width,
 									  y: contentOffset.y + frame.height)
 			let cols = sheet.columns
+			let rows = sheet.rows
 
 			// TODO: For a relatively small number of columns the following
 			// linear search will perform OK. But for a large number of
@@ -87,12 +89,18 @@ class SheetScrollView: UIScrollView {
 				$0.offset <= bottomRight.x && $0.offset + $0.width >= bottomRight.x
 			} ?? sheet.columns.count - 1
 
-			leftColumn = max(0, leftIndex - 1)
-			rightColumn = min(sheet.columns.count - 1, rightIndex + 1)
+			// find the top and bottom visible row indices
+			let topIndex = rows.firstIndex {
+				$0.offset <= topLeft.y && $0.offset + $0.height >= topLeft.y
+			} ?? 0
+			let bottomIndex = rows.firstIndex {
+				$0.offset <= bottomRight.y && $0.offset + $0.height >= bottomRight.y
+			} ?? sheet.rows.count - 1
 
-			visibleRowCount = Int(ceil(frame.height / Double(estRowHeight))) + 2
-			topRow = max(0, Int(topLeft.y / estRowHeight) - 1)
-			bottomRow = min(rowCount, topRow + visibleRowCount)
+			leftColumn = max(0, leftIndex - 1)
+			rightColumn = min(cols.count - 1, rightIndex + 1)
+			topRow = max(0, topIndex - 1)
+			bottomRow = min(rows.count - 1, bottomIndex + 1)
 
 			for index in visibleCells.keys {
 				if index.col < leftColumn || index.col > rightColumn
@@ -111,9 +119,9 @@ class SheetScrollView: UIScrollView {
 						addSubview(cell)
 						cell.frame = .init(
 							x: cols[x].offset,
-							y: CGFloat(y) * estRowHeight,
+							y: rows[y].offset,
 							width: cols[x].width,
-							height: estRowHeight)
+							height: rows[y].height)
 						visibleCells[index] = cell
 					}
 				}
@@ -169,17 +177,18 @@ class SheetScrollView: UIScrollView {
 
 	func scrollToSelection(_ selection: SheetSelection, animated: Bool) {
 		let allowedCols = 0..<sheet.columns.count
-		let allowedRows = 0..<rowCount
+		let allowedRows = 0..<sheet.rows.count
 		switch selection {
 		case .none:
 			return
 		case .cell(let column, let row)
 			where allowedCols.contains(column) && allowedRows.contains(row):
 			let colDef = sheet.columns[column]
+			let rowDef = sheet.rows[row]
 			let rect = CGRect(x: colDef.offset,
-							  y: CGFloat(row) * estRowHeight,
+							  y: rowDef.offset,
 							  width: colDef.width,
-							  height: estRowHeight)
+							  height: rowDef.height)
 				.insetBy(dx: -Self.selectionPadding, dy: -Self.selectionPadding)
 			scrollRectToVisible(rect, animated: animated)
 		case .cell(_, _):
@@ -193,11 +202,13 @@ class SheetScrollView: UIScrollView {
 			&& allowedRows.contains(top) && allowedRows.contains(bottom):
 			let leftColDef = sheet.columns[left]
 			let rightColDef = sheet.columns[right]
+			let topRowDef = sheet.rows[top]
+			let bottomRowDef = sheet.rows[bottom]
 
 			let rect = CGRect(x: leftColDef.offset,
-							  y: CGFloat(top) * estRowHeight,
+							  y: topRowDef.offset,
 							  width: rightColDef.offset + rightColDef.width - leftColDef.offset,
-							  height: CGFloat(bottom - top) * estRowHeight)
+							  height: bottomRowDef.offset + bottomRowDef.height - topRowDef.offset)
 				.insetBy(dx: -Self.selectionPadding, dy: -Self.selectionPadding)
 			scrollRectToVisible(rect, animated: animated)
 		case .range(_, _, _, _):
@@ -206,10 +217,10 @@ class SheetScrollView: UIScrollView {
 	}
 
 	func refreshContentMeasurements() {
-		// TODO: cache the total width
+		// TODO: cache the total width and height
 		contentSize = .init(
-			width: sheet.columns.map { $0.width }.reduce(0, +),
-			height: CGFloat(rowCount) * estRowHeight)
+			width: sheet.columns.map { $0.width }.reduce(0.0, +),
+			height: sheet.rows.map { $0.height }.reduce(0.0, +))
 	}
 
 	private func visibleIndicesFrom(selection: SheetSelection) -> [SheetIndex] {

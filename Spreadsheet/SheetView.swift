@@ -8,6 +8,12 @@ struct SheetColumnDefinition {
 	var offset: CGFloat = 0.0
 }
 
+struct SheetRowDefinition {
+	var index: Int = -1
+	var height: CGFloat = 0.0
+	var offset: CGFloat = 0.0
+}
+
 @IBDesignable
 public class SheetView: UIView {
 	static let minQueueLimit = 100
@@ -30,6 +36,7 @@ public class SheetView: UIView {
 	public var allowedSelectionModes = SheetSelectionMode.all
 
 	var columns = [SheetColumnDefinition]()
+	var rows = [SheetRowDefinition]()
 
 	private var scrollView: SheetScrollView!
 	private var cellQueues = [String: SheetViewCellQueue]()
@@ -86,8 +93,16 @@ public class SheetView: UIView {
 			}
 		}
 
-		scrollView.estRowHeight = dataSource?.sheetRowHeight(self) ?? Self.defaultRowHeight
-		scrollView.rowCount = dataSource?.sheetNumberOfRows(self) ?? 0
+		let rowCount = dataSource?.sheetNumberOfRows(self) ?? 0
+		if rowCount > 0 {
+			rows.reserveCapacity(rowCount)
+			var offset = 0.0
+			for i in 0..<rowCount {
+				let height = dataSource?.sheetRowHeight(self, at: i) ?? Self.defaultRowHeight
+				rows.append(.init(index: i, height: height, offset: offset))
+				offset += height
+			}
+		}
 		scrollView.refreshContentMeasurements()
 	}
 }

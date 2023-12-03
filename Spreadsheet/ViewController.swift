@@ -18,6 +18,10 @@ extension ViewController: SheetDataSource {
 		return 100.0 + CGFloat(index % 3) * 150.0
 	}
 
+	func sheetRowHeight(_ sheet: SheetView, at index: Int) -> CGFloat {
+		return 100.0 + CGFloat(index % 4) * 50.0
+	}
+
 	func sheetNumberOfColumns(_ sheet: SheetView) -> Int {
 		return 100
 	}
@@ -30,6 +34,7 @@ extension ViewController: SheetDataSource {
 		guard let cell = sheet.dequeueReusableCell(withIdentifier: "cell") as? SheetViewTextCell else {
 			return .init()
 		}
+		cell.label.numberOfLines = 0
 		cell.label.text = "\(index)"
 		cell.selectedBackgroundColor = .systemBlue.withAlphaComponent(0.3)
 		if sheet.selection.contains(index) {
