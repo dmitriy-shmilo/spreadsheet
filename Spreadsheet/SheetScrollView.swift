@@ -98,9 +98,9 @@ class SheetScrollView: UIScrollView {
 			} ?? sheet.rows.count - 1
 
 			leftColumn = max(0, leftIndex - 1)
-			rightColumn = min(cols.count - 1, rightIndex + 1)
+			rightColumn = min(cols.count, rightIndex + 1)
 			topRow = max(0, topIndex - 1)
-			bottomRow = min(rows.count - 1, bottomIndex + 1)
+			bottomRow = min(rows.count, bottomIndex + 1)
 
 			for index in visibleCells.keys {
 				if index.col < leftColumn || index.col > rightColumn
