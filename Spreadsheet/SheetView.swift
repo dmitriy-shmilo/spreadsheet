@@ -176,7 +176,9 @@ extension SheetView {
 			fatalError("\(reuseIdentifier) was not registered for reuse.")
 		}
 
-		return queue.dequeue()
+		let cell = queue.dequeue()
+		cell.prepareForReuse()
+		return cell
 	}
 
 	func cellFor(_ index: SheetIndex, in area: SheetViewArea) -> SheetViewCell {
