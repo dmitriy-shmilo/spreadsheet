@@ -70,7 +70,20 @@ public class SheetView: UIView {
 		return .init(col: col, row: row, index: row * columns.count + col)
 	}
 
-	public func reloadCellsAt(index: SheetIndex) {
+	public func frameRectFor(index: SheetIndex) -> CGRect {
+		guard index.row >= 0 && index.row < rows.count
+				&& index.col >= 0 && index.col < columns.count else {
+			return .zero
+		}
+
+		return .init(
+			x: columns[index.col].offset,
+			y: rows[index.row].offset,
+			width: columns[index.col].width,
+			height: rows[index.row].height)
+	}
+
+	public func reloadCellAt(index: SheetIndex) {
 		scrollView.reloadCellsAt(indices: [index])
 	}
 
@@ -216,6 +229,23 @@ extension SheetView {
 	}
 }
 
+// MARK: - Cell Editing
+extension SheetView {
+	func shouldEditCell(at index: SheetIndex) -> Bool {
+		return delegate?.sheet(self, shouldEditCellAt: index) ?? false
+	}
+
+	func editorViewFor(index: SheetIndex) -> UIView {
+		return dataSource?.sheet(self, editorCellFor: index) ?? UIView()
+	}
+
+	func endCellEditing(at index: SheetIndex, andRelease editor: UIView) {
+		delegate?.sheet(self, didEndEditingCellAt: index, with: editor)
+		editor.removeFromSuperview()
+	}
+}
+
+// MARK: - UIScrollViewDelegate
 extension SheetView: UIScrollViewDelegate {
 	public func scrollViewDidScroll(_ scrollView: UIScrollView) {
 		let offset = scrollView.contentOffset

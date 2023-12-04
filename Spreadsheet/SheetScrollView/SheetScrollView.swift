@@ -12,6 +12,10 @@ class SheetScrollView: UIScrollView {
 	private var rightColumn = 0
 	private var topRow = 0
 	private var bottomRow = 0
+	private var isEditing = false
+	private var editorIndex = SheetIndex.invalid
+	private var editorView: UIView?
+
 	private(set) var selection = SheetSelection.none {
 		didSet {
 			if oldValue != selection {
@@ -43,19 +47,28 @@ class SheetScrollView: UIScrollView {
 		let point = touch.location(in: self)
 		guard let colIndex = sheet.columns[leftColumn..<rightColumn].first(where: {
 			$0.offset <= point.x && ($0.offset + $0.width) >= point.x
-		}) else {
+		})?.index else {
 			return
 		}
 
 		guard let rowIndex = sheet.rows[topRow..<bottomRow].first(where: {
 			$0.offset <= point.y && ($0.offset + $0.height) >= point.y
-		}) else {
+		})?.index else {
 			return
 		}
-		let cellIndex = sheet.makeIndex(colIndex.index, rowIndex.index)
+		let cellIndex = sheet.makeIndex(colIndex, rowIndex)
+		let canEdit = sheet.shouldEditCell(at: cellIndex)
 
+		if canEdit,
+			case .cell(let col, let row) = selection,
+			row == rowIndex && col == colIndex {
+			beginEditCell(at: sheet.makeIndex(col, row))
+			return
+		}
+
+		endEditCell()
 		deselectCellsAt(selection)
-		selection = .cell(column: colIndex.index, row: rowIndex.index)
+		selection = .cell(column: colIndex, row: rowIndex)
 
 		if sheet.delegate?.sheet(sheet, shouldSelectCellAt: cellIndex) ?? true {
 			selectCellsAt(selection)
@@ -140,6 +153,28 @@ class SheetScrollView: UIScrollView {
 				visibleCells[i] = freshCell
 			}
 		}
+	}
+
+	func beginEditCell(at index: SheetIndex) {
+		let editor = sheet.editorViewFor(index: index)
+		editor.frame = sheet.frameRectFor(index: index)
+		editor.layer.zPosition = 1
+		addSubview(editor)
+		editor.becomeFirstResponder()
+		editorView = editor
+		editorIndex = index
+		isEditing = true
+	}
+
+	func endEditCell() {
+		guard let editorView = editorView else {
+			return
+		}
+
+		sheet.endCellEditing(at: editorIndex, andRelease: editorView)
+		isEditing = false
+		editorIndex = .invalid
+		self.editorView = nil
 	}
 
 	// MARK: - Selection Operations
