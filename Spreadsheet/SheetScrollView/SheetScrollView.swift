@@ -115,7 +115,7 @@ class SheetScrollView: UIScrollView {
 				for y in topRow..<bottomRow {
 					let index = sheet.makeIndex(x, y)
 					if visibleCells[index] == nil {
-						let cell = sheet.cellFor(index)
+						let cell = sheet.cellFor(index, in: .content)
 						addSubview(cell)
 						cell.frame = .init(
 							x: cols[x].offset,
@@ -134,7 +134,7 @@ class SheetScrollView: UIScrollView {
 			if let cell = visibleCells[i] {
 				let frame = cell.frame
 				sheet.releaseCell(cell)
-				let freshCell = sheet.cellFor(i)
+				let freshCell = sheet.cellFor(i, in: .content)
 				addSubview(freshCell)
 				freshCell.frame = frame
 				visibleCells[i] = freshCell

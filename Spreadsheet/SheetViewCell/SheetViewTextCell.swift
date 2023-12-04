@@ -5,25 +5,25 @@ import UIKit
 public class SheetViewTextCell: SheetViewCell {
 	private static let spacing = 8.0
 
-	public var normalBorderColor = UIColor.systemGray2 {
+	public override var normalBorderColor: UIColor {
 		didSet {
 			refreshColors()
 		}
 	}
 
-	public var selectedBorderColor = UIColor.systemBlue {
+	public override var selectedBorderColor: UIColor {
 		didSet {
 			refreshColors()
 		}
 	}
 
-	public var normalBackgroundColor: UIColor? {
+	public override  var normalBackgroundColor: UIColor? {
 		didSet {
 			refreshColors()
 		}
 	}
 
-	public var selectedBackgroundColor: UIColor? {
+	public override var selectedBackgroundColor: UIColor? {
 		didSet {
 			refreshColors()
 		}

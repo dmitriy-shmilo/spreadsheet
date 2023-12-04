@@ -14,6 +14,12 @@ struct SheetRowDefinition {
 	var offset: CGFloat = 0.0
 }
 
+enum SheetViewArea {
+	case unknown
+	case content
+	case fixedTop
+}
+
 @IBDesignable
 public class SheetView: UIView {
 	static let minQueueLimit = 100
@@ -37,8 +43,13 @@ public class SheetView: UIView {
 
 	var columns = [SheetColumnDefinition]()
 	var rows = [SheetRowDefinition]()
+	var fixedTopRows = [SheetRowDefinition]()
 
+	private var topScrollView: SheetFixedRowScrollView!
+	private var topScrollViewHeight: NSLayoutConstraint!
+	// TODO: rename to contentScrollView
 	private var scrollView: SheetScrollView!
+
 	private var cellQueues = [String: SheetViewCellQueue]()
 
 	override init(frame: CGRect) {
@@ -68,12 +79,28 @@ public class SheetView: UIView {
 	}
 
 	private func setup() {
-		scrollView = .init(frame: frame)
+		topScrollView = .init(frame: .zero)
+		topScrollView.translatesAutoresizingMaskIntoConstraints = false
+		topScrollView.sheet = self
+		topScrollView.delegate = self
+		topScrollView.showsVerticalScrollIndicator = false
+		topScrollView.showsHorizontalScrollIndicator = false
+		topScrollViewHeight = topScrollView.heightAnchor.constraint(equalToConstant: 0.0)
+		addSubview(topScrollView)
+
+		scrollView = .init(frame: .zero)
 		scrollView.translatesAutoresizingMaskIntoConstraints = false
 		scrollView.sheet = self
+		scrollView.delegate = self
 		addSubview(scrollView)
+
 		NSLayoutConstraint.activate([
-			scrollView.topAnchor.constraint(equalTo: topAnchor),
+			topScrollView.topAnchor.constraint(equalTo: topAnchor),
+			topScrollView.leftAnchor.constraint(equalTo: leftAnchor),
+			topScrollView.rightAnchor.constraint(equalTo: rightAnchor),
+			topScrollViewHeight,
+
+			scrollView.topAnchor.constraint(equalTo: topScrollView.bottomAnchor),
 			scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
 			scrollView.rightAnchor.constraint(equalTo: rightAnchor),
 			scrollView.leftAnchor.constraint(equalTo: leftAnchor),
@@ -82,6 +109,15 @@ public class SheetView: UIView {
 	}
 
 	private func refreshContentMeasurements() {
+		reloadContentColumns()
+		reloadContentRows()
+		reloadFixedTopRows()
+
+		topScrollView.refreshContentMeasurements()
+		scrollView.refreshContentMeasurements()
+	}
+
+	private func reloadContentColumns() {
 		let columnCount = dataSource?.sheetNumberOfColumns(self) ?? 0
 		if columnCount > 0 {
 			columns.reserveCapacity(columnCount)
@@ -92,7 +128,9 @@ public class SheetView: UIView {
 				offset += width
 			}
 		}
+	}
 
+	private func reloadContentRows() {
 		let rowCount = dataSource?.sheetNumberOfRows(self) ?? 0
 		if rowCount > 0 {
 			rows.reserveCapacity(rowCount)
@@ -103,7 +141,20 @@ public class SheetView: UIView {
 				offset += height
 			}
 		}
-		scrollView.refreshContentMeasurements()
+	}
+
+	private func reloadFixedTopRows() {
+		let fixedTopRowCount = dataSource?.sheetNumberOfFixedTopRows(self) ?? 0
+		if fixedTopRowCount > 0 {
+			fixedTopRows.reserveCapacity(fixedTopRowCount)
+			var offset = 0.0
+			for i in 0..<fixedTopRowCount {
+				let height = dataSource?.sheet(self, heightForFixedTopRowAt: i) ?? Self.defaultRowHeight
+				fixedTopRows.append(.init(index: i, height: height, offset: offset))
+				offset += height
+			}
+			topScrollViewHeight.constant = fixedTopRows.last!.offset + fixedTopRows.last!.height
+		}
 	}
 }
 
@@ -128,15 +179,26 @@ extension SheetView {
 		return queue.dequeue()
 	}
 
-	func cellFor(_ index: SheetIndex) -> SheetViewCell {
-		guard let cell = dataSource?.sheet(self, cellFor: index) else {
-			return SheetViewCell(index: index)
+	func cellFor(_ index: SheetIndex, in area: SheetViewArea) -> SheetViewCell {
+		switch area {
+		case .unknown:
+			fatalError("\(self) can't produce a cell for an unknown area")
+		case .content:
+			let cell = dataSource?.sheet(self, cellFor: index) ?? SheetViewCell(index: index)
+			if selection.contains(index) {
+				cell.selection = selection
+			}
+			cell.sheetIndex = index
+			return cell
+		case .fixedTop:
+			let cell = dataSource?.sheet(self, cellFor: index.col, inFixedTopRow: index.row)
+			?? SheetViewCell(index: index)
+			if case .column(_) = selection, selection.contains(index) {
+				cell.selection = selection
+			}
+			cell.sheetIndex = index
+			return cell
 		}
-		if selection.contains(index) {
-			cell.selection = selection
-		}
-		cell.sheetIndex = index
-		return cell
 	}
 
 	func releaseCell(_ cell: SheetViewCell) {
@@ -149,5 +211,20 @@ extension SheetView {
 		}
 
 		queue.enqueue(cell)
+	}
+}
+
+extension SheetView: UIScrollViewDelegate {
+	public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+		let offset = scrollView.contentOffset
+		if scrollView == self.scrollView {
+			topScrollView.contentOffset.x = offset.x
+			return
+		}
+
+		if scrollView == topScrollView {
+			self.scrollView.contentOffset.x = offset.x
+			return
+		}
 	}
 }

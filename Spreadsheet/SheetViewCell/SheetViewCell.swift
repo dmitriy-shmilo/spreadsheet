@@ -6,7 +6,35 @@ public class SheetViewCell: UIView {
 	internal(set) public var reuseIdentifier = ""
 	internal(set) public var sheetIndex = SheetIndex.invalid
 
-	internal(set) public var selection = SheetSelection.none
+	internal(set) public var normalBorderColor = UIColor.systemGray2 {
+		didSet {
+			refreshColors()
+		}
+	}
+
+	internal(set) public var selectedBorderColor = UIColor.systemBlue {
+		didSet {
+			refreshColors()
+		}
+	}
+
+	internal(set) public var normalBackgroundColor: UIColor? = .systemBackground {
+		didSet {
+			refreshColors()
+		}
+	}
+
+	internal(set) public var selectedBackgroundColor: UIColor? = .systemBlue.withAlphaComponent(0.3) {
+		didSet {
+			refreshColors()
+		}
+	}
+
+	internal(set) public var selection: SheetSelection = .none {
+		didSet {
+			refreshColors()
+		}
+	}
 
 	public required override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -29,7 +57,16 @@ public class SheetViewCell: UIView {
 	private func setup() {
 		isUserInteractionEnabled = false
 		layer.borderWidth = 1.0
-		layer.borderColor = UIColor.systemGray2.cgColor
-		backgroundColor = .systemBackground
+		refreshColors()
+	}
+
+	private func refreshColors() {
+		if case .none = selection {
+			layer.borderColor = normalBorderColor.cgColor
+			backgroundColor = normalBackgroundColor
+		} else {
+			layer.borderColor = selectedBorderColor.cgColor
+			backgroundColor = selectedBackgroundColor
+		}
 	}
 }
