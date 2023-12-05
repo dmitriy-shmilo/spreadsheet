@@ -35,7 +35,7 @@ public class SheetView: UIView {
 	public weak var delegate: SheetViewDelegate?
 	public var selection: SheetSelection {
 		get {
-			return scrollView.selection
+			return contentScrollView.selection
 		}
 	}
 
@@ -45,10 +45,9 @@ public class SheetView: UIView {
 	var rows = [SheetRowDefinition]()
 	var fixedTopRows = [SheetRowDefinition]()
 
-	private var topScrollView: SheetFixedRowScrollView!
+	private var topScrollView: SheetFixedHorizontalScrollView!
 	private var topScrollViewHeight: NSLayoutConstraint!
-	// TODO: rename to contentScrollView
-	private var scrollView: SheetScrollView!
+	private var contentScrollView: SheetContentScrollView!
 
 	private var cellQueues = [String: SheetViewCellQueue]()
 
@@ -63,7 +62,7 @@ public class SheetView: UIView {
 	}
 
 	public func setSelection(_ selection: SheetSelection, animated: Bool) {
-		scrollView.setSelection(selection, animated: animated)
+		contentScrollView.setSelection(selection, animated: animated)
 	}
 
 	public func makeIndex(_ col: Int, _ row: Int) -> SheetIndex {
@@ -84,11 +83,11 @@ public class SheetView: UIView {
 	}
 
 	public func reloadCellAt(index: SheetIndex) {
-		scrollView.reloadCellsAt(indices: [index])
+		contentScrollView.reloadCellsAt(indices: [index])
 	}
 
 	public func reloadCellsAt(indices: [SheetIndex]) {
-		scrollView.reloadCellsAt(indices: indices)
+		contentScrollView.reloadCellsAt(indices: indices)
 	}
 
 	private func setup() {
@@ -101,11 +100,11 @@ public class SheetView: UIView {
 		topScrollViewHeight = topScrollView.heightAnchor.constraint(equalToConstant: 0.0)
 		addSubview(topScrollView)
 
-		scrollView = .init(frame: .zero)
-		scrollView.translatesAutoresizingMaskIntoConstraints = false
-		scrollView.sheet = self
-		scrollView.delegate = self
-		addSubview(scrollView)
+		contentScrollView = .init(frame: .zero)
+		contentScrollView.translatesAutoresizingMaskIntoConstraints = false
+		contentScrollView.sheet = self
+		contentScrollView.delegate = self
+		addSubview(contentScrollView)
 
 		NSLayoutConstraint.activate([
 			topScrollView.topAnchor.constraint(equalTo: topAnchor),
@@ -113,10 +112,10 @@ public class SheetView: UIView {
 			topScrollView.rightAnchor.constraint(equalTo: rightAnchor),
 			topScrollViewHeight,
 
-			scrollView.topAnchor.constraint(equalTo: topScrollView.bottomAnchor),
-			scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
-			scrollView.rightAnchor.constraint(equalTo: rightAnchor),
-			scrollView.leftAnchor.constraint(equalTo: leftAnchor),
+			contentScrollView.topAnchor.constraint(equalTo: topScrollView.bottomAnchor),
+			contentScrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
+			contentScrollView.rightAnchor.constraint(equalTo: rightAnchor),
+			contentScrollView.leftAnchor.constraint(equalTo: leftAnchor),
 		])
 		refreshContentMeasurements()
 	}
@@ -126,8 +125,13 @@ public class SheetView: UIView {
 		reloadContentRows()
 		reloadFixedTopRows()
 
+		topScrollView.columns = columns
+		topScrollView.rows = fixedTopRows
+		contentScrollView.columns = columns
+		contentScrollView.rows = rows
+
 		topScrollView.refreshContentMeasurements()
-		scrollView.refreshContentMeasurements()
+		contentScrollView.refreshContentMeasurements()
 	}
 
 	private func reloadContentColumns() {
@@ -249,13 +253,13 @@ extension SheetView {
 extension SheetView: UIScrollViewDelegate {
 	public func scrollViewDidScroll(_ scrollView: UIScrollView) {
 		let offset = scrollView.contentOffset
-		if scrollView == self.scrollView {
+		if scrollView == self.contentScrollView {
 			topScrollView.contentOffset.x = offset.x
 			return
 		}
 
 		if scrollView == topScrollView {
-			self.scrollView.contentOffset.x = offset.x
+			self.contentScrollView.contentOffset.x = offset.x
 			return
 		}
 	}
