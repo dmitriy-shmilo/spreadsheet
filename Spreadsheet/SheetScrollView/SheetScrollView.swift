@@ -10,10 +10,8 @@ class SheetScrollView: UIScrollView {
 	var rows = [SheetRowDefinition]()
 	var selection = SheetSelection.none
 	var visibleCells = [SheetIndex: SheetViewCell]()
-	var leftColumn = 0
-	var rightColumn = 0
-	var topRow = 0
-	var bottomRow = 0
+	var visibleRange = SheetCellRange.empty
+	var area = SheetViewArea.unknown
 
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -24,6 +22,36 @@ class SheetScrollView: UIScrollView {
 	}
 }
 
+extension SheetScrollView {
+	func releaseCells(in range: SheetCellRange) {
+		for index in visibleCells.keys {
+			if index.col < range.leftColumn || index.col > range.rightColumn
+				|| index.row < range.topRow || index.row > range.bottomRow {
+				if let cell = visibleCells.removeValue(forKey: index) {
+					sheet.releaseCell(cell)
+				}
+			}
+		}
+	}
+
+	func addCells(in range: SheetCellRange) {
+		for x in range.leftColumn..<range.rightColumn {
+			for y in range.topRow..<range.bottomRow {
+				let index = sheet.makeIndex(x, y)
+				if visibleCells[index] == nil {
+					let cell = sheet.cellFor(index, in: area)
+					addSubview(cell)
+					cell.frame = .init(
+						x: columns[x].offset,
+						y: rows[y].offset,
+						width: columns[x].width,
+						height: rows[y].height)
+					visibleCells[index] = cell
+				}
+			}
+		}
+	}
+}
 // MARK: - Column/Row Utility
 extension SheetScrollView {
 	// TODO: For a relatively small number of columns the following
@@ -39,6 +67,18 @@ extension SheetScrollView {
 
 	func findRowIntersecting(offset: CGFloat) -> SheetRowDefinition? {
 		return rows.first {
+			$0.offset <= offset && $0.offset + $0.height >= offset
+		}
+	}
+
+	func findVisibleColumnIntersecting(offset: CGFloat) -> SheetColumnDefinition? {
+		return columns[visibleRange.leftColumn..<visibleRange.rightColumn].first {
+			$0.offset <= offset && $0.offset + $0.width >= offset
+		}
+	}
+
+	func findVisibleRowIntersecting(offset: CGFloat) -> SheetRowDefinition? {
+		return rows[visibleRange.topRow..<visibleRange.bottomRow].first {
 			$0.offset <= offset && $0.offset + $0.height >= offset
 		}
 	}
@@ -104,11 +144,11 @@ extension SheetScrollView {
 		case .none:
 			return []
 		case .column(let col):
-			return (topRow..<bottomRow).map {
+			return (visibleRange.topRow..<visibleRange.bottomRow).map {
 				self.sheet.makeIndex(col, $0)
 			}
 		case .row(let row):
-			return (leftColumn..<rightColumn).map {
+			return (visibleRange.leftColumn..<visibleRange.rightColumn).map {
 				self.sheet.makeIndex($0, row)
 			}
 		case .cell(let col, let row):

@@ -36,15 +36,12 @@ class SheetContentScrollView: SheetScrollView {
 		}
 
 		let point = touch.location(in: self)
-		guard let colIndex = columns[leftColumn..<rightColumn].first(where: {
-			$0.offset <= point.x && ($0.offset + $0.width) >= point.x
-		})?.index else {
+		guard let colIndex = findVisibleColumnIntersecting(
+			offset: point.x)?.index else {
 			return
 		}
 
-		guard let rowIndex = rows[topRow..<bottomRow].first(where: {
-			$0.offset <= point.y && ($0.offset + $0.height) >= point.y
-		})?.index else {
+		guard let rowIndex = findVisibleRowIntersecting(offset: point.y)?.index else {
 			return
 		}
 		let cellIndex = sheet.makeIndex(colIndex, rowIndex)
@@ -70,10 +67,6 @@ class SheetContentScrollView: SheetScrollView {
 
 	override var contentOffset: CGPoint {
 		didSet {
-			guard let sheet = sheet else {
-				return
-			}
-
 			let topLeft = contentOffset
 			let bottomRight = CGPoint(x: contentOffset.x + frame.width,
 									  y: contentOffset.y + frame.height)
@@ -86,35 +79,19 @@ class SheetContentScrollView: SheetScrollView {
 			let topIndex = findRowIntersecting(offset: topLeft.y)?.index ?? 0
 			let bottomIndex = findRowIntersecting(offset: bottomRight.y)?.index ?? rows.count - 1
 
-			leftColumn = max(0, leftIndex - 1)
-			rightColumn = min(columns.count, rightIndex + 1)
-			topRow = max(0, topIndex - 1)
-			bottomRow = min(rows.count, bottomIndex + 1)
+			let range = SheetCellRange(
+				leftColumn: max(0, leftIndex - 1),
+				rightColumn: min(columns.count, rightIndex + 1),
+				topRow: max(0, topIndex - 1),
+				bottomRow: min(rows.count, bottomIndex + 1))
 
-			for index in visibleCells.keys {
-				if index.col < leftColumn || index.col > rightColumn
-					|| index.row < topRow || index.row > bottomRow {
-					if let cell = visibleCells.removeValue(forKey: index) {
-						sheet.releaseCell(cell)
-					}
-				}
+			guard visibleRange != range else {
+				return
 			}
 
-			for x in leftColumn..<rightColumn {
-				for y in topRow..<bottomRow {
-					let index = sheet.makeIndex(x, y)
-					if visibleCells[index] == nil {
-						let cell = sheet.cellFor(index, in: .content)
-						addSubview(cell)
-						cell.frame = .init(
-							x: columns[x].offset,
-							y: rows[y].offset,
-							width: columns[x].width,
-							height: rows[y].height)
-						visibleCells[index] = cell
-					}
-				}
-			}
+			visibleRange = range
+			releaseCells(in: visibleRange)
+			addCells(in: visibleRange)
 		}
 	}
 

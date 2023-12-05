@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2C080DE82B1FB95C00D14CF2 /* SheetContentScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C080DE72B1FB95C00D14CF2 /* SheetContentScrollView.swift */; };
+		2C080DEA2B1FBDDA00D14CF2 /* SheetCellRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C080DE92B1FBDDA00D14CF2 /* SheetCellRange.swift */; };
 		2C73BC662B1A7D5900CE2EE0 /* SheetSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C73BC652B1A7D5900CE2EE0 /* SheetSelection.swift */; };
 		2C73BC682B1A7E1800CE2EE0 /* SheetViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C73BC672B1A7E1800CE2EE0 /* SheetViewDelegate.swift */; };
 		2C73BC6A2B1A94B800CE2EE0 /* SheetSelectionMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C73BC692B1A94B800CE2EE0 /* SheetSelectionMode.swift */; };
@@ -29,6 +30,7 @@
 
 /* Begin PBXFileReference section */
 		2C080DE72B1FB95C00D14CF2 /* SheetContentScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetContentScrollView.swift; sourceTree = "<group>"; };
+		2C080DE92B1FBDDA00D14CF2 /* SheetCellRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetCellRange.swift; sourceTree = "<group>"; };
 		2C73BC652B1A7D5900CE2EE0 /* SheetSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetSelection.swift; sourceTree = "<group>"; };
 		2C73BC672B1A7E1800CE2EE0 /* SheetViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewDelegate.swift; sourceTree = "<group>"; };
 		2C73BC692B1A94B800CE2EE0 /* SheetSelectionMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetSelectionMode.swift; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 				2CCD16FA2B1868740041929F /* LaunchScreen.storyboard */,
 				2CCD16F52B1868730041929F /* Main.storyboard */,
 				2CCD16F12B1868730041929F /* SceneDelegate.swift */,
+				2C080DE92B1FBDDA00D14CF2 /* SheetCellRange.swift */,
 				2CCD170A2B186E5D0041929F /* SheetDataSource.swift */,
 				2CCD17082B186B280041929F /* SheetIndex.swift */,
 				2CF652A42B1CDAEC009E95DC /* SheetScrollView */,
@@ -114,9 +117,9 @@
 		2CF652A42B1CDAEC009E95DC /* SheetScrollView */ = {
 			isa = PBXGroup;
 			children = (
-				2CCD17062B186B030041929F /* SheetScrollView.swift */,
-				2CF652A22B1CD6DF009E95DC /* SheetFixedHorizontalScrollView.swift */,
 				2C080DE72B1FB95C00D14CF2 /* SheetContentScrollView.swift */,
+				2CF652A22B1CD6DF009E95DC /* SheetFixedHorizontalScrollView.swift */,
+				2CCD17062B186B030041929F /* SheetScrollView.swift */,
 			);
 			path = SheetScrollView;
 			sourceTree = "<group>";
@@ -197,6 +200,7 @@
 				2CCD16F02B1868730041929F /* AppDelegate.swift in Sources */,
 				2CCD170F2B187D7A0041929F /* SheetViewCell.swift in Sources */,
 				2C080DE82B1FB95C00D14CF2 /* SheetContentScrollView.swift in Sources */,
+				2C080DEA2B1FBDDA00D14CF2 /* SheetCellRange.swift in Sources */,
 				2CCD17132B1943CF0041929F /* SheetViewTextCell.swift in Sources */,
 				2CF652A32B1CD6DF009E95DC /* SheetFixedHorizontalScrollView.swift in Sources */,
 				2CCD16F22B1868730041929F /* SceneDelegate.swift in Sources */,

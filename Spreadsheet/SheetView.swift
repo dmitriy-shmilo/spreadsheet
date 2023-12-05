@@ -95,6 +95,7 @@ public class SheetView: UIView {
 		topScrollView.translatesAutoresizingMaskIntoConstraints = false
 		topScrollView.sheet = self
 		topScrollView.delegate = self
+		topScrollView.area = .fixedTop
 		topScrollView.showsVerticalScrollIndicator = false
 		topScrollView.showsHorizontalScrollIndicator = false
 		topScrollViewHeight = topScrollView.heightAnchor.constraint(equalToConstant: 0.0)
@@ -104,6 +105,7 @@ public class SheetView: UIView {
 		contentScrollView.translatesAutoresizingMaskIntoConstraints = false
 		contentScrollView.sheet = self
 		contentScrollView.delegate = self
+		contentScrollView.area = .content
 		addSubview(contentScrollView)
 
 		NSLayoutConstraint.activate([
