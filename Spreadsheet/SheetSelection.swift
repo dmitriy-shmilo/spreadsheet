@@ -11,7 +11,7 @@ public enum SheetSelection: Equatable {
 }
 
 extension SheetSelection {
-	func contains(_ index: SheetIndex) -> Bool {
+	public func contains(_ index: SheetIndex) -> Bool {
 		switch self {
 		case .none:
 			return false

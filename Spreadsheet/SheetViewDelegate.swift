@@ -12,7 +12,7 @@ public protocol SheetViewDelegate: AnyObject {
 	func sheet(_ sheet: SheetView, didEndEditingCellAt index: SheetIndex, with editor: UIView)
 }
 
-extension SheetViewDelegate {
+public extension SheetViewDelegate {
 	func sheet(_ sheet: SheetView, shouldSelectCellAt index: SheetIndex) -> Bool {
 		return true
 	}

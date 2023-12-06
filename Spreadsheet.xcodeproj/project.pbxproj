@@ -7,56 +7,48 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2C080DE82B1FB95C00D14CF2 /* SheetContentScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C080DE72B1FB95C00D14CF2 /* SheetContentScrollView.swift */; };
-		2C080DEA2B1FBDDA00D14CF2 /* SheetCellRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C080DE92B1FBDDA00D14CF2 /* SheetCellRange.swift */; };
-		2C73BC662B1A7D5900CE2EE0 /* SheetSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C73BC652B1A7D5900CE2EE0 /* SheetSelection.swift */; };
-		2C73BC682B1A7E1800CE2EE0 /* SheetViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C73BC672B1A7E1800CE2EE0 /* SheetViewDelegate.swift */; };
-		2C73BC6A2B1A94B800CE2EE0 /* SheetSelectionMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C73BC692B1A94B800CE2EE0 /* SheetSelectionMode.swift */; };
-		2C9E7C172B20A4020098BE8A /* SheetFixedVerticalScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9E7C162B20A4020098BE8A /* SheetFixedVerticalScrollView.swift */; };
-		2CCD16F02B1868730041929F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCD16EF2B1868730041929F /* AppDelegate.swift */; };
-		2CCD16F22B1868730041929F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCD16F12B1868730041929F /* SceneDelegate.swift */; };
-		2CCD16F42B1868730041929F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCD16F32B1868730041929F /* ViewController.swift */; };
-		2CCD16F72B1868730041929F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2CCD16F52B1868730041929F /* Main.storyboard */; };
-		2CCD16F92B1868740041929F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2CCD16F82B1868740041929F /* Assets.xcassets */; };
-		2CCD16FC2B1868740041929F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2CCD16FA2B1868740041929F /* LaunchScreen.storyboard */; };
-		2CCD17042B1868820041929F /* SheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCD17032B1868820041929F /* SheetView.swift */; };
-		2CCD17072B186B030041929F /* SheetScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCD17062B186B030041929F /* SheetScrollView.swift */; };
-		2CCD17092B186B280041929F /* SheetIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCD17082B186B280041929F /* SheetIndex.swift */; };
-		2CCD170B2B186E5D0041929F /* SheetDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCD170A2B186E5D0041929F /* SheetDataSource.swift */; };
-		2CCD170F2B187D7A0041929F /* SheetViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCD170E2B187D7A0041929F /* SheetViewCell.swift */; };
-		2CCD17132B1943CF0041929F /* SheetViewTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCD17122B1943CF0041929F /* SheetViewTextCell.swift */; };
-		2CF652A12B1BC278009E95DC /* SheetViewCellQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF652A02B1BC278009E95DC /* SheetViewCellQueue.swift */; };
-		2CF652A32B1CD6DF009E95DC /* SheetFixedHorizontalScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF652A22B1CD6DF009E95DC /* SheetFixedHorizontalScrollView.swift */; };
+		2C59CF1A2B20DD790048363D /* Spreadsheet.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C59CF192B20DD790048363D /* Spreadsheet.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2C59CF2C2B20DDA90048363D /* SheetSelectionMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF202B20DDA80048363D /* SheetSelectionMode.swift */; };
+		2C59CF2D2B20DDA90048363D /* SheetIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF212B20DDA80048363D /* SheetIndex.swift */; };
+		2C59CF2E2B20DDA90048363D /* SheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF222B20DDA80048363D /* SheetView.swift */; };
+		2C59CF2F2B20DDA90048363D /* SheetViewCellQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF232B20DDA80048363D /* SheetViewCellQueue.swift */; };
+		2C59CF302B20DDA90048363D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF242B20DDA80048363D /* SceneDelegate.swift */; };
+		2C59CF312B20DDA90048363D /* SheetDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF252B20DDA80048363D /* SheetDataSource.swift */; };
+		2C59CF322B20DDA90048363D /* SheetSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF262B20DDA90048363D /* SheetSelection.swift */; };
+		2C59CF332B20DDA90048363D /* SheetCellRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF272B20DDA90048363D /* SheetCellRange.swift */; };
+		2C59CF352B20DDA90048363D /* SheetViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF292B20DDA90048363D /* SheetViewDelegate.swift */; };
+		2C59CF372B20DDA90048363D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF2B2B20DDA90048363D /* AppDelegate.swift */; };
+		2C59CF402B20DE050048363D /* SheetContentScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF392B20DE050048363D /* SheetContentScrollView.swift */; };
+		2C59CF412B20DE050048363D /* SheetFixedHorizontalScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF3A2B20DE050048363D /* SheetFixedHorizontalScrollView.swift */; };
+		2C59CF422B20DE050048363D /* SheetFixedVerticalScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF3B2B20DE050048363D /* SheetFixedVerticalScrollView.swift */; };
+		2C59CF432B20DE050048363D /* SheetScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF3C2B20DE050048363D /* SheetScrollView.swift */; };
+		2C59CF442B20DE050048363D /* SheetViewTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF3E2B20DE050048363D /* SheetViewTextCell.swift */; };
+		2C59CF452B20DE050048363D /* SheetViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF3F2B20DE050048363D /* SheetViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2C080DE72B1FB95C00D14CF2 /* SheetContentScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetContentScrollView.swift; sourceTree = "<group>"; };
-		2C080DE92B1FBDDA00D14CF2 /* SheetCellRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetCellRange.swift; sourceTree = "<group>"; };
-		2C73BC652B1A7D5900CE2EE0 /* SheetSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetSelection.swift; sourceTree = "<group>"; };
-		2C73BC672B1A7E1800CE2EE0 /* SheetViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewDelegate.swift; sourceTree = "<group>"; };
-		2C73BC692B1A94B800CE2EE0 /* SheetSelectionMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetSelectionMode.swift; sourceTree = "<group>"; };
-		2C9E7C162B20A4020098BE8A /* SheetFixedVerticalScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetFixedVerticalScrollView.swift; sourceTree = "<group>"; };
-		2CCD16EC2B1868730041929F /* Spreadsheet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Spreadsheet.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		2CCD16EF2B1868730041929F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		2CCD16F12B1868730041929F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		2CCD16F32B1868730041929F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		2CCD16F62B1868730041929F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		2CCD16F82B1868740041929F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		2CCD16FB2B1868740041929F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		2CCD16FD2B1868740041929F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2CCD17032B1868820041929F /* SheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetView.swift; sourceTree = "<group>"; };
-		2CCD17052B1869DA0041929F /* Spreadsheet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Spreadsheet.entitlements; sourceTree = "<group>"; };
-		2CCD17062B186B030041929F /* SheetScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetScrollView.swift; sourceTree = "<group>"; };
-		2CCD17082B186B280041929F /* SheetIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetIndex.swift; sourceTree = "<group>"; };
-		2CCD170A2B186E5D0041929F /* SheetDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetDataSource.swift; sourceTree = "<group>"; };
-		2CCD170E2B187D7A0041929F /* SheetViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewCell.swift; sourceTree = "<group>"; };
-		2CCD17122B1943CF0041929F /* SheetViewTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewTextCell.swift; sourceTree = "<group>"; };
-		2CF652A02B1BC278009E95DC /* SheetViewCellQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewCellQueue.swift; sourceTree = "<group>"; };
-		2CF652A22B1CD6DF009E95DC /* SheetFixedHorizontalScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetFixedHorizontalScrollView.swift; sourceTree = "<group>"; };
+		2C59CF162B20DD790048363D /* Spreadsheet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Spreadsheet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2C59CF192B20DD790048363D /* Spreadsheet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Spreadsheet.h; sourceTree = "<group>"; };
+		2C59CF202B20DDA80048363D /* SheetSelectionMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetSelectionMode.swift; sourceTree = "<group>"; };
+		2C59CF212B20DDA80048363D /* SheetIndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetIndex.swift; sourceTree = "<group>"; };
+		2C59CF222B20DDA80048363D /* SheetView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetView.swift; sourceTree = "<group>"; };
+		2C59CF232B20DDA80048363D /* SheetViewCellQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetViewCellQueue.swift; sourceTree = "<group>"; };
+		2C59CF242B20DDA80048363D /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		2C59CF252B20DDA80048363D /* SheetDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetDataSource.swift; sourceTree = "<group>"; };
+		2C59CF262B20DDA90048363D /* SheetSelection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetSelection.swift; sourceTree = "<group>"; };
+		2C59CF272B20DDA90048363D /* SheetCellRange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetCellRange.swift; sourceTree = "<group>"; };
+		2C59CF292B20DDA90048363D /* SheetViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetViewDelegate.swift; sourceTree = "<group>"; };
+		2C59CF2B2B20DDA90048363D /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		2C59CF392B20DE050048363D /* SheetContentScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetContentScrollView.swift; sourceTree = "<group>"; };
+		2C59CF3A2B20DE050048363D /* SheetFixedHorizontalScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetFixedHorizontalScrollView.swift; sourceTree = "<group>"; };
+		2C59CF3B2B20DE050048363D /* SheetFixedVerticalScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetFixedVerticalScrollView.swift; sourceTree = "<group>"; };
+		2C59CF3C2B20DE050048363D /* SheetScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetScrollView.swift; sourceTree = "<group>"; };
+		2C59CF3E2B20DE050048363D /* SheetViewTextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetViewTextCell.swift; sourceTree = "<group>"; };
+		2C59CF3F2B20DE050048363D /* SheetViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		2CCD16E92B1868730041929F /* Frameworks */ = {
+		2C59CF132B20DD790048363D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -66,77 +58,84 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2CCD16E32B1868730041929F = {
+		2C59CF0C2B20DD790048363D = {
 			isa = PBXGroup;
 			children = (
-				2CCD16ED2B1868730041929F /* Products */,
-				2CCD16EE2B1868730041929F /* Spreadsheet */,
+				2C59CF172B20DD790048363D /* Products */,
+				2C59CF182B20DD790048363D /* Spreadsheet */,
 			);
 			sourceTree = "<group>";
 		};
-		2CCD16ED2B1868730041929F /* Products */ = {
+		2C59CF172B20DD790048363D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				2CCD16EC2B1868730041929F /* Spreadsheet.app */,
+				2C59CF162B20DD790048363D /* Spreadsheet.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		2CCD16EE2B1868730041929F /* Spreadsheet */ = {
+		2C59CF182B20DD790048363D /* Spreadsheet */ = {
 			isa = PBXGroup;
 			children = (
-				2CCD16EF2B1868730041929F /* AppDelegate.swift */,
-				2CCD16F82B1868740041929F /* Assets.xcassets */,
-				2CCD16FD2B1868740041929F /* Info.plist */,
-				2CCD16FA2B1868740041929F /* LaunchScreen.storyboard */,
-				2CCD16F52B1868730041929F /* Main.storyboard */,
-				2CCD16F12B1868730041929F /* SceneDelegate.swift */,
-				2C080DE92B1FBDDA00D14CF2 /* SheetCellRange.swift */,
-				2CCD170A2B186E5D0041929F /* SheetDataSource.swift */,
-				2CCD17082B186B280041929F /* SheetIndex.swift */,
-				2CF652A42B1CDAEC009E95DC /* SheetScrollView */,
-				2C73BC652B1A7D5900CE2EE0 /* SheetSelection.swift */,
-				2C73BC692B1A94B800CE2EE0 /* SheetSelectionMode.swift */,
-				2CCD17032B1868820041929F /* SheetView.swift */,
-				2CCD17112B1943B20041929F /* SheetViewCell */,
-				2CF652A02B1BC278009E95DC /* SheetViewCellQueue.swift */,
-				2C73BC672B1A7E1800CE2EE0 /* SheetViewDelegate.swift */,
-				2CCD17052B1869DA0041929F /* Spreadsheet.entitlements */,
-				2CCD16F32B1868730041929F /* ViewController.swift */,
+				2C59CF2B2B20DDA90048363D /* AppDelegate.swift */,
+				2C59CF242B20DDA80048363D /* SceneDelegate.swift */,
+				2C59CF272B20DDA90048363D /* SheetCellRange.swift */,
+				2C59CF252B20DDA80048363D /* SheetDataSource.swift */,
+				2C59CF212B20DDA80048363D /* SheetIndex.swift */,
+				2C59CF382B20DE050048363D /* SheetScrollView */,
+				2C59CF262B20DDA90048363D /* SheetSelection.swift */,
+				2C59CF202B20DDA80048363D /* SheetSelectionMode.swift */,
+				2C59CF222B20DDA80048363D /* SheetView.swift */,
+				2C59CF3D2B20DE050048363D /* SheetViewCell */,
+				2C59CF232B20DDA80048363D /* SheetViewCellQueue.swift */,
+				2C59CF292B20DDA90048363D /* SheetViewDelegate.swift */,
+				2C59CF192B20DD790048363D /* Spreadsheet.h */,
 			);
 			path = Spreadsheet;
 			sourceTree = "<group>";
 		};
-		2CCD17112B1943B20041929F /* SheetViewCell */ = {
+		2C59CF382B20DE050048363D /* SheetScrollView */ = {
 			isa = PBXGroup;
 			children = (
-				2CCD170E2B187D7A0041929F /* SheetViewCell.swift */,
-				2CCD17122B1943CF0041929F /* SheetViewTextCell.swift */,
-			);
-			path = SheetViewCell;
-			sourceTree = "<group>";
-		};
-		2CF652A42B1CDAEC009E95DC /* SheetScrollView */ = {
-			isa = PBXGroup;
-			children = (
-				2C080DE72B1FB95C00D14CF2 /* SheetContentScrollView.swift */,
-				2CF652A22B1CD6DF009E95DC /* SheetFixedHorizontalScrollView.swift */,
-				2C9E7C162B20A4020098BE8A /* SheetFixedVerticalScrollView.swift */,
-				2CCD17062B186B030041929F /* SheetScrollView.swift */,
+				2C59CF392B20DE050048363D /* SheetContentScrollView.swift */,
+				2C59CF3A2B20DE050048363D /* SheetFixedHorizontalScrollView.swift */,
+				2C59CF3B2B20DE050048363D /* SheetFixedVerticalScrollView.swift */,
+				2C59CF3C2B20DE050048363D /* SheetScrollView.swift */,
 			);
 			path = SheetScrollView;
 			sourceTree = "<group>";
 		};
+		2C59CF3D2B20DE050048363D /* SheetViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				2C59CF3F2B20DE050048363D /* SheetViewCell.swift */,
+				2C59CF3E2B20DE050048363D /* SheetViewTextCell.swift */,
+			);
+			path = SheetViewCell;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		2C59CF112B20DD790048363D /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2C59CF1A2B20DD790048363D /* Spreadsheet.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
-		2CCD16EB2B1868730041929F /* Spreadsheet */ = {
+		2C59CF152B20DD790048363D /* Spreadsheet */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2CCD17002B1868740041929F /* Build configuration list for PBXNativeTarget "Spreadsheet" */;
+			buildConfigurationList = 2C59CF1D2B20DD790048363D /* Build configuration list for PBXNativeTarget "Spreadsheet" */;
 			buildPhases = (
-				2CCD16E82B1868730041929F /* Sources */,
-				2CCD16E92B1868730041929F /* Frameworks */,
-				2CCD16EA2B1868730041929F /* Resources */,
+				2C59CF112B20DD790048363D /* Headers */,
+				2C59CF122B20DD790048363D /* Sources */,
+				2C59CF132B20DD790048363D /* Frameworks */,
+				2C59CF142B20DD790048363D /* Resources */,
 			);
 			buildRules = (
 			);
@@ -144,25 +143,25 @@
 			);
 			name = Spreadsheet;
 			productName = Spreadsheet;
-			productReference = 2CCD16EC2B1868730041929F /* Spreadsheet.app */;
-			productType = "com.apple.product-type.application";
+			productReference = 2C59CF162B20DD790048363D /* Spreadsheet.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		2CCD16E42B1868730041929F /* Project object */ = {
+		2C59CF0D2B20DD790048363D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1430;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
-					2CCD16EB2B1868730041929F = {
+					2C59CF152B20DD790048363D = {
 						CreatedOnToolsVersion = 14.3.1;
+						LastSwiftMigration = 1430;
 					};
 				};
 			};
-			buildConfigurationList = 2CCD16E72B1868730041929F /* Build configuration list for PBXProject "Spreadsheet" */;
+			buildConfigurationList = 2C59CF102B20DD790048363D /* Build configuration list for PBXProject "Spreadsheet" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -170,77 +169,54 @@
 				en,
 				Base,
 			);
-			mainGroup = 2CCD16E32B1868730041929F;
-			productRefGroup = 2CCD16ED2B1868730041929F /* Products */;
+			mainGroup = 2C59CF0C2B20DD790048363D;
+			productRefGroup = 2C59CF172B20DD790048363D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				2CCD16EB2B1868730041929F /* Spreadsheet */,
+				2C59CF152B20DD790048363D /* Spreadsheet */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		2CCD16EA2B1868730041929F /* Resources */ = {
+		2C59CF142B20DD790048363D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2CCD16FC2B1868740041929F /* LaunchScreen.storyboard in Resources */,
-				2CCD16F92B1868740041929F /* Assets.xcassets in Resources */,
-				2CCD16F72B1868730041929F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		2CCD16E82B1868730041929F /* Sources */ = {
+		2C59CF122B20DD790048363D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2C9E7C172B20A4020098BE8A /* SheetFixedVerticalScrollView.swift in Sources */,
-				2CCD17042B1868820041929F /* SheetView.swift in Sources */,
-				2CCD16F42B1868730041929F /* ViewController.swift in Sources */,
-				2CCD16F02B1868730041929F /* AppDelegate.swift in Sources */,
-				2CCD170F2B187D7A0041929F /* SheetViewCell.swift in Sources */,
-				2C080DE82B1FB95C00D14CF2 /* SheetContentScrollView.swift in Sources */,
-				2C080DEA2B1FBDDA00D14CF2 /* SheetCellRange.swift in Sources */,
-				2CCD17132B1943CF0041929F /* SheetViewTextCell.swift in Sources */,
-				2CF652A32B1CD6DF009E95DC /* SheetFixedHorizontalScrollView.swift in Sources */,
-				2CCD16F22B1868730041929F /* SceneDelegate.swift in Sources */,
-				2CCD17072B186B030041929F /* SheetScrollView.swift in Sources */,
-				2C73BC6A2B1A94B800CE2EE0 /* SheetSelectionMode.swift in Sources */,
-				2CCD170B2B186E5D0041929F /* SheetDataSource.swift in Sources */,
-				2C73BC662B1A7D5900CE2EE0 /* SheetSelection.swift in Sources */,
-				2C73BC682B1A7E1800CE2EE0 /* SheetViewDelegate.swift in Sources */,
-				2CF652A12B1BC278009E95DC /* SheetViewCellQueue.swift in Sources */,
-				2CCD17092B186B280041929F /* SheetIndex.swift in Sources */,
+				2C59CF352B20DDA90048363D /* SheetViewDelegate.swift in Sources */,
+				2C59CF312B20DDA90048363D /* SheetDataSource.swift in Sources */,
+				2C59CF452B20DE050048363D /* SheetViewCell.swift in Sources */,
+				2C59CF302B20DDA90048363D /* SceneDelegate.swift in Sources */,
+				2C59CF402B20DE050048363D /* SheetContentScrollView.swift in Sources */,
+				2C59CF422B20DE050048363D /* SheetFixedVerticalScrollView.swift in Sources */,
+				2C59CF412B20DE050048363D /* SheetFixedHorizontalScrollView.swift in Sources */,
+				2C59CF2F2B20DDA90048363D /* SheetViewCellQueue.swift in Sources */,
+				2C59CF432B20DE050048363D /* SheetScrollView.swift in Sources */,
+				2C59CF2D2B20DDA90048363D /* SheetIndex.swift in Sources */,
+				2C59CF2E2B20DDA90048363D /* SheetView.swift in Sources */,
+				2C59CF332B20DDA90048363D /* SheetCellRange.swift in Sources */,
+				2C59CF2C2B20DDA90048363D /* SheetSelectionMode.swift in Sources */,
+				2C59CF372B20DDA90048363D /* AppDelegate.swift in Sources */,
+				2C59CF442B20DE050048363D /* SheetViewTextCell.swift in Sources */,
+				2C59CF322B20DDA90048363D /* SheetSelection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXVariantGroup section */
-		2CCD16F52B1868730041929F /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				2CCD16F62B1868730041929F /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		2CCD16FA2B1868740041929F /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				2CCD16FB2B1868740041929F /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
-		2CCD16FE2B1868740041929F /* Debug */ = {
+		2C59CF1B2B20DD790048363D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -273,6 +249,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -297,10 +274,12 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Debug;
 		};
-		2CCD16FF2B1868740041929F /* Release */ = {
+		2C59CF1C2B20DD790048363D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -333,6 +312,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -351,66 +331,75 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
-		2CCD17012B1868740041929F /* Debug */ = {
+		2C59CF1E2B20DD790048363D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Spreadsheet/Spreadsheet.entitlements;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ZJSZZS49UL;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Spreadsheet/Info.plist;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.shmilo.Spreadsheet;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		2CCD17022B1868740041929F /* Release */ = {
+		2C59CF1F2B20DD790048363D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Spreadsheet/Spreadsheet.entitlements;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ZJSZZS49UL;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Spreadsheet/Info.plist;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.shmilo.Spreadsheet;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -423,25 +412,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		2CCD16E72B1868730041929F /* Build configuration list for PBXProject "Spreadsheet" */ = {
+		2C59CF102B20DD790048363D /* Build configuration list for PBXProject "Spreadsheet" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				2CCD16FE2B1868740041929F /* Debug */,
-				2CCD16FF2B1868740041929F /* Release */,
+				2C59CF1B2B20DD790048363D /* Debug */,
+				2C59CF1C2B20DD790048363D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2CCD17002B1868740041929F /* Build configuration list for PBXNativeTarget "Spreadsheet" */ = {
+		2C59CF1D2B20DD790048363D /* Build configuration list for PBXNativeTarget "Spreadsheet" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				2CCD17012B1868740041929F /* Debug */,
-				2CCD17022B1868740041929F /* Release */,
+				2C59CF1E2B20DD790048363D /* Debug */,
+				2C59CF1F2B20DD790048363D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 2CCD16E42B1868730041929F /* Project object */;
+	rootObject = 2C59CF0D2B20DD790048363D /* Project object */;
 }

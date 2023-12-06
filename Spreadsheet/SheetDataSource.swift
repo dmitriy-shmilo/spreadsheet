@@ -24,7 +24,7 @@ public protocol SheetDataSource: AnyObject {
 	func sheet(_ sheet: SheetView, cellForFixedColumnAt index: SheetIndex, in area: SheetViewArea) -> SheetViewCell
 }
 
-extension SheetDataSource {
+public extension SheetDataSource {
 	func sheetColumnWidth(_ sheet: SheetView, at index: Int) -> CGFloat {
 		return SheetView.defaultColWidth
 	}
