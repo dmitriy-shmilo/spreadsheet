@@ -13,15 +13,17 @@ class ViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-		for x in 0..<columnCount {
-			for y in 0..<rowCount {
-				data.append("Col: \(x), Row: \(y)")
+
+		for y in 0..<rowCount {
+			for x in 0..<columnCount {
+			data.append("Col: \(x), Row: \(y)")
 			}
 		}
 
 		sheet.register(SheetViewTextCell.self, forCellReuseIdentifier: "cell")
 		sheet.dataSource = self
 		sheet.delegate = self
+		sheet.reloadData()
 	}
 }
 

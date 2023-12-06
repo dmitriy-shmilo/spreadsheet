@@ -26,11 +26,7 @@ public class SheetView: UIView {
 	static let defaultColWidth: CGFloat = 100.0
 	static let defaultRowHeight: CGFloat = 45.0
 
-	public weak var dataSource: SheetDataSource? {
-		didSet {
-			refreshContentMeasurements()
-		}
-	}
+	public weak var dataSource: SheetDataSource?
 
 	public weak var delegate: SheetViewDelegate?
 	public var selection: SheetSelection {
@@ -48,6 +44,7 @@ public class SheetView: UIView {
 	private var topScrollView: SheetFixedHorizontalScrollView!
 	private var topScrollViewHeight: NSLayoutConstraint!
 	private var contentScrollView: SheetContentScrollView!
+	private var syncContentOffsets = true
 
 	private var cellQueues = [String: SheetViewCellQueue]()
 
@@ -82,14 +79,6 @@ public class SheetView: UIView {
 			height: rows[index.row].height)
 	}
 
-	public func reloadCellAt(index: SheetIndex) {
-		contentScrollView.reloadCellsAt(indices: [index])
-	}
-
-	public func reloadCellsAt(indices: [SheetIndex]) {
-		contentScrollView.reloadCellsAt(indices: indices)
-	}
-
 	private func setup() {
 		topScrollView = .init(frame: .zero)
 		topScrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -119,10 +108,12 @@ public class SheetView: UIView {
 			contentScrollView.rightAnchor.constraint(equalTo: rightAnchor),
 			contentScrollView.leftAnchor.constraint(equalTo: leftAnchor),
 		])
-		refreshContentMeasurements()
 	}
+}
 
-	private func refreshContentMeasurements() {
+// MARK: - Reloads
+extension SheetView {
+	public func reloadData() {
 		reloadContentColumns()
 		reloadContentRows()
 		reloadFixedTopRows()
@@ -132,12 +123,23 @@ public class SheetView: UIView {
 		contentScrollView.columns = columns
 		contentScrollView.rows = rows
 
-		topScrollView.refreshContentMeasurements()
-		contentScrollView.refreshContentMeasurements()
+		syncContentOffsets = false
+		topScrollView.reloadData()
+		contentScrollView.reloadData()
+		syncContentOffsets = true
+	}
+
+	public func reloadCellAt(index: SheetIndex) {
+		contentScrollView.reloadCellsAt(indices: [index])
+	}
+
+	public func reloadCellsAt(indices: [SheetIndex]) {
+		contentScrollView.reloadCellsAt(indices: indices)
 	}
 
 	private func reloadContentColumns() {
 		let columnCount = dataSource?.sheetNumberOfColumns(self) ?? 0
+		columns.removeAll(keepingCapacity: true)
 		if columnCount > 0 {
 			columns.reserveCapacity(columnCount)
 			var offset = 0.0
@@ -151,6 +153,7 @@ public class SheetView: UIView {
 
 	private func reloadContentRows() {
 		let rowCount = dataSource?.sheetNumberOfRows(self) ?? 0
+		rows.removeAll(keepingCapacity: true)
 		if rowCount > 0 {
 			rows.reserveCapacity(rowCount)
 			var offset = 0.0
@@ -164,6 +167,7 @@ public class SheetView: UIView {
 
 	private func reloadFixedTopRows() {
 		let fixedTopRowCount = dataSource?.sheetNumberOfFixedTopRows(self) ?? 0
+		fixedTopRows.removeAll(keepingCapacity: true)
 		if fixedTopRowCount > 0 {
 			fixedTopRows.reserveCapacity(fixedTopRowCount)
 			var offset = 0.0
@@ -173,12 +177,15 @@ public class SheetView: UIView {
 				offset += height
 			}
 			topScrollViewHeight.constant = fixedTopRows.last!.offset + fixedTopRows.last!.height
+		} else {
+			topScrollViewHeight.constant = 0.0
 		}
 	}
 }
 
 // MARK: - Cell Lifecycle
 extension SheetView {
+
 	public func register(_ type: SheetViewCell.Type, forCellReuseIdentifier id: String) {
 		guard cellQueues[id] == nil else {
 			fatalError("\(id) is already registered in \(self)")
@@ -254,6 +261,9 @@ extension SheetView {
 // MARK: - UIScrollViewDelegate
 extension SheetView: UIScrollViewDelegate {
 	public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+		guard syncContentOffsets else {
+			return
+		}
 		let offset = scrollView.contentOffset
 		if scrollView == self.contentScrollView {
 			topScrollView.contentOffset.x = offset.x

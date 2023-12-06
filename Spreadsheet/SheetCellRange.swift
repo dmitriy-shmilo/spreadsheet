@@ -10,3 +10,9 @@ struct SheetCellRange: Equatable {
 	let topRow: Int
 	let bottomRow: Int
 }
+
+extension SheetCellRange: CustomDebugStringConvertible {
+	public var debugDescription: String {
+		return "{SheetCellRange leftColumn: \(leftColumn), topRow: \(topRow), rightColumn: \(rightColumn), bottomRow: \(bottomRow)}"
+	}
+}

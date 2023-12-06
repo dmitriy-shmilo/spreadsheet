@@ -20,9 +20,48 @@ class SheetScrollView: UIScrollView {
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
 	}
+
+	override var contentOffset: CGPoint {
+		didSet {
+			let range = determineVisibleRange()
+
+			guard visibleRange != range else {
+				return
+			}
+
+			visibleRange = range
+			releaseCells(in: visibleRange)
+			addCells(in: visibleRange)
+		}
+	}
+
+	func determineRange(from topLeft: CGPoint, to bottomRight: CGPoint) -> SheetCellRange {
+		fatalError("determineVisibleRange is not implemented")
+	}
+
+	func determineVisibleRange() -> SheetCellRange {
+		return determineRange(
+			from: contentOffset,
+			to: .init(
+				x: contentOffset.x + bounds.width,
+				y: contentOffset.y + bounds.height))
+	}
 }
 
 extension SheetScrollView {
+	func reloadVisibleCells() {
+		releaseCells(in: visibleRange)
+		visibleRange = determineVisibleRange()
+		addCells(in: visibleRange)
+	}
+
+	func releaseAllCells() {
+		for cell in visibleCells.values {
+			sheet.releaseCell(cell)
+		}
+		visibleCells.removeAll(keepingCapacity: true)
+	}
+
 	func releaseCells(in range: SheetCellRange) {
 		for index in visibleCells.keys {
 			if index.col < range.leftColumn || index.col > range.rightColumn
@@ -127,16 +166,27 @@ extension SheetScrollView {
 		}
 	}
 
-	func refreshContentMeasurements() {
+	func reloadData() {
+		releaseAllCells()
 		guard let row = rows.last,
 			  let column = columns.last else {
 			contentSize = .zero
 			return
 		}
 
+		let oldRange = visibleRange
 		contentSize = .init(
 			width: column.offset + column.width,
 			height: row.offset + row.height)
+
+		if oldRange.topRow != visibleRange.topRow
+			|| oldRange.leftColumn != visibleRange.leftColumn {
+			contentOffset = .init(
+				x: columns[oldRange.leftColumn].offset,
+				y: rows[oldRange.topRow].offset)
+		} else {
+			addCells(in: visibleRange)
+		}
 	}
 
 	func visibleIndicesFrom(selection: SheetSelection) -> [SheetIndex] {

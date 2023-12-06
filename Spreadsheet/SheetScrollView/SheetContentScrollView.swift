@@ -65,34 +65,20 @@ class SheetContentScrollView: SheetScrollView {
 		}
 	}
 
-	override var contentOffset: CGPoint {
-		didSet {
-			let topLeft = contentOffset
-			let bottomRight = CGPoint(x: contentOffset.x + frame.width,
-									  y: contentOffset.y + frame.height)
+	override func determineRange(
+		from topLeft: CGPoint,
+		to bottomRight: CGPoint)
+	-> SheetCellRange {
+		let leftIndex = findColumnIntersecting(offset: topLeft.x)?.index ?? 0
+		let rightIndex = findColumnIntersecting(offset: bottomRight.x)?.index ?? columns.count - 1
+		let topIndex = findRowIntersecting(offset: topLeft.y)?.index ?? 0
+		let bottomIndex = findRowIntersecting(offset: bottomRight.y)?.index ?? rows.count - 1
 
-			// find the leftmost and rightmost visible column indicies
-			let leftIndex = findColumnIntersecting(offset: topLeft.x)?.index ?? 0
-			let rightIndex = findColumnIntersecting(offset: bottomRight.x)?.index ?? columns.count - 1
-
-			// find the top and bottom visible row indices
-			let topIndex = findRowIntersecting(offset: topLeft.y)?.index ?? 0
-			let bottomIndex = findRowIntersecting(offset: bottomRight.y)?.index ?? rows.count - 1
-
-			let range = SheetCellRange(
-				leftColumn: max(0, leftIndex - 1),
-				rightColumn: min(columns.count, rightIndex + 1),
-				topRow: max(0, topIndex - 1),
-				bottomRow: min(rows.count, bottomIndex + 1))
-
-			guard visibleRange != range else {
-				return
-			}
-
-			visibleRange = range
-			releaseCells(in: visibleRange)
-			addCells(in: visibleRange)
-		}
+		return SheetCellRange(
+			leftColumn: max(0, leftIndex - 1),
+			rightColumn: min(columns.count, rightIndex + 1),
+			topRow: max(0, topIndex - 1),
+			bottomRow: min(rows.count, bottomIndex + 1))
 	}
 
 	func reloadCellsAt(indices: [SheetIndex]) {
