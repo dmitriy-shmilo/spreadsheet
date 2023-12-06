@@ -79,6 +79,53 @@ public class SheetView: UIView {
 			height: rows[index.row].height)
 	}
 
+	public func setWidth(_ width: CGFloat, for index: Int) {
+		guard index >= 0 && index < columns.count else {
+			return
+		}
+
+		let range = contentScrollView.visibleRange
+		columns[index].width = width
+
+		if index < columns.count - 1 {
+			var offset = columns[index].offset + columns[index].width
+			for i in (index + 1)..<columns.count {
+				columns[i].offset = offset
+				offset += columns[i].width
+			}
+		}
+
+		contentScrollView.columns = columns
+		topScrollView.columns = columns
+
+		if range.rightColumn > index {
+			syncContentOffsets = false
+
+			// TODO: there's no real need to fully reload affected cells
+			// we can just shift their frames by a given amount
+			let contentRange = SheetCellRange(
+				leftColumn: index,
+				rightColumn: range.rightColumn,
+				topRow: range.topRow,
+				bottomRow: range.bottomRow)
+
+			contentScrollView.releaseCells(in: contentRange)
+			contentScrollView.addCells(in: contentRange)
+			contentScrollView.invalidateContentSize()
+
+			let topRange = SheetCellRange(
+				leftColumn: index,
+				rightColumn: range.rightColumn,
+				topRow: 0,
+				bottomRow: fixedTopRows.count)
+			topScrollView.releaseCells(in: topRange)
+			topScrollView.addCells(in: topRange)
+			topScrollView.invalidateContentSize()
+
+			syncContentOffsets = true
+		}
+	}
+
 	private func setup() {
 		topScrollView = .init(frame: .zero)
 		topScrollView.translatesAutoresizingMaskIntoConstraints = false

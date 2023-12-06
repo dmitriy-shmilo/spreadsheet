@@ -16,3 +16,18 @@ extension SheetCellRange: CustomDebugStringConvertible {
 		return "{SheetCellRange leftColumn: \(leftColumn), topRow: \(topRow), rightColumn: \(rightColumn), bottomRow: \(bottomRow)}"
 	}
 }
+
+extension SheetCellRange {
+	func contains(column: Int) -> Bool {
+		return leftColumn <= column && rightColumn >= column
+	}
+
+	func contains(row: Int) -> Bool {
+		return topRow <= row && bottomRow >= row
+	}
+
+	func contains(index: SheetIndex) -> Bool {
+		return leftColumn <= index.col && rightColumn >= index.col
+		&& topRow <= index.row && bottomRow >= index.row
+	}
+}

@@ -30,7 +30,7 @@ class SheetScrollView: UIScrollView {
 			}
 
 			visibleRange = range
-			releaseCells(in: visibleRange)
+			releaseCells(outside: visibleRange)
 			addCells(in: visibleRange)
 		}
 	}
@@ -46,8 +46,21 @@ class SheetScrollView: UIScrollView {
 				x: contentOffset.x + bounds.width,
 				y: contentOffset.y + bounds.height))
 	}
+
+	func invalidateContentSize() {
+		guard let row = rows.last,
+			  let column = columns.last else {
+			contentSize = .zero
+			return
+		}
+
+		contentSize = .init(
+			width: column.offset + column.width,
+			height: row.offset + row.height)
+	}
 }
 
+// MARK: - Cell Lifecycle
 extension SheetScrollView {
 	func reloadVisibleCells() {
 		releaseCells(in: visibleRange)
@@ -62,10 +75,19 @@ extension SheetScrollView {
 		visibleCells.removeAll(keepingCapacity: true)
 	}
 
+	func releaseCells(outside range: SheetCellRange) {
+		for index in visibleCells.keys {
+			if !range.contains(index: index) {
+				if let cell = visibleCells.removeValue(forKey: index) {
+					sheet.releaseCell(cell)
+				}
+			}
+		}
+	}
+
 	func releaseCells(in range: SheetCellRange) {
 		for index in visibleCells.keys {
-			if index.col < range.leftColumn || index.col > range.rightColumn
-				|| index.row < range.topRow || index.row > range.bottomRow {
+			if range.contains(index: index) {
 				if let cell = visibleCells.removeValue(forKey: index) {
 					sheet.releaseCell(cell)
 				}
@@ -168,16 +190,9 @@ extension SheetScrollView {
 
 	func reloadData() {
 		releaseAllCells()
-		guard let row = rows.last,
-			  let column = columns.last else {
-			contentSize = .zero
-			return
-		}
-
 		let oldRange = visibleRange
-		contentSize = .init(
-			width: column.offset + column.width,
-			height: row.offset + row.height)
+
+		invalidateContentSize()
 
 		if oldRange.topRow != visibleRange.topRow
 			|| oldRange.leftColumn != visibleRange.leftColumn {
