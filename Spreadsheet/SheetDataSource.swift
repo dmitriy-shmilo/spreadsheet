@@ -16,9 +16,12 @@ public protocol SheetDataSource: AnyObject {
 	func sheetNumberOfRows(_ sheet: SheetView) -> Int
 
 	// MARK: - Sticky Rows and Columns
-	func sheetNumberOfFixedTopRows(_ sheet: SheetView) -> Int
-	func sheet(_ sheet: SheetView, heightForFixedTopRowAt index: Int) -> CGFloat
-	func sheet(_ sheet: SheetView, cellFor column: Int, inFixedTopRow row: Int) -> SheetViewCell
+	func sheetNumberOfFixedRows(_ sheet: SheetView, in area: SheetViewArea) -> Int
+	func sheetNumberOfFixedColumns(_ sheet: SheetView, in area: SheetViewArea) -> Int
+	func sheet(_ sheet: SheetView, heightForFixedRowAt index: Int, in area: SheetViewArea) -> CGFloat
+	func sheet(_ sheet: SheetView, widthForFixedColumnAt index: Int, in area: SheetViewArea) -> CGFloat
+	func sheet(_ sheet: SheetView, cellForFixedRowAt index: SheetIndex, in area: SheetViewArea) -> SheetViewCell
+	func sheet(_ sheet: SheetView, cellForFixedColumnAt index: SheetIndex, in area: SheetViewArea) -> SheetViewCell
 }
 
 extension SheetDataSource {
@@ -34,15 +37,32 @@ extension SheetDataSource {
 		return -1
 	}
 
-	func sheetNumberOfFixedTopRows(_ sheet: SheetView) -> Int {
-		return 1
-	}
-
-	func sheet(_ sheet: SheetView, heightForFixedTopRowAt index: Int) -> CGFloat {
-		return SheetView.defaultRowHeight
-	}
-
 	func sheet(_ sheet: SheetView, editorCellFor index: SheetIndex) -> UIView? {
 		return nil
 	}
+
+	func sheetNumberOfFixedRows(_ sheet: SheetView, in area: SheetViewArea) -> Int {
+		return 0
+	}
+
+	func sheetNumberOfFixedColumns(_ sheet: SheetView, in area: SheetViewArea) -> Int {
+		return 0
+	}
+
+	func sheet(_ sheet: SheetView, heightForFixedRowAt index: Int, in area: SheetViewArea) -> CGFloat {
+		return SheetView.defaultRowHeight
+	}
+
+	func sheet(_ sheet: SheetView, widthForFixedColumnAt index: Int, in area: SheetViewArea) -> CGFloat {
+		return SheetView.defaultColWidth
+	}
+
+	func sheet(_ sheet: SheetView, cellForFixedRowAt index: SheetIndex, in area: SheetViewArea) -> SheetViewCell {
+		return .init()
+	}
+	
+	func sheet(_ sheet: SheetView, cellForFixedColumnAt index: SheetIndex, in area: SheetViewArea) -> SheetViewCell {
+		return .init()
+	}
+
 }

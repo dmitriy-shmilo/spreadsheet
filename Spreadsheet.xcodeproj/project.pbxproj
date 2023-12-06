@@ -12,6 +12,7 @@
 		2C73BC662B1A7D5900CE2EE0 /* SheetSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C73BC652B1A7D5900CE2EE0 /* SheetSelection.swift */; };
 		2C73BC682B1A7E1800CE2EE0 /* SheetViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C73BC672B1A7E1800CE2EE0 /* SheetViewDelegate.swift */; };
 		2C73BC6A2B1A94B800CE2EE0 /* SheetSelectionMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C73BC692B1A94B800CE2EE0 /* SheetSelectionMode.swift */; };
+		2C9E7C172B20A4020098BE8A /* SheetFixedVerticalScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9E7C162B20A4020098BE8A /* SheetFixedVerticalScrollView.swift */; };
 		2CCD16F02B1868730041929F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCD16EF2B1868730041929F /* AppDelegate.swift */; };
 		2CCD16F22B1868730041929F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCD16F12B1868730041929F /* SceneDelegate.swift */; };
 		2CCD16F42B1868730041929F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CCD16F32B1868730041929F /* ViewController.swift */; };
@@ -34,6 +35,7 @@
 		2C73BC652B1A7D5900CE2EE0 /* SheetSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetSelection.swift; sourceTree = "<group>"; };
 		2C73BC672B1A7E1800CE2EE0 /* SheetViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewDelegate.swift; sourceTree = "<group>"; };
 		2C73BC692B1A94B800CE2EE0 /* SheetSelectionMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetSelectionMode.swift; sourceTree = "<group>"; };
+		2C9E7C162B20A4020098BE8A /* SheetFixedVerticalScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetFixedVerticalScrollView.swift; sourceTree = "<group>"; };
 		2CCD16EC2B1868730041929F /* Spreadsheet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Spreadsheet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CCD16EF2B1868730041929F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2CCD16F12B1868730041929F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 			children = (
 				2C080DE72B1FB95C00D14CF2 /* SheetContentScrollView.swift */,
 				2CF652A22B1CD6DF009E95DC /* SheetFixedHorizontalScrollView.swift */,
+				2C9E7C162B20A4020098BE8A /* SheetFixedVerticalScrollView.swift */,
 				2CCD17062B186B030041929F /* SheetScrollView.swift */,
 			);
 			path = SheetScrollView;
@@ -195,6 +198,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C9E7C172B20A4020098BE8A /* SheetFixedVerticalScrollView.swift in Sources */,
 				2CCD17042B1868820041929F /* SheetView.swift in Sources */,
 				2CCD16F42B1868730041929F /* ViewController.swift in Sources */,
 				2CCD16F02B1868730041929F /* AppDelegate.swift in Sources */,

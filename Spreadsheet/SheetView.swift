@@ -14,10 +14,11 @@ struct SheetRowDefinition {
 	var offset: CGFloat = 0.0
 }
 
-enum SheetViewArea {
+public enum SheetViewArea {
 	case unknown
 	case content
 	case fixedTop
+	case fixedLeft
 }
 
 @IBDesignable
@@ -40,9 +41,12 @@ public class SheetView: UIView {
 	var columns = [SheetColumnDefinition]()
 	var rows = [SheetRowDefinition]()
 	var fixedTopRows = [SheetRowDefinition]()
+	var fixedLeftColumns = [SheetColumnDefinition]()
 
 	private var topScrollView: SheetFixedHorizontalScrollView!
 	private var topScrollViewHeight: NSLayoutConstraint!
+	private var leftScrollView: SheetFixedHorizontalScrollView!
+	private var leftScrollViewWidth: NSLayoutConstraint!
 	private var contentScrollView: SheetContentScrollView!
 	private var syncContentOffsets = true
 
@@ -137,6 +141,16 @@ public class SheetView: UIView {
 		topScrollViewHeight = topScrollView.heightAnchor.constraint(equalToConstant: 0.0)
 		addSubview(topScrollView)
 
+		leftScrollView = .init(frame: .zero)
+		leftScrollView.translatesAutoresizingMaskIntoConstraints = false
+		leftScrollView.sheet = self
+		leftScrollView.delegate = self
+		leftScrollView.area = .fixedLeft
+		leftScrollView.showsVerticalScrollIndicator = false
+		leftScrollView.showsHorizontalScrollIndicator = false
+		leftScrollViewWidth = leftScrollView.widthAnchor.constraint(equalToConstant: 0.0)
+		addSubview(leftScrollView)
+
 		contentScrollView = .init(frame: .zero)
 		contentScrollView.translatesAutoresizingMaskIntoConstraints = false
 		contentScrollView.sheet = self
@@ -145,15 +159,20 @@ public class SheetView: UIView {
 		addSubview(contentScrollView)
 
 		NSLayoutConstraint.activate([
+			leftScrollView.topAnchor.constraint(equalTo: topScrollView.bottomAnchor),
+			leftScrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
+			leftScrollView.leftAnchor.constraint(equalTo: leftAnchor),
+			leftScrollViewWidth,
+
 			topScrollView.topAnchor.constraint(equalTo: topAnchor),
-			topScrollView.leftAnchor.constraint(equalTo: leftAnchor),
+			topScrollView.leftAnchor.constraint(equalTo: leftScrollView.rightAnchor),
 			topScrollView.rightAnchor.constraint(equalTo: rightAnchor),
 			topScrollViewHeight,
 
 			contentScrollView.topAnchor.constraint(equalTo: topScrollView.bottomAnchor),
 			contentScrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
 			contentScrollView.rightAnchor.constraint(equalTo: rightAnchor),
-			contentScrollView.leftAnchor.constraint(equalTo: leftAnchor),
+			contentScrollView.leftAnchor.constraint(equalTo: leftScrollView.rightAnchor),
 		])
 	}
 }
@@ -164,14 +183,18 @@ extension SheetView {
 		reloadContentColumns()
 		reloadContentRows()
 		reloadFixedTopRows()
+		reloadFixedLeftColumns()
 
 		topScrollView.columns = columns
 		topScrollView.rows = fixedTopRows
+		leftScrollView.columns = fixedLeftColumns
+		leftScrollView.rows = rows
 		contentScrollView.columns = columns
 		contentScrollView.rows = rows
 
 		syncContentOffsets = false
 		topScrollView.reloadData()
+		leftScrollView.reloadData()
 		contentScrollView.reloadData()
 		syncContentOffsets = true
 	}
@@ -213,19 +236,36 @@ extension SheetView {
 	}
 
 	private func reloadFixedTopRows() {
-		let fixedTopRowCount = dataSource?.sheetNumberOfFixedTopRows(self) ?? 0
+		let count = dataSource?.sheetNumberOfFixedRows(self, in: .fixedTop) ?? 0
 		fixedTopRows.removeAll(keepingCapacity: true)
-		if fixedTopRowCount > 0 {
-			fixedTopRows.reserveCapacity(fixedTopRowCount)
+		if count > 0 {
+			fixedTopRows.reserveCapacity(count)
 			var offset = 0.0
-			for i in 0..<fixedTopRowCount {
-				let height = dataSource?.sheet(self, heightForFixedTopRowAt: i) ?? Self.defaultRowHeight
+			for i in 0..<count {
+				let height = dataSource?.sheet(self, heightForFixedRowAt: i, in: .fixedTop) ?? Self.defaultRowHeight
 				fixedTopRows.append(.init(index: i, height: height, offset: offset))
 				offset += height
 			}
-			topScrollViewHeight.constant = fixedTopRows.last!.offset + fixedTopRows.last!.height
+			topScrollViewHeight.constant = offset
 		} else {
 			topScrollViewHeight.constant = 0.0
+		}
+	}
+
+	private func reloadFixedLeftColumns() {
+		let count = dataSource?.sheetNumberOfFixedColumns(self, in: .fixedLeft) ?? 0
+		fixedLeftColumns.removeAll(keepingCapacity: true)
+		if count > 0 {
+			fixedLeftColumns.reserveCapacity(count)
+			var offset = 0.0
+			for i in 0..<count {
+				let width = dataSource?.sheet(self, heightForFixedRowAt: i, in: .fixedLeft) ?? Self.defaultColWidth
+				fixedLeftColumns.append(.init(index: i, width: width, offset: offset))
+				offset += width
+			}
+			leftScrollViewWidth.constant = offset
+		} else {
+			leftScrollViewWidth.constant = 0.0
 		}
 	}
 }
@@ -262,14 +302,28 @@ extension SheetView {
 			let cell = dataSource?.sheet(self, cellFor: index) ?? SheetViewCell(index: index)
 			if selection.contains(index) {
 				cell.selection = selection
+			} else {
+				cell.selection = .none
 			}
 			cell.sheetIndex = index
 			return cell
 		case .fixedTop:
-			let cell = dataSource?.sheet(self, cellFor: index.col, inFixedTopRow: index.row)
+			let cell = dataSource?.sheet(self, cellForFixedRowAt: index, in: area)
 			?? SheetViewCell(index: index)
 			if case .column(_) = selection, selection.contains(index) {
 				cell.selection = selection
+			} else {
+				cell.selection = .none
+			}
+			cell.sheetIndex = index
+			return cell
+		case .fixedLeft:
+			let cell = dataSource?.sheet(self, cellForFixedColumnAt: index, in: area)
+			?? SheetViewCell(index: index)
+			if case .row(_) = selection, selection.contains(index) {
+				cell.selection = selection
+			} else {
+				cell.selection = .none
 			}
 			cell.sheetIndex = index
 			return cell
@@ -312,13 +366,19 @@ extension SheetView: UIScrollViewDelegate {
 			return
 		}
 		let offset = scrollView.contentOffset
-		if scrollView == self.contentScrollView {
+		if scrollView == contentScrollView {
 			topScrollView.contentOffset.x = offset.x
+			leftScrollView.contentOffset.y = offset.y
 			return
 		}
 
 		if scrollView == topScrollView {
-			self.contentScrollView.contentOffset.x = offset.x
+			contentScrollView.contentOffset.x = offset.x
+			return
+		}
+
+		if scrollView == leftScrollView {
+			contentScrollView.contentOffset.y = offset.y
 			return
 		}
 	}
