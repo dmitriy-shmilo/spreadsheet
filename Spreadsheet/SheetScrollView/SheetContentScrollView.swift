@@ -7,17 +7,6 @@ class SheetContentScrollView: SheetScrollView {
 	private var editorIndex = SheetIndex.invalid
 	private var editorView: UIView?
 
-	override var selection: SheetSelection {
-		didSet {
-			if oldValue != selection {
-				sheet.delegate?.sheet(
-					sheet,
-					didChangeSelection: selection,
-					from: oldValue)
-			}
-		}
-	}
-
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 	}
@@ -74,6 +63,11 @@ class SheetContentScrollView: SheetScrollView {
 			rightColumn: min(columns.count, rightIndex + 1),
 			topRow: max(0, topIndex - 1),
 			bottomRow: min(rows.count, bottomIndex + 1))
+	}
+
+	override func setSelection(_ selection: SheetSelection) {
+		endEditCell()
+		super.setSelection(selection)
 	}
 
 	func reloadCellsAt(indices: [SheetIndex]) {

@@ -50,6 +50,8 @@ public class SheetView: UIView {
 	private var contentScrollView: SheetContentScrollView!
 	private var syncContentOffsets = true
 
+	private var currentSelection = SheetSelection.none
+
 	private var cellQueues = [String: SheetViewCellQueue]()
 
 	override init(frame: CGRect) {
@@ -63,6 +65,10 @@ public class SheetView: UIView {
 	}
 
 	public func setSelection(_ selection: SheetSelection) {
+		guard currentSelection != selection else {
+			return
+		}
+
 		switch selection {
 		case .columnRange(_, _),  .columnSet(_):
 			topScrollView.setSelection(selection)
@@ -73,6 +79,8 @@ public class SheetView: UIView {
 			leftScrollView.deselectCellsAtCurrentSelection()
 			contentScrollView.setSelection(selection)
 		}
+		delegate?.sheet(self, didChangeSelection: selection, from: currentSelection)
+		currentSelection = selection
 	}
 
 	public func scrollToSelection(_ selection: SheetSelection, animated: Bool) {

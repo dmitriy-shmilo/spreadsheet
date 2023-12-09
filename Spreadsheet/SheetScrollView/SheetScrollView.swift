@@ -58,10 +58,8 @@ class SheetScrollView: UIScrollView {
 			width: column.offset + column.width,
 			height: row.offset + row.height)
 	}
-}
 
-// MARK: - Cell Lifecycle
-extension SheetScrollView {
+	// MARK: - Cell Lifecycle
 	func reloadData() {
 		releaseAllCells()
 		let oldRange = visibleRange
@@ -128,9 +126,8 @@ extension SheetScrollView {
 			}
 		}
 	}
-}
-// MARK: - Column/Row Utility
-extension SheetScrollView {
+
+	// MARK: - Column/Row Utility
 	// TODO: For a relatively small number of columns the following
 	// linear search will perform OK. But for a large number of
 	// columns we should leverage the fact that columns and rows
@@ -159,10 +156,8 @@ extension SheetScrollView {
 			$0.offset <= offset && $0.offset + $0.height >= offset
 		}
 	}
-}
 
-// MARK: - Selection Utility
-extension SheetScrollView {
+	// MARK: - Selection Utility
 	func isSelectionSupported(_ selection: SheetSelection) -> Bool {
 		return true
 	}
