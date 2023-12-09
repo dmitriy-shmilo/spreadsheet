@@ -9,6 +9,14 @@ struct SheetCellRange: Equatable {
 	let rightColumn: Int
 	let topRow: Int
 	let bottomRow: Int
+
+	var columnRange: Range<Int> {
+		return leftColumn..<rightColumn
+	}
+
+	var rowRange: Range<Int> {
+		return topRow..<bottomRow
+	}
 }
 
 extension SheetCellRange: CustomDebugStringConvertible {

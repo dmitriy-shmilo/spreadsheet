@@ -3,6 +3,27 @@
 import UIKit
 
 class SheetFixedHorizontalScrollView: SheetScrollView {
+	override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+		guard let touch = touches.first else {
+			return
+		}
+
+		guard sheet.allowedSelectionModes.contains(.column) else {
+			return
+		}
+
+		let point = touch.location(in: self)
+		guard let colIndex = findVisibleColumnIntersecting(
+			offset: point.x)?.index else {
+			return
+		}
+		
+		if sheet.delegate?.sheet(sheet, shouldSelectColumnAt: colIndex) ?? true {
+			//sheet.setSelection(.columnSet(indices: .init(integer: colIndex)))
+			sheet.setSelection(.columnRange(from: colIndex, to: colIndex + 2))
+			sheet.scrollToSelection(selection, animated: true)
+		}
+	}
 
 	override func determineRange(
 		from topLeft: CGPoint,

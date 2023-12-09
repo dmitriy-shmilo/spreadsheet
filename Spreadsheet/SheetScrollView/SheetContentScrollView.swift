@@ -54,14 +54,9 @@ class SheetContentScrollView: SheetScrollView {
 			return
 		}
 
-		endEditCell()
-		deselectCellsAt(selection)
-		selection = .cell(column: colIndex, row: rowIndex)
-
 		if sheet.delegate?.sheet(sheet, shouldSelectCellAt: cellIndex) ?? true {
-			selectCellsAt(selection)
-		} else {
-			selection = .none
+			sheet.setSelection(.cell(column: colIndex, row: rowIndex))
+			scrollToSelection(selection, animated: true)
 		}
 	}
 
@@ -114,38 +109,5 @@ class SheetContentScrollView: SheetScrollView {
 		isEditing = false
 		editorIndex = .invalid
 		self.editorView = nil
-	}
-
-	// MARK: - Selection Operations
-	func setSelection(_ selection: SheetSelection, animated: Bool) {
-		deselectCellsAt(selection)
-		self.selection = selection
-		selectCellsAt(selection)
-		scrollToSelection(selection, animated: true)
-	}
-
-	func deselectCellsAt(_ selection: SheetSelection) {
-		for i in visibleIndicesFrom(selection: selection) {
-			visibleCells[i]?.selection = .none
-		}
-	}
-
-	func selectCellsAt(_ selection: SheetSelection) {
-		var rect = CGRect.zero
-		for i in visibleIndicesFrom(selection: selection) {
-			if let cell = visibleCells[i] {
-				cell.selection = selection
-				if rect == .zero {
-					rect = cell.frame
-				} else {
-					rect = rect.union(cell.frame)
-				}
-			}
-		}
-
-		if rect != .zero {
-			rect = rect.insetBy(dx: -Self.selectionPadding, dy: -Self.selectionPadding)
-			scrollRectToVisible(rect, animated: true)
-		}
 	}
 }

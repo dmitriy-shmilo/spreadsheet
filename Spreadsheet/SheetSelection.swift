@@ -4,7 +4,8 @@ import Foundation
 
 public enum SheetSelection: Equatable {
 	case none
-	case column(index: Int)
+	case columnSet(indices: IndexSet)
+	case columnRange(from: Int, to: Int)
 	case row(index: Int)
 	case cell(column: Int, row: Int)
 	case range(left: Int, top: Int, right: Int, bottom: Int)
@@ -15,8 +16,10 @@ extension SheetSelection {
 		switch self {
 		case .none:
 			return false
-		case .column(let col):
-			return col == index.col
+		case .columnSet(let indices):
+			return indices.contains(index.col)
+		case .columnRange(let from, let to):
+			return index.col >= from && index.col <= to
 		case .row(let row):
 			return row == index.row
 		case .cell(let col, let row):

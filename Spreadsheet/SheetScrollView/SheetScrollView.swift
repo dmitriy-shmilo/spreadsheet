@@ -62,6 +62,22 @@ class SheetScrollView: UIScrollView {
 
 // MARK: - Cell Lifecycle
 extension SheetScrollView {
+	func reloadData() {
+		releaseAllCells()
+		let oldRange = visibleRange
+
+		invalidateContentSize()
+
+		if oldRange.topRow != visibleRange.topRow
+			|| oldRange.leftColumn != visibleRange.leftColumn {
+			contentOffset = .init(
+				x: columns[oldRange.leftColumn].offset,
+				y: rows[oldRange.topRow].offset)
+		} else {
+			addCells(in: visibleRange)
+		}
+	}
+
 	func reloadVisibleCells() {
 		releaseCells(in: visibleRange)
 		visibleRange = determineVisibleRange()
@@ -147,6 +163,39 @@ extension SheetScrollView {
 
 // MARK: - Selection Utility
 extension SheetScrollView {
+	func isSelectionSupported(_ selection: SheetSelection) -> Bool {
+		return true
+	}
+
+	func setSelection(_ selection: SheetSelection) {
+		deselectCellsAtCurrentSelection()
+
+		if isSelectionSupported(selection) {
+			self.selection = selection
+			selectCellsAt(selection)
+		} else {
+			self.selection = .none
+		}
+	}
+
+	func deselectCellsAtCurrentSelection() {
+		deselectCellsAt(selection)
+	}
+
+	func deselectCellsAt(_ selection: SheetSelection) {
+		for i in visibleIndicesFrom(selection: selection) {
+			visibleCells[i]?.selection = .none
+		}
+	}
+
+	func selectCellsAt(_ selection: SheetSelection) {
+		for i in visibleIndicesFrom(selection: selection) {
+			if let cell = visibleCells[i] {
+				cell.selection = selection
+			}
+		}
+	}
+	
 	func scrollToSelection(_ selection: SheetSelection, animated: Bool) {
 		let allowedCols = 0..<columns.count
 		let allowedRows = 0..<rows.count
@@ -165,8 +214,37 @@ extension SheetScrollView {
 			scrollRectToVisible(rect, animated: animated)
 		case .cell(_, _):
 			return
-		case .column(_):
-			fatalError("Not implemented")
+		case .columnSet(let indices):
+			let firstIndex = indices.reduce(Int.max, min)
+			let lastIndex = indices.reduce(0, max)
+
+			guard allowedCols.contains(firstIndex) && allowedCols.contains(lastIndex) else {
+				return
+			}
+
+			let rect = CGRect(
+				x: columns[firstIndex].offset - Self.selectionPadding,
+				y: frame.minY,
+				width: columns[lastIndex].offset - columns[firstIndex].offset + columns[lastIndex].width + Self.selectionPadding * 2.0,
+				height: frame.height)
+
+			if rect.width < frame.width {
+				scrollRectToVisible(rect, animated: animated)
+			}
+		case .columnRange(let from, let to):
+			guard allowedCols.contains(from) && allowedCols.contains(to) else {
+				return
+			}
+
+			let rect = CGRect(
+				x: columns[from].offset - Self.selectionPadding,
+				y: frame.minY,
+				width: columns[to].offset - columns[from].offset + columns[to].width + Self.selectionPadding * 2.0,
+				height: frame.height)
+
+			if rect.width < frame.width {
+				scrollRectToVisible(rect, animated: animated)
+			}
 		case .row(_):
 			fatalError("Not implemented")
 		case .range(let left, let top, let right, let bottom)
@@ -188,30 +266,28 @@ extension SheetScrollView {
 		}
 	}
 
-	func reloadData() {
-		releaseAllCells()
-		let oldRange = visibleRange
-
-		invalidateContentSize()
-
-		if oldRange.topRow != visibleRange.topRow
-			|| oldRange.leftColumn != visibleRange.leftColumn {
-			contentOffset = .init(
-				x: columns[oldRange.leftColumn].offset,
-				y: rows[oldRange.topRow].offset)
-		} else {
-			addCells(in: visibleRange)
-		}
-	}
-
 	func visibleIndicesFrom(selection: SheetSelection) -> [SheetIndex] {
 		switch selection {
 		case .none:
 			return []
-		case .column(let col):
-			return (visibleRange.topRow..<visibleRange.bottomRow).map {
-				self.sheet.makeIndex(col, $0)
+		case .columnSet(let indices):
+			var result = [SheetIndex]()
+			for col in indices {
+				if visibleRange.columnRange.contains(col) {
+					for row in visibleRange.rowRange {
+						result.append(sheet.makeIndex(col, row))
+					}
+				}
 			}
+			return result
+		case .columnRange(let from, let to):
+			var result = [SheetIndex]()
+			for col in (from..<to + 1).clamped(to: visibleRange.columnRange) {
+				for row in visibleRange.rowRange {
+					result.append(sheet.makeIndex(col, row))
+				}
+			}
+			return result
 		case .row(let row):
 			return (visibleRange.leftColumn..<visibleRange.rightColumn).map {
 				self.sheet.makeIndex($0, row)

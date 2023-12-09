@@ -62,8 +62,21 @@ public class SheetView: UIView {
 		setup()
 	}
 
-	public func setSelection(_ selection: SheetSelection, animated: Bool) {
-		contentScrollView.setSelection(selection, animated: animated)
+	public func setSelection(_ selection: SheetSelection) {
+		switch selection {
+		case .columnRange(_, _),  .columnSet(_):
+			topScrollView.setSelection(selection)
+			leftScrollView.deselectCellsAtCurrentSelection()
+			contentScrollView.setSelection(selection)
+		default:
+			topScrollView.deselectCellsAtCurrentSelection()
+			leftScrollView.deselectCellsAtCurrentSelection()
+			contentScrollView.setSelection(selection)
+		}
+	}
+
+	public func scrollToSelection(_ selection: SheetSelection, animated: Bool) {
+		contentScrollView.scrollToSelection(selection, animated: animated)
 	}
 
 	public func makeIndex(_ col: Int, _ row: Int) -> SheetIndex {
@@ -310,7 +323,9 @@ extension SheetView {
 		case .fixedTop:
 			let cell = dataSource?.sheet(self, cellForFixedRowAt: index, in: area)
 			?? SheetViewCell(index: index)
-			if case .column(_) = selection, selection.contains(index) {
+			if case .columnSet(_) = selection, selection.contains(index) {
+				cell.selection = selection
+			} else if case .columnRange(_, _) = selection, selection.contains(index) {
 				cell.selection = selection
 			} else {
 				cell.selection = .none
