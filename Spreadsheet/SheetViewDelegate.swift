@@ -6,6 +6,7 @@ public protocol SheetViewDelegate: AnyObject {
 	// MARK: - Selection
 	func sheet(_ sheet: SheetView, shouldSelectCellAt index: SheetIndex) -> Bool
 	func sheet(_ sheet: SheetView, shouldSelectColumnAt index: Int) -> Bool
+	func sheet(_ sheet: SheetView, shouldSelectRowAt index: Int) -> Bool
 	func sheet(_ sheet: SheetView, didChangeSelection to: SheetSelection, from: SheetSelection)
 
 	// MARK: - Cell Editing
@@ -19,6 +20,10 @@ public extension SheetViewDelegate {
 	}
 
 	func sheet(_ sheet: SheetView, shouldSelectColumnAt index: Int) -> Bool {
+		return true
+	}
+
+	func sheet(_ sheet: SheetView, shouldSelectRowAt index: Int) -> Bool {
 		return true
 	}
 

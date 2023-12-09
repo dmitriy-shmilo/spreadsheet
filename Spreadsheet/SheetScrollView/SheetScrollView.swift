@@ -219,7 +219,7 @@ class SheetScrollView: UIScrollView {
 
 			let rect = CGRect(
 				x: columns[firstIndex].offset - Self.selectionPadding,
-				y: frame.minY,
+				y: 0,
 				width: columns[lastIndex].offset - columns[firstIndex].offset + columns[lastIndex].width + Self.selectionPadding * 2.0,
 				height: frame.height)
 
@@ -233,15 +233,44 @@ class SheetScrollView: UIScrollView {
 
 			let rect = CGRect(
 				x: columns[from].offset - Self.selectionPadding,
-				y: frame.minY,
+				y: 0,
 				width: columns[to].offset - columns[from].offset + columns[to].width + Self.selectionPadding * 2.0,
 				height: frame.height)
 
 			if rect.width < frame.width {
 				scrollRectToVisible(rect, animated: animated)
 			}
-		case .row(_):
-			fatalError("Not implemented")
+		case .rowSet(let indices):
+			let firstIndex = indices.reduce(Int.max, min)
+			let lastIndex = indices.reduce(0, max)
+
+			guard allowedRows.contains(firstIndex) && allowedRows.contains(lastIndex) else {
+				return
+			}
+
+			let rect = CGRect(
+				x: 0,
+				y: rows[firstIndex].offset - Self.selectionPadding,
+				width: frame.width,
+				height: rows[lastIndex].offset - rows[firstIndex].offset + rows[lastIndex].height + Self.selectionPadding * 2.0)
+
+			if rect.height < frame.height {
+				scrollRectToVisible(rect, animated: animated)
+			}
+		case .rowRange(let from, let to):
+			guard allowedRows.contains(from) && allowedRows.contains(to) else {
+				return
+			}
+
+			let rect = CGRect(
+				x: 0,
+				y: rows[from].offset - Self.selectionPadding,
+				width: frame.width,
+				height: rows[to].offset - rows[from].offset + rows[to].height + Self.selectionPadding * 2.0)
+
+			if rect.height < frame.height {
+				scrollRectToVisible(rect, animated: animated)
+			}
 		case .range(let left, let top, let right, let bottom)
 			where allowedCols.contains(left) && allowedCols.contains(right)
 			&& allowedRows.contains(top) && allowedRows.contains(bottom):
@@ -283,10 +312,24 @@ class SheetScrollView: UIScrollView {
 				}
 			}
 			return result
-		case .row(let row):
-			return (visibleRange.leftColumn..<visibleRange.rightColumn).map {
-				self.sheet.makeIndex($0, row)
+		case .rowSet(let indices):
+			var result = [SheetIndex]()
+			for row in indices {
+				if visibleRange.rowRange.contains(row) {
+					for col in visibleRange.columnRange {
+						result.append(sheet.makeIndex(col, row))
+					}
+				}
 			}
+			return result
+		case .rowRange(let from, let to):
+			var result = [SheetIndex]()
+			for row in (from..<to + 1).clamped(to: visibleRange.rowRange) {
+				for col in visibleRange.columnRange {
+					result.append(sheet.makeIndex(col, row))
+				}
+			}
+			return result
 		case .cell(let col, let row):
 			return [sheet.makeIndex(col, row)]
 		case .range(let left, let top, let right, let bottom):

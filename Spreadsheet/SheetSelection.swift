@@ -6,7 +6,8 @@ public enum SheetSelection: Equatable {
 	case none
 	case columnSet(indices: IndexSet)
 	case columnRange(from: Int, to: Int)
-	case row(index: Int)
+	case rowSet(indices: IndexSet)
+	case rowRange(from: Int, to: Int)
 	case cell(column: Int, row: Int)
 	case range(left: Int, top: Int, right: Int, bottom: Int)
 }
@@ -20,8 +21,10 @@ extension SheetSelection {
 			return indices.contains(index.col)
 		case .columnRange(let from, let to):
 			return index.col >= from && index.col <= to
-		case .row(let row):
-			return row == index.row
+		case .rowSet(let indices):
+			return indices.contains(index.row)
+		case .rowRange(let from, let to):
+			return index.row >= from && index.row <= to
 		case .cell(let col, let row):
 			return col == index.col && row == index.row
 		case .range(let left, let top, let right, let bottom):

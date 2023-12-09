@@ -28,14 +28,9 @@ public class SheetView: UIView {
 	static let defaultRowHeight: CGFloat = 45.0
 
 	public weak var dataSource: SheetDataSource?
-
 	public weak var delegate: SheetViewDelegate?
-	public var selection: SheetSelection {
-		get {
-			return contentScrollView.selection
-		}
-	}
 
+	private(set) public var currentSelection = SheetSelection.none
 	public var allowedSelectionModes = SheetSelectionMode.all
 
 	var columns = [SheetColumnDefinition]()
@@ -45,12 +40,10 @@ public class SheetView: UIView {
 
 	private var topScrollView: SheetFixedHorizontalScrollView!
 	private var topScrollViewHeight: NSLayoutConstraint!
-	private var leftScrollView: SheetFixedHorizontalScrollView!
+	private var leftScrollView: SheetFixedVerticalScrollView!
 	private var leftScrollViewWidth: NSLayoutConstraint!
 	private var contentScrollView: SheetContentScrollView!
 	private var syncContentOffsets = true
-
-	private var currentSelection = SheetSelection.none
 
 	private var cellQueues = [String: SheetViewCellQueue]()
 
@@ -69,16 +62,15 @@ public class SheetView: UIView {
 			return
 		}
 
-		switch selection {
-		case .columnRange(_, _),  .columnSet(_):
-			topScrollView.setSelection(selection)
-			leftScrollView.deselectCellsAtCurrentSelection()
-			contentScrollView.setSelection(selection)
-		default:
-			topScrollView.deselectCellsAtCurrentSelection()
-			leftScrollView.deselectCellsAtCurrentSelection()
-			contentScrollView.setSelection(selection)
+		for scrollView in [topScrollView, leftScrollView] {
+			if scrollView!.isSelectionSupported(selection) {
+				scrollView!.setSelection(selection)
+				continue
+			}
+			scrollView!.deselectCellsAtCurrentSelection()
 		}
+		contentScrollView.setSelection(selection)
+
 		delegate?.sheet(self, didChangeSelection: selection, from: currentSelection)
 		currentSelection = selection
 	}
@@ -321,34 +313,36 @@ extension SheetView {
 			fatalError("\(self) can't produce a cell for an unknown area")
 		case .content:
 			let cell = dataSource?.sheet(self, cellFor: index) ?? SheetViewCell(index: index)
-			if selection.contains(index) {
-				cell.selection = selection
+			cell.sheetIndex = index
+			if currentSelection.contains(index) {
+				cell.selection = currentSelection
 			} else {
 				cell.selection = .none
 			}
-			cell.sheetIndex = index
 			return cell
 		case .fixedTop:
 			let cell = dataSource?.sheet(self, cellForFixedRowAt: index, in: area)
 			?? SheetViewCell(index: index)
-			if case .columnSet(_) = selection, selection.contains(index) {
-				cell.selection = selection
-			} else if case .columnRange(_, _) = selection, selection.contains(index) {
-				cell.selection = selection
+			cell.sheetIndex = index
+			if case .columnSet(_) = currentSelection, currentSelection.contains(index) {
+				cell.selection = currentSelection
+			} else if case .columnRange(_, _) = currentSelection, currentSelection.contains(index) {
+				cell.selection = currentSelection
 			} else {
 				cell.selection = .none
 			}
-			cell.sheetIndex = index
 			return cell
 		case .fixedLeft:
 			let cell = dataSource?.sheet(self, cellForFixedColumnAt: index, in: area)
 			?? SheetViewCell(index: index)
-			if case .row(_) = selection, selection.contains(index) {
-				cell.selection = selection
+			cell.sheetIndex = index
+			if case .rowSet(_) = currentSelection, currentSelection.contains(index) {
+				cell.selection = currentSelection
+			} else if case .rowRange(_, _) = currentSelection, currentSelection.contains(index) {
+				cell.selection = currentSelection
 			} else {
 				cell.selection = .none
 			}
-			cell.sheetIndex = index
 			return cell
 		}
 	}

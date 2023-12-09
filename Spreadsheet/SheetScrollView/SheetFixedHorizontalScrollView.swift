@@ -36,4 +36,13 @@ class SheetFixedHorizontalScrollView: SheetScrollView {
 			topRow: 0,
 			bottomRow: rows.count)
 	}
+
+	override func isSelectionSupported(_ selection: SheetSelection) -> Bool {
+		switch selection {
+		case .columnSet(_), .columnRange(_, _):
+			return true
+		default:
+			return false
+		}
+	}
 }
