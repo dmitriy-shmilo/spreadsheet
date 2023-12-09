@@ -19,8 +19,7 @@ class SheetFixedHorizontalScrollView: SheetScrollView {
 		}
 		
 		if sheet.delegate?.sheet(sheet, shouldSelectColumnAt: colIndex) ?? true {
-			//sheet.setSelection(.columnSet(indices: .init(integer: colIndex)))
-			sheet.setSelection(.columnRange(from: colIndex, to: colIndex + 2))
+			sheet.setSelection(.columnSet(indices: .init(integer: colIndex)))
 			sheet.scrollToSelection(selection, animated: true)
 		}
 	}
