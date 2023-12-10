@@ -9,19 +9,19 @@ class SheetFixedVerticalScrollView: SheetScrollView {
 			return
 		}
 
-		guard sheet.allowedSelectionModes.contains(.row) else {
+		let point = touch.location(in: self)
+		guard let colIndex = findVisibleColumnIntersecting(
+			offset: point.x)?.index else {
 			return
 		}
 
-		let point = touch.location(in: self)
 		guard let rowIndex = findVisibleRowIntersecting(offset: point.y)?.index else {
 			return
 		}
-
-		if sheet.delegate?.sheet(sheet, shouldSelectRowAt: rowIndex) ?? true {
-			sheet.setSelection(.rowSet(indices: .init(integer: rowIndex)))
-			sheet.scrollToSelection(selection, animated: true)
-		}
+		sheet.delegate?.sheet(
+			sheet,
+			didTouchFixedColumnCellAt: sheet.makeIndex(colIndex, rowIndex),
+			in: area)
 	}
 
 	override func determineRange(

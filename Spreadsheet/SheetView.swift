@@ -79,6 +79,10 @@ public class SheetView: UIView {
 		contentScrollView.scrollToSelection(selection, animated: animated)
 	}
 
+	public func scrollToCurrentSelection(animated: Bool) {
+		contentScrollView.scrollToSelection(currentSelection, animated: animated)
+	}
+
 	public func makeIndex(_ col: Int, _ row: Int) -> SheetIndex {
 		return .init(col: col, row: row, index: row * columns.count + col)
 	}
@@ -143,6 +147,17 @@ public class SheetView: UIView {
 		}
 	}
 
+	// MARK: - Editing
+	public func editCellAt(_ index: SheetIndex) {
+		contentScrollView.endEditCell()
+		contentScrollView.beginEditCell(at: index)
+	}
+
+	public func endEditCell() {
+		contentScrollView.endEditCell()
+	}
+
+	// MARK: - Private Methods
 	private func setup() {
 		topScrollView = .init(frame: .zero)
 		topScrollView.translatesAutoresizingMaskIntoConstraints = false

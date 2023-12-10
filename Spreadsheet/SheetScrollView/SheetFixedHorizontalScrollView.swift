@@ -8,20 +8,19 @@ class SheetFixedHorizontalScrollView: SheetScrollView {
 			return
 		}
 
-		guard sheet.allowedSelectionModes.contains(.column) else {
-			return
-		}
-
 		let point = touch.location(in: self)
 		guard let colIndex = findVisibleColumnIntersecting(
 			offset: point.x)?.index else {
 			return
 		}
-		
-		if sheet.delegate?.sheet(sheet, shouldSelectColumnAt: colIndex) ?? true {
-			sheet.setSelection(.columnSet(indices: .init(integer: colIndex)))
-			sheet.scrollToSelection(selection, animated: true)
+
+		guard let rowIndex = findVisibleRowIntersecting(offset: point.y)?.index else {
+			return
 		}
+		sheet.delegate?.sheet(
+			sheet,
+			didTouchFixedRowCellAt: sheet.makeIndex(colIndex, rowIndex),
+			in: area)
 	}
 
 	override func determineRange(

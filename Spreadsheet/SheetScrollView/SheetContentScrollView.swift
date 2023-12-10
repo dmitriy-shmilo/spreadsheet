@@ -3,7 +3,6 @@
 import UIKit
 
 class SheetContentScrollView: SheetScrollView {
-	private var isEditing = false
 	private var editorIndex = SheetIndex.invalid
 	private var editorView: UIView?
 
@@ -20,10 +19,6 @@ class SheetContentScrollView: SheetScrollView {
 			return
 		}
 
-		guard sheet.allowedSelectionModes.contains(.cell) else {
-			return
-		}
-
 		let point = touch.location(in: self)
 		guard let colIndex = findVisibleColumnIntersecting(
 			offset: point.x)?.index else {
@@ -33,20 +28,7 @@ class SheetContentScrollView: SheetScrollView {
 		guard let rowIndex = findVisibleRowIntersecting(offset: point.y)?.index else {
 			return
 		}
-		let cellIndex = sheet.makeIndex(colIndex, rowIndex)
-		let canEdit = sheet.shouldEditCell(at: cellIndex)
-
-		if canEdit,
-			case .cell(let col, let row) = selection,
-			row == rowIndex && col == colIndex {
-			beginEditCell(at: sheet.makeIndex(col, row))
-			return
-		}
-
-		if sheet.delegate?.sheet(sheet, shouldSelectCellAt: cellIndex) ?? true {
-			sheet.setSelection(.cell(column: colIndex, row: rowIndex))
-			scrollToSelection(selection, animated: true)
-		}
+		sheet.delegate?.sheet(sheet, didTouchCellAt: sheet.makeIndex(colIndex, rowIndex))
 	}
 
 	override func determineRange(
@@ -91,7 +73,6 @@ class SheetContentScrollView: SheetScrollView {
 		editor.becomeFirstResponder()
 		editorView = editor
 		editorIndex = index
-		isEditing = true
 	}
 
 	func endEditCell() {
@@ -100,7 +81,6 @@ class SheetContentScrollView: SheetScrollView {
 		}
 
 		sheet.endCellEditing(at: editorIndex, andRelease: editorView)
-		isEditing = false
 		editorIndex = .invalid
 		self.editorView = nil
 	}
