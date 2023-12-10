@@ -51,13 +51,12 @@ public class SheetViewCell: UIView {
 	}
 
 	public func prepareForReuse() {
-		// no-op
+		refreshColors()
 	}
 
 	private func setup() {
 		isUserInteractionEnabled = false
 		layer.borderWidth = 1.0
-		refreshColors()
 	}
 
 	private func refreshColors() {

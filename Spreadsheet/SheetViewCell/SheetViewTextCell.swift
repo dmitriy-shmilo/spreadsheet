@@ -35,7 +35,6 @@ public class SheetViewTextCell: SheetViewCell {
 		}
 	}
 	
-
 	private(set) public var label = UILabel()
 
 	public required init(frame: CGRect) {
@@ -49,6 +48,7 @@ public class SheetViewTextCell: SheetViewCell {
 	}
 
 	public override func prepareForReuse() {
+		refreshColors()
 		label.text = ""
 	}
 
@@ -66,9 +66,10 @@ public class SheetViewTextCell: SheetViewCell {
 	private func setup() {
 		isUserInteractionEnabled = false
 
-		refreshColors()
 		layer.borderWidth = 1.0
 		label.translatesAutoresizingMaskIntoConstraints = false
+		label.numberOfLines = 0
+		label.textAlignment = .left
 		
 		addSubview(label)
 		NSLayoutConstraint.activate([
