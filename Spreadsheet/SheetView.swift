@@ -2,13 +2,13 @@
 
 import UIKit
 
-struct SheetColumnDefinition {
+struct SheetColumnDefinition: Equatable {
 	var index: Int = -1
 	var width: CGFloat = 0.0
 	var offset: CGFloat = 0.0
 }
 
-struct SheetRowDefinition {
+struct SheetRowDefinition: Equatable {
 	var index: Int = -1
 	var height: CGFloat = 0.0
 	var offset: CGFloat = 0.0

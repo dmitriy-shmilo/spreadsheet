@@ -24,7 +24,6 @@ class SheetScrollView: UIScrollView {
 	override var contentOffset: CGPoint {
 		didSet {
 			let range = determineVisibleRange()
-
 			guard visibleRange != range else {
 				return
 			}
@@ -128,20 +127,31 @@ class SheetScrollView: UIScrollView {
 	}
 
 	// MARK: - Column/Row Utility
-	// TODO: For a relatively small number of columns the following
-	// linear search will perform OK. But for a large number of
-	// columns we should leverage the fact that columns and rows
-	// are sorted by offset, and use binary search.
-
 	func findColumnIntersecting(offset: CGFloat) -> SheetColumnDefinition? {
-		return columns.first {
-			$0.offset <= offset && $0.offset + $0.width >= offset
+		return columns.binarySearch {
+			if $0.offset > offset {
+				return .orderedAscending
+			}
+
+			if $0.offset + $0.width < offset {
+				return .orderedDescending
+			}
+
+			return .orderedSame
 		}
 	}
 
 	func findRowIntersecting(offset: CGFloat) -> SheetRowDefinition? {
-		return rows.first {
-			$0.offset <= offset && $0.offset + $0.height >= offset
+		return rows.binarySearch {
+			if $0.offset > offset {
+				return .orderedAscending
+			}
+
+			if $0.offset + $0.height < offset {
+				return .orderedDescending
+			}
+
+			return .orderedSame
 		}
 	}
 

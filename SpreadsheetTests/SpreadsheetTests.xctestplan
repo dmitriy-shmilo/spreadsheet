@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "06F618CC-10CB-4556-9FD2-EF9B06B11192",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:Spreadsheet.xcodeproj",
+        "identifier" : "2CF6A41A2B261A10004FAD45",
+        "name" : "SpreadsheetTests"
+      }
+    }
+  ],
+  "version" : 1
+}
