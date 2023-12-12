@@ -24,6 +24,7 @@
 		2C59CF432B20DE050048363D /* SheetScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF3C2B20DE050048363D /* SheetScrollView.swift */; };
 		2C59CF442B20DE050048363D /* SheetViewTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF3E2B20DE050048363D /* SheetViewTextCell.swift */; };
 		2C59CF452B20DE050048363D /* SheetViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF3F2B20DE050048363D /* SheetViewCell.swift */; };
+		2C6580072B28EE73004FF216 /* CGRect+Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6580062B28EE73004FF216 /* CGRect+Size.swift */; };
 		2CF6A4162B26104F004FAD45 /* Array+BinarySearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF6A4152B26104F004FAD45 /* Array+BinarySearch.swift */; };
 		2CF6A41E2B261A10004FAD45 /* BinarySearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF6A41D2B261A10004FAD45 /* BinarySearchTests.swift */; };
 		2CF6A41F2B261A10004FAD45 /* Spreadsheet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C59CF162B20DD790048363D /* Spreadsheet.framework */; platformFilter = ios; };
@@ -58,6 +59,7 @@
 		2C59CF3C2B20DE050048363D /* SheetScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetScrollView.swift; sourceTree = "<group>"; };
 		2C59CF3E2B20DE050048363D /* SheetViewTextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetViewTextCell.swift; sourceTree = "<group>"; };
 		2C59CF3F2B20DE050048363D /* SheetViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetViewCell.swift; sourceTree = "<group>"; };
+		2C6580062B28EE73004FF216 /* CGRect+Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGRect+Size.swift"; sourceTree = "<group>"; };
 		2CF6A4152B26104F004FAD45 /* Array+BinarySearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+BinarySearch.swift"; sourceTree = "<group>"; };
 		2CF6A41B2B261A10004FAD45 /* SpreadsheetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SpreadsheetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CF6A41D2B261A10004FAD45 /* BinarySearchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinarySearchTests.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 			children = (
 				2C59CF2B2B20DDA90048363D /* AppDelegate.swift */,
 				2CF6A4152B26104F004FAD45 /* Array+BinarySearch.swift */,
+				2C6580062B28EE73004FF216 /* CGRect+Size.swift */,
 				2C59CF242B20DDA80048363D /* SceneDelegate.swift */,
 				2C59CF272B20DDA90048363D /* SheetCellRange.swift */,
 				2C59CF252B20DDA80048363D /* SheetDataSource.swift */,
@@ -275,6 +278,7 @@
 				2C59CF332B20DDA90048363D /* SheetCellRange.swift in Sources */,
 				2C59CF2C2B20DDA90048363D /* SheetSelectionMode.swift in Sources */,
 				2C59CF372B20DDA90048363D /* AppDelegate.swift in Sources */,
+				2C6580072B28EE73004FF216 /* CGRect+Size.swift in Sources */,
 				2C59CF442B20DE050048363D /* SheetViewTextCell.swift in Sources */,
 				2CF6A4162B26104F004FAD45 /* Array+BinarySearch.swift in Sources */,
 				2C59CF322B20DDA90048363D /* SheetSelection.swift in Sources */,
