@@ -27,11 +27,11 @@ public class SheetView: UIView {
 	static let defaultColWidth: CGFloat = 100.0
 	static let defaultRowHeight: CGFloat = 45.0
 
-	public weak var dataSource: SheetDataSource?
+	public weak var dataSource: SheetViewDataSource?
 	public weak var delegate: SheetViewDelegate?
 
 	private(set) public var currentSelection = SheetSelection.none
-	public var allowedSelectionModes = SheetSelectionMode.all
+	public var allowedSelectionModes = SheetViewSelectionMode.all
 
 	var columns = [SheetColumnDefinition]()
 	var rows = [SheetRowDefinition]()

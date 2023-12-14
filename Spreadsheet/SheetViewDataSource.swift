@@ -2,7 +2,7 @@
 
 import UIKit
 
-public protocol SheetDataSource: AnyObject {
+public protocol SheetViewDataSource: AnyObject {
 	func sheet(_ sheet: SheetView, queueLimitForReuseIdentifier reuseIdentifier: String) -> Int
 
 	// MARK: - View Creation
@@ -24,7 +24,7 @@ public protocol SheetDataSource: AnyObject {
 	func sheet(_ sheet: SheetView, cellForFixedColumnAt index: SheetIndex, in area: SheetViewArea) -> SheetViewCell
 }
 
-public extension SheetDataSource {
+public extension SheetViewDataSource {
 	func sheetColumnWidth(_ sheet: SheetView, at index: Int) -> CGFloat {
 		return SheetView.defaultColWidth
 	}

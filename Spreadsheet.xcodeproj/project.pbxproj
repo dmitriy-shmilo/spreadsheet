@@ -8,21 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		2C59CF1A2B20DD790048363D /* Spreadsheet.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C59CF192B20DD790048363D /* Spreadsheet.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		2C59CF2C2B20DDA90048363D /* SheetSelectionMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF202B20DDA80048363D /* SheetSelectionMode.swift */; };
+		2C59CF2C2B20DDA90048363D /* SheetViewSelectionMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF202B20DDA80048363D /* SheetViewSelectionMode.swift */; };
 		2C59CF2D2B20DDA90048363D /* SheetIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF212B20DDA80048363D /* SheetIndex.swift */; };
 		2C59CF2E2B20DDA90048363D /* SheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF222B20DDA80048363D /* SheetView.swift */; };
 		2C59CF2F2B20DDA90048363D /* SheetViewCellQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF232B20DDA80048363D /* SheetViewCellQueue.swift */; };
-		2C59CF302B20DDA90048363D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF242B20DDA80048363D /* SceneDelegate.swift */; };
-		2C59CF312B20DDA90048363D /* SheetDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF252B20DDA80048363D /* SheetDataSource.swift */; };
+		2C59CF312B20DDA90048363D /* SheetViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF252B20DDA80048363D /* SheetViewDataSource.swift */; };
 		2C59CF322B20DDA90048363D /* SheetSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF262B20DDA90048363D /* SheetSelection.swift */; };
 		2C59CF332B20DDA90048363D /* SheetCellRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF272B20DDA90048363D /* SheetCellRange.swift */; };
 		2C59CF352B20DDA90048363D /* SheetViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF292B20DDA90048363D /* SheetViewDelegate.swift */; };
-		2C59CF372B20DDA90048363D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF2B2B20DDA90048363D /* AppDelegate.swift */; };
 		2C59CF402B20DE050048363D /* SheetContentScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF392B20DE050048363D /* SheetContentScrollView.swift */; };
 		2C59CF412B20DE050048363D /* SheetFixedHorizontalScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF3A2B20DE050048363D /* SheetFixedHorizontalScrollView.swift */; };
 		2C59CF422B20DE050048363D /* SheetFixedVerticalScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF3B2B20DE050048363D /* SheetFixedVerticalScrollView.swift */; };
 		2C59CF432B20DE050048363D /* SheetScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF3C2B20DE050048363D /* SheetScrollView.swift */; };
-		2C59CF442B20DE050048363D /* SheetViewTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF3E2B20DE050048363D /* SheetViewTextCell.swift */; };
+		2C59CF442B20DE050048363D /* SheetViewLabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF3E2B20DE050048363D /* SheetViewLabelCell.swift */; };
 		2C59CF452B20DE050048363D /* SheetViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF3F2B20DE050048363D /* SheetViewCell.swift */; };
 		2C6580072B28EE73004FF216 /* CGRect+Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6580062B28EE73004FF216 /* CGRect+Size.swift */; };
 		2CF6A4162B26104F004FAD45 /* Array+BinarySearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF6A4152B26104F004FAD45 /* Array+BinarySearch.swift */; };
@@ -43,21 +41,19 @@
 /* Begin PBXFileReference section */
 		2C59CF162B20DD790048363D /* Spreadsheet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Spreadsheet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C59CF192B20DD790048363D /* Spreadsheet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Spreadsheet.h; sourceTree = "<group>"; };
-		2C59CF202B20DDA80048363D /* SheetSelectionMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetSelectionMode.swift; sourceTree = "<group>"; };
+		2C59CF202B20DDA80048363D /* SheetViewSelectionMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetViewSelectionMode.swift; sourceTree = "<group>"; };
 		2C59CF212B20DDA80048363D /* SheetIndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetIndex.swift; sourceTree = "<group>"; };
 		2C59CF222B20DDA80048363D /* SheetView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetView.swift; sourceTree = "<group>"; };
 		2C59CF232B20DDA80048363D /* SheetViewCellQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetViewCellQueue.swift; sourceTree = "<group>"; };
-		2C59CF242B20DDA80048363D /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		2C59CF252B20DDA80048363D /* SheetDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetDataSource.swift; sourceTree = "<group>"; };
+		2C59CF252B20DDA80048363D /* SheetViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetViewDataSource.swift; sourceTree = "<group>"; };
 		2C59CF262B20DDA90048363D /* SheetSelection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetSelection.swift; sourceTree = "<group>"; };
 		2C59CF272B20DDA90048363D /* SheetCellRange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetCellRange.swift; sourceTree = "<group>"; };
 		2C59CF292B20DDA90048363D /* SheetViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetViewDelegate.swift; sourceTree = "<group>"; };
-		2C59CF2B2B20DDA90048363D /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2C59CF392B20DE050048363D /* SheetContentScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetContentScrollView.swift; sourceTree = "<group>"; };
 		2C59CF3A2B20DE050048363D /* SheetFixedHorizontalScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetFixedHorizontalScrollView.swift; sourceTree = "<group>"; };
 		2C59CF3B2B20DE050048363D /* SheetFixedVerticalScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetFixedVerticalScrollView.swift; sourceTree = "<group>"; };
 		2C59CF3C2B20DE050048363D /* SheetScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetScrollView.swift; sourceTree = "<group>"; };
-		2C59CF3E2B20DE050048363D /* SheetViewTextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetViewTextCell.swift; sourceTree = "<group>"; };
+		2C59CF3E2B20DE050048363D /* SheetViewLabelCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetViewLabelCell.swift; sourceTree = "<group>"; };
 		2C59CF3F2B20DE050048363D /* SheetViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetViewCell.swift; sourceTree = "<group>"; };
 		2C6580062B28EE73004FF216 /* CGRect+Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGRect+Size.swift"; sourceTree = "<group>"; };
 		2CF6A4152B26104F004FAD45 /* Array+BinarySearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+BinarySearch.swift"; sourceTree = "<group>"; };
@@ -106,20 +102,18 @@
 		2C59CF182B20DD790048363D /* Spreadsheet */ = {
 			isa = PBXGroup;
 			children = (
-				2C59CF2B2B20DDA90048363D /* AppDelegate.swift */,
 				2CF6A4152B26104F004FAD45 /* Array+BinarySearch.swift */,
 				2C6580062B28EE73004FF216 /* CGRect+Size.swift */,
-				2C59CF242B20DDA80048363D /* SceneDelegate.swift */,
 				2C59CF272B20DDA90048363D /* SheetCellRange.swift */,
-				2C59CF252B20DDA80048363D /* SheetDataSource.swift */,
 				2C59CF212B20DDA80048363D /* SheetIndex.swift */,
 				2C59CF382B20DE050048363D /* SheetScrollView */,
 				2C59CF262B20DDA90048363D /* SheetSelection.swift */,
-				2C59CF202B20DDA80048363D /* SheetSelectionMode.swift */,
 				2C59CF222B20DDA80048363D /* SheetView.swift */,
 				2C59CF3D2B20DE050048363D /* SheetViewCell */,
 				2C59CF232B20DDA80048363D /* SheetViewCellQueue.swift */,
+				2C59CF252B20DDA80048363D /* SheetViewDataSource.swift */,
 				2C59CF292B20DDA90048363D /* SheetViewDelegate.swift */,
+				2C59CF202B20DDA80048363D /* SheetViewSelectionMode.swift */,
 				2C59CF192B20DD790048363D /* Spreadsheet.h */,
 			);
 			path = Spreadsheet;
@@ -140,7 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				2C59CF3F2B20DE050048363D /* SheetViewCell.swift */,
-				2C59CF3E2B20DE050048363D /* SheetViewTextCell.swift */,
+				2C59CF3E2B20DE050048363D /* SheetViewLabelCell.swift */,
 			);
 			path = SheetViewCell;
 			sourceTree = "<group>";
@@ -265,9 +259,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C59CF352B20DDA90048363D /* SheetViewDelegate.swift in Sources */,
-				2C59CF312B20DDA90048363D /* SheetDataSource.swift in Sources */,
+				2C59CF312B20DDA90048363D /* SheetViewDataSource.swift in Sources */,
 				2C59CF452B20DE050048363D /* SheetViewCell.swift in Sources */,
-				2C59CF302B20DDA90048363D /* SceneDelegate.swift in Sources */,
 				2C59CF402B20DE050048363D /* SheetContentScrollView.swift in Sources */,
 				2C59CF422B20DE050048363D /* SheetFixedVerticalScrollView.swift in Sources */,
 				2C59CF412B20DE050048363D /* SheetFixedHorizontalScrollView.swift in Sources */,
@@ -276,10 +269,9 @@
 				2C59CF2D2B20DDA90048363D /* SheetIndex.swift in Sources */,
 				2C59CF2E2B20DDA90048363D /* SheetView.swift in Sources */,
 				2C59CF332B20DDA90048363D /* SheetCellRange.swift in Sources */,
-				2C59CF2C2B20DDA90048363D /* SheetSelectionMode.swift in Sources */,
-				2C59CF372B20DDA90048363D /* AppDelegate.swift in Sources */,
+				2C59CF2C2B20DDA90048363D /* SheetViewSelectionMode.swift in Sources */,
 				2C6580072B28EE73004FF216 /* CGRect+Size.swift in Sources */,
-				2C59CF442B20DE050048363D /* SheetViewTextCell.swift in Sources */,
+				2C59CF442B20DE050048363D /* SheetViewLabelCell.swift in Sources */,
 				2CF6A4162B26104F004FAD45 /* Array+BinarySearch.swift in Sources */,
 				2C59CF322B20DDA90048363D /* SheetSelection.swift in Sources */,
 			);

@@ -2,7 +2,7 @@
 
 import UIKit
 
-public class SheetViewTextCell: SheetViewCell {
+public class SheetViewLabelCell: SheetViewCell {
 	private static let spacing = 8.0
 
 	public override var normalBorderColor: UIColor {
