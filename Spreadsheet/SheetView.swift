@@ -67,7 +67,7 @@ public class SheetView: UIView {
 				scrollView!.setSelection(selection)
 				continue
 			}
-			scrollView!.deselectCellsAtCurrentSelection()
+			scrollView!.clearSelection()
 		}
 		contentScrollView.setSelection(selection)
 

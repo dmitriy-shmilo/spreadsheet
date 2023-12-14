@@ -24,13 +24,14 @@ public extension SheetViewDelegate {
 			return
 		}
 
-		if case .cell(let col, let row) = sheet.currentSelection,
-		   row == index.row && col == index.col {
+		if case .cellSet(let indices) = sheet.currentSelection,
+		   indices.contains(index) {
+			sheet.setSelection(.singleCell(with: index))
 			sheet.editCellAt(index)
 			return
 		}
 
-		sheet.setSelection(.cell(column: index.col, row: index.row))
+		sheet.setSelection(.singleCell(with: index))
 		sheet.scrollToCurrentSelection(animated: true)
 	}
 
@@ -39,7 +40,7 @@ public extension SheetViewDelegate {
 			return
 		}
 
-		sheet.setSelection(.columnSet(indices: .init(integer: index.col)))
+		sheet.setSelection(.singleColumn(with: index.col))
 		sheet.scrollToCurrentSelection(animated: true)
 	}
 
@@ -48,7 +49,7 @@ public extension SheetViewDelegate {
 			return
 		}
 
-		sheet.setSelection(.rowSet(indices: .init(integer: index.row)))
+		sheet.setSelection(.singleRow(with: index.row))
 		sheet.scrollToCurrentSelection(animated: true)
 	}
 

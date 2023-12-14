@@ -62,7 +62,6 @@ class SheetScrollView: UIScrollView {
 	func reloadData() {
 		releaseAllCells()
 		let oldRange = visibleRange
-
 		invalidateContentSize()
 
 		if oldRange.topRow != visibleRange.topRow
@@ -173,7 +172,7 @@ class SheetScrollView: UIScrollView {
 	}
 
 	func setSelection(_ selection: SheetSelection) {
-		deselectCellsAtCurrentSelection()
+		clearSelection()
 
 		if isSelectionSupported(selection) {
 			self.selection = selection
@@ -183,8 +182,10 @@ class SheetScrollView: UIScrollView {
 		}
 	}
 
-	func deselectCellsAtCurrentSelection() {
-		deselectCellsAt(selection)
+	func clearSelection() {
+		for cell in visibleCells.values {
+			cell.selection = .none
+		}
 	}
 
 	func deselectCellsAt(_ selection: SheetSelection) {
@@ -202,101 +203,52 @@ class SheetScrollView: UIScrollView {
 	}
 	
 	func scrollToSelection(_ selection: SheetSelection, animated: Bool) {
-		let allowedCols = 0..<columns.count
-		let allowedRows = 0..<rows.count
 		switch selection {
 		case .none:
 			return
-		case .cell(let column, let row)
-			where allowedCols.contains(column) && allowedRows.contains(row):
-			let colDef = columns[column]
-			let rowDef = rows[row]
-			let rect = CGRect(x: colDef.offset,
-							  y: rowDef.offset,
-							  width: colDef.width,
-							  height: rowDef.height)
-				.insetBy(dx: -Self.selectionPadding, dy: -Self.selectionPadding)
-				.limitedBy(size: frame.size)
 
-			scrollRectToVisible(rect, animated: animated)
-		case .cell(_, _):
-			return
 		case .columnSet(let indices):
 			let firstIndex = indices.reduce(Int.max, min)
 			let lastIndex = indices.reduce(0, max)
+			scrollToColumnRange(from: firstIndex, to: lastIndex, animated: animated)
 
-			guard allowedCols.contains(firstIndex) && allowedCols.contains(lastIndex) else {
-				return
-			}
-
-			let rect = CGRect(
-				x: columns[firstIndex].offset - Self.selectionPadding,
-				y: contentOffset.y,
-				width: columns[lastIndex].offset - columns[firstIndex].offset + columns[lastIndex].width + Self.selectionPadding * 2.0,
-				height: frame.height)
-				.limitedBy(size: frame.size)
-
-			scrollRectToVisible(rect, animated: animated)
 		case .columnRange(let from, let to):
-			guard allowedCols.contains(from) && allowedCols.contains(to) else {
-				return
-			}
+			scrollToColumnRange(from: from, to: to, animated: animated)
 
-			let rect = CGRect(
-				x: columns[from].offset - Self.selectionPadding,
-				y: contentOffset.y,
-				width: columns[to].offset - columns[from].offset + columns[to].width + Self.selectionPadding * 2.0,
-				height: frame.height)
-				.limitedBy(size: frame.size)
-
-			scrollRectToVisible(rect, animated: animated)
 		case .rowSet(let indices):
 			let firstIndex = indices.reduce(Int.max, min)
 			let lastIndex = indices.reduce(0, max)
+			scrollToRowRange(from: firstIndex, to: lastIndex, animated: animated)
 
-			guard allowedRows.contains(firstIndex) && allowedRows.contains(lastIndex) else {
-				return
-			}
-
-			let rect = CGRect(
-				x: contentOffset.x,
-				y: rows[firstIndex].offset - Self.selectionPadding,
-				width: frame.width,
-				height: rows[lastIndex].offset - rows[firstIndex].offset + rows[lastIndex].height + Self.selectionPadding * 2.0)
-				.limitedBy(size: frame.size)
-
-			scrollRectToVisible(rect, animated: animated)
 		case .rowRange(let from, let to):
-			guard allowedRows.contains(from) && allowedRows.contains(to) else {
-				return
-			}
+			scrollToRowRange(from: from, to: to, animated: animated)
 
-			let rect = CGRect(
-				x: contentOffset.x,
-				y: rows[from].offset - Self.selectionPadding,
-				width: frame.width,
-				height: rows[to].offset - rows[from].offset + rows[to].height + Self.selectionPadding * 2.0)
-				.limitedBy(size: frame.size)
-
-
-			scrollRectToVisible(rect, animated: animated)
-		case .range(let left, let top, let right, let bottom)
-			where allowedCols.contains(left) && allowedCols.contains(right)
-			&& allowedRows.contains(top) && allowedRows.contains(bottom):
-			let leftColDef = columns[left]
-			let rightColDef = columns[right]
-			let topRowDef = rows[top]
-			let bottomRowDef = rows[bottom]
-
-			let rect = CGRect(x: leftColDef.offset,
-							  y: topRowDef.offset,
-							  width: rightColDef.offset + rightColDef.width - leftColDef.offset,
-							  height: bottomRowDef.offset + bottomRowDef.height - topRowDef.offset)
-				.insetBy(dx: -Self.selectionPadding, dy: -Self.selectionPadding)
-				.limitedBy(size: frame.size)
-			scrollRectToVisible(rect, animated: animated)
-		case .range(_, _, _, _):
-			return
+		case .cellSet(let indices):
+			let left = indices
+				.map { $0.col }
+				.reduce(Int.max, min)
+			let right = indices
+				.map { $0.col }
+				.reduce(0, max)
+			let top = indices
+				.map { $0.row }
+				.reduce(Int.max, min)
+			let bottom = indices
+				.map { $0.row }
+				.reduce(0, max)
+			scrollToCellRange(
+				left: left,
+				top: top,
+				right: right,
+				bottom: bottom,
+				animated: animated)
+		case .cellRange(let left, let top, let right, let bottom):
+			scrollToCellRange(
+				left: left,
+				top: top,
+				right: right,
+				bottom: bottom,
+				animated: animated)
 		}
 	}
 
@@ -340,15 +292,77 @@ class SheetScrollView: UIScrollView {
 				}
 			}
 			return result
-		case .cell(let col, let row):
-			return [sheet.makeIndex(col, row)]
-		case .range(let left, let top, let right, let bottom):
-			return (left..<right).flatMap { col in
-				(top..<bottom).map { row in
-					self.sheet.makeIndex(col, row)
+		case .cellSet(let indices):
+			return Array(indices.intersection(visibleCells.keys))
+		case .cellRange(let left, let top, let right, let bottom):
+			var result = [SheetIndex]()
+			for row in (top..<bottom + 1).clamped(to: visibleRange.rowRange) {
+				for col in (left..<right + 1).clamped(to: visibleRange.columnRange) {
+					result.append(sheet.makeIndex(col, row))
 				}
 			}
+			return result
 		}
+	}
+
+	// MARK: - Private Methods
+	// MARK: Scrolling
+	private func scrollToColumnRange(from: Int, to: Int, animated: Bool) {
+		let allowedCols = 0..<columns.count
+		guard allowedCols.contains(from) && allowedCols.contains(to) else {
+			return
+		}
+
+		let rect = CGRect(
+			x: columns[from].offset - Self.selectionPadding,
+			y: contentOffset.y,
+			width: columns[to].offset - columns[from].offset + columns[to].width + Self.selectionPadding * 2.0,
+			height: frame.height)
+			.limitedBy(size: frame.size)
+
+		scrollRectToVisible(rect, animated: animated)
+	}
+
+	private func scrollToRowRange(from: Int, to: Int, animated: Bool) {
+		let allowedRows = 0..<rows.count
+		guard allowedRows.contains(from) && allowedRows.contains(to) else {
+			return
+		}
+
+		let rect = CGRect(
+			x: contentOffset.x,
+			y: rows[from].offset - Self.selectionPadding,
+			width: frame.width,
+			height: rows[to].offset - rows[from].offset + rows[to].height + Self.selectionPadding * 2.0)
+			.limitedBy(size: frame.size)
+
+		scrollRectToVisible(rect, animated: animated)
+	}
+
+	private func scrollToCellRange(
+		left: Int, top: Int, right: Int, bottom: Int, animated: Bool) {
+		let allowedCols = 0..<columns.count
+		let allowedRows = 0..<rows.count
+
+		guard allowedCols.contains(left)
+				&& allowedCols.contains(right)
+				&& allowedRows.contains(top)
+				&& allowedRows.contains(bottom) else {
+			return
+		}
+
+		let leftColDef = columns[left]
+		let rightColDef = columns[right]
+		let topRowDef = rows[top]
+		let bottomRowDef = rows[bottom]
+
+		let rect = CGRect(x: leftColDef.offset,
+						  y: topRowDef.offset,
+						  width: rightColDef.offset + rightColDef.width - leftColDef.offset,
+						  height: bottomRowDef.offset + bottomRowDef.height - topRowDef.offset)
+			.insetBy(dx: -Self.selectionPadding, dy: -Self.selectionPadding)
+			.limitedBy(size: frame.size)
+		scrollRectToVisible(rect, animated: animated)
 	}
 }
 
