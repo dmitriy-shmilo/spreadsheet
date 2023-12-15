@@ -358,10 +358,6 @@ extension SheetView {
 
 // MARK: - Cell Editing
 extension SheetView {
-	func shouldEditCell(at index: SheetIndex) -> Bool {
-		return delegate?.sheet(self, shouldEditCellAt: index) ?? false
-	}
-
 	func editorViewFor(index: SheetIndex) -> UIView {
 		return dataSource?.sheet(self, editorCellFor: index) ?? UIView()
 	}
