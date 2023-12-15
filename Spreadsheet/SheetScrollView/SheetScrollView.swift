@@ -6,8 +6,8 @@ class SheetScrollView: UIScrollView {
 	static let selectionPadding = 16.0
 	weak var sheet: SheetView!
 
-	var columns = [SheetColumnDefinition]()
-	var rows = [SheetRowDefinition]()
+	var columns = [SheetViewColumnDefinition]()
+	var rows = [SheetViewRowDefinition]()
 	var selection = SheetSelection.none
 	var visibleCells = [SheetIndex: SheetViewCell]()
 	var visibleRange = SheetCellRange.empty
@@ -126,7 +126,7 @@ class SheetScrollView: UIScrollView {
 	}
 
 	// MARK: - Column/Row Utility
-	func findColumnIntersecting(offset: CGFloat) -> SheetColumnDefinition? {
+	func findColumnIntersecting(offset: CGFloat) -> SheetViewColumnDefinition? {
 		return columns.binarySearch {
 			if $0.offset > offset {
 				return .orderedAscending
@@ -140,7 +140,7 @@ class SheetScrollView: UIScrollView {
 		}
 	}
 
-	func findRowIntersecting(offset: CGFloat) -> SheetRowDefinition? {
+	func findRowIntersecting(offset: CGFloat) -> SheetViewRowDefinition? {
 		return rows.binarySearch {
 			if $0.offset > offset {
 				return .orderedAscending
@@ -154,13 +154,13 @@ class SheetScrollView: UIScrollView {
 		}
 	}
 
-	func findVisibleColumnIntersecting(offset: CGFloat) -> SheetColumnDefinition? {
+	func findVisibleColumnIntersecting(offset: CGFloat) -> SheetViewColumnDefinition? {
 		return columns[visibleRange.leftColumn..<visibleRange.rightColumn].first {
 			$0.offset <= offset && $0.offset + $0.width >= offset
 		}
 	}
 
-	func findVisibleRowIntersecting(offset: CGFloat) -> SheetRowDefinition? {
+	func findVisibleRowIntersecting(offset: CGFloat) -> SheetViewRowDefinition? {
 		return rows[visibleRange.topRow..<visibleRange.bottomRow].first {
 			$0.offset <= offset && $0.offset + $0.height >= offset
 		}

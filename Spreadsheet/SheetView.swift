@@ -2,25 +2,6 @@
 
 import UIKit
 
-struct SheetColumnDefinition: Equatable {
-	var index: Int = -1
-	var width: CGFloat = 0.0
-	var offset: CGFloat = 0.0
-}
-
-struct SheetRowDefinition: Equatable {
-	var index: Int = -1
-	var height: CGFloat = 0.0
-	var offset: CGFloat = 0.0
-}
-
-public enum SheetViewArea {
-	case unknown
-	case content
-	case fixedTop
-	case fixedLeft
-}
-
 @IBDesignable
 public class SheetView: UIView {
 	static let minQueueLimit = 100
@@ -33,10 +14,10 @@ public class SheetView: UIView {
 	private(set) public var currentSelection = SheetSelection.none
 	public var allowedSelectionModes = SheetViewSelectionMode.all
 
-	var columns = [SheetColumnDefinition]()
-	var rows = [SheetRowDefinition]()
-	var fixedTopRows = [SheetRowDefinition]()
-	var fixedLeftColumns = [SheetColumnDefinition]()
+	var columns = [SheetViewColumnDefinition]()
+	var rows = [SheetViewRowDefinition]()
+	var fixedTopRows = [SheetViewRowDefinition]()
+	var fixedLeftColumns = [SheetViewColumnDefinition]()
 
 	private var topScrollView: SheetFixedHorizontalScrollView!
 	private var topScrollViewHeight: NSLayoutConstraint!

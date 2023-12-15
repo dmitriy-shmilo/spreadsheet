@@ -23,6 +23,9 @@
 		2C59CF442B20DE050048363D /* SheetViewLabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF3E2B20DE050048363D /* SheetViewLabelCell.swift */; };
 		2C59CF452B20DE050048363D /* SheetViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF3F2B20DE050048363D /* SheetViewCell.swift */; };
 		2C6580072B28EE73004FF216 /* CGRect+Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6580062B28EE73004FF216 /* CGRect+Size.swift */; };
+		2C93907B2B2CA4500072C847 /* SheetViewColumnDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C93907A2B2CA4500072C847 /* SheetViewColumnDefinition.swift */; };
+		2C93907D2B2CA46D0072C847 /* SheetViewRowDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C93907C2B2CA46D0072C847 /* SheetViewRowDefinition.swift */; };
+		2C93907F2B2CA4890072C847 /* SheetViewArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C93907E2B2CA4890072C847 /* SheetViewArea.swift */; };
 		2CF6A4162B26104F004FAD45 /* Array+BinarySearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF6A4152B26104F004FAD45 /* Array+BinarySearch.swift */; };
 		2CF6A41E2B261A10004FAD45 /* BinarySearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF6A41D2B261A10004FAD45 /* BinarySearchTests.swift */; };
 		2CF6A41F2B261A10004FAD45 /* Spreadsheet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C59CF162B20DD790048363D /* Spreadsheet.framework */; platformFilter = ios; };
@@ -56,6 +59,9 @@
 		2C59CF3E2B20DE050048363D /* SheetViewLabelCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetViewLabelCell.swift; sourceTree = "<group>"; };
 		2C59CF3F2B20DE050048363D /* SheetViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetViewCell.swift; sourceTree = "<group>"; };
 		2C6580062B28EE73004FF216 /* CGRect+Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGRect+Size.swift"; sourceTree = "<group>"; };
+		2C93907A2B2CA4500072C847 /* SheetViewColumnDefinition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewColumnDefinition.swift; sourceTree = "<group>"; };
+		2C93907C2B2CA46D0072C847 /* SheetViewRowDefinition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewRowDefinition.swift; sourceTree = "<group>"; };
+		2C93907E2B2CA4890072C847 /* SheetViewArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewArea.swift; sourceTree = "<group>"; };
 		2CF6A4152B26104F004FAD45 /* Array+BinarySearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+BinarySearch.swift"; sourceTree = "<group>"; };
 		2CF6A41B2B261A10004FAD45 /* SpreadsheetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SpreadsheetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CF6A41D2B261A10004FAD45 /* BinarySearchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinarySearchTests.swift; sourceTree = "<group>"; };
@@ -109,10 +115,13 @@
 				2C59CF382B20DE050048363D /* SheetScrollView */,
 				2C59CF262B20DDA90048363D /* SheetSelection.swift */,
 				2C59CF222B20DDA80048363D /* SheetView.swift */,
+				2C93907E2B2CA4890072C847 /* SheetViewArea.swift */,
 				2C59CF3D2B20DE050048363D /* SheetViewCell */,
 				2C59CF232B20DDA80048363D /* SheetViewCellQueue.swift */,
+				2C93907A2B2CA4500072C847 /* SheetViewColumnDefinition.swift */,
 				2C59CF252B20DDA80048363D /* SheetViewDataSource.swift */,
 				2C59CF292B20DDA90048363D /* SheetViewDelegate.swift */,
+				2C93907C2B2CA46D0072C847 /* SheetViewRowDefinition.swift */,
 				2C59CF202B20DDA80048363D /* SheetViewSelectionMode.swift */,
 				2C59CF192B20DD790048363D /* Spreadsheet.h */,
 			);
@@ -268,10 +277,13 @@
 				2C59CF432B20DE050048363D /* SheetScrollView.swift in Sources */,
 				2C59CF2D2B20DDA90048363D /* SheetIndex.swift in Sources */,
 				2C59CF2E2B20DDA90048363D /* SheetView.swift in Sources */,
+				2C93907D2B2CA46D0072C847 /* SheetViewRowDefinition.swift in Sources */,
+				2C93907B2B2CA4500072C847 /* SheetViewColumnDefinition.swift in Sources */,
 				2C59CF332B20DDA90048363D /* SheetCellRange.swift in Sources */,
 				2C59CF2C2B20DDA90048363D /* SheetViewSelectionMode.swift in Sources */,
 				2C6580072B28EE73004FF216 /* CGRect+Size.swift in Sources */,
 				2C59CF442B20DE050048363D /* SheetViewLabelCell.swift in Sources */,
+				2C93907F2B2CA4890072C847 /* SheetViewArea.swift in Sources */,
 				2CF6A4162B26104F004FAD45 /* Array+BinarySearch.swift in Sources */,
 				2C59CF322B20DDA90048363D /* SheetSelection.swift in Sources */,
 			);
