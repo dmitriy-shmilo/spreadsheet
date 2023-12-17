@@ -145,7 +145,7 @@ public extension SheetViewDataSource {
 		return SheetView.defaultColWidth
 	}
 
-	func sheetRowHeight(_ sheet: SheetView) -> CGFloat {
+	func sheetRowHeight(_ sheet: SheetView, at index: Int) -> CGFloat {
 		return SheetView.defaultRowHeight
 	}
 
