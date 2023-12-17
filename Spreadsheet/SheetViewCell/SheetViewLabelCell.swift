@@ -2,6 +2,8 @@
 
 import UIKit
 
+/// A simple cel limplementation, which holds a single text label.
+/// Use the ``label`` property to customize the `UILabel` within this cell.
 public class SheetViewLabelCell: SheetViewCell {
 	private static let spacing = 8.0
 
@@ -34,7 +36,9 @@ public class SheetViewLabelCell: SheetViewCell {
 			refreshColors()
 		}
 	}
-	
+
+	/// Gets the label, which is the only subview of this cell. Assign its `text` and other properties
+	/// in order to display data within this cell.
 	private(set) public var label = UILabel()
 
 	public required init(frame: CGRect) {
@@ -52,6 +56,7 @@ public class SheetViewLabelCell: SheetViewCell {
 		label.text = ""
 	}
 
+	// MARK: - Private Methods
 	private func refreshColors() {
 		label.textColor = .label
 		if case .none = selection {
