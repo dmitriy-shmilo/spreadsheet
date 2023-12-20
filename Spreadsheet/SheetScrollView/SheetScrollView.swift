@@ -35,7 +35,7 @@ class SheetScrollView: UIScrollView {
 	}
 
 	func determineRange(from topLeft: CGPoint, to bottomRight: CGPoint) -> SheetCellRange {
-		fatalError("determineVisibleRange is not implemented")
+		fatalError("determineRange(from:to:) is not implemented")
 	}
 
 	func determineVisibleRange() -> SheetCellRange {
@@ -66,9 +66,11 @@ class SheetScrollView: UIScrollView {
 
 		if oldRange.topRow != visibleRange.topRow
 			|| oldRange.leftColumn != visibleRange.leftColumn {
+			let left = min(oldRange.leftColumn, columns.count - 1)
+			let top = min(oldRange.topRow, rows.count - 1)
 			contentOffset = .init(
-				x: columns[oldRange.leftColumn].offset,
-				y: rows[oldRange.topRow].offset)
+				x: columns[left].offset,
+				y: rows[top].offset)
 		} else {
 			addCells(in: visibleRange)
 		}
