@@ -2,16 +2,36 @@
 
 import UIKit
 
-@IBDesignable
+/// A spreadsheet-like view, designed to display two dimensional tables
+/// of cells with predetermined widths and heights. After instantiating, assign the ``dataSource``
+/// property in order to provide the necessary dimensions and cell subviews.
+/// Call ``reloadData()`` afterwards. Optionally, assign  a ``delegate`` for further fine
+/// tune the behavior.
+///
+/// Internally, this view contains multiple synchronized scrollviews, one for each ``SheetViewArea``.
+/// When scrolled, each area will request a set of, potentially reusable, cells from the datasource and place
+/// each cell inside of itself. Cells, which are no longer visible, will be discarded to save the resources.
 public class SheetView: UIView {
 	static let minQueueLimit = 100
 	static let defaultColWidth: CGFloat = 100.0
 	static let defaultRowHeight: CGFloat = 45.0
 
+	/// Gets or sets the ``SheetViewDataSource`` implementation for this view. If nil, no data
+	/// will be visible in the sheet by default. After assigning a datasource, call ``reloadData()``.
 	public weak var dataSource: SheetViewDataSource?
+
+	/// Gets or sets the ``SheetViewDelegate`` implementation for this view. Delegate methods
+	/// will be called when the user interacts with the table.
 	public weak var delegate: SheetViewDelegate?
 
+	/// Gets the current ``SheetSelection``, ``SheetSelection/none`` by default.
+	/// Current selection will be passed to each visible ``SheetViewCell``, which might affect
+	/// their presentation. Use ``setSelection(_:)`` in order to change the current selection.
 	private(set) public var currentSelection = SheetSelection.none
+
+	/// Gets or sets current allowed selection mode. Defaults to
+	/// ``SheetViewSelectionMode/all``. Only affects the default implementation of
+	/// ``SheetViewDelegate`` methods.
 	public var allowedSelectionModes = SheetViewSelectionMode.all
 
 	var columns = [SheetViewColumnDefinition]()
@@ -38,6 +58,25 @@ public class SheetView: UIView {
 		setup()
 	}
 
+	/// Creates a ``SheetIndex`` instance with given column and row reference within
+	/// this spreadsheet.
+	public func makeIndex(_ col: Int, _ row: Int) -> SheetIndex {
+		return .init(col: col, row: row, index: row * columns.count + col)
+	}
+
+	// MARK: - Selection
+	/// Call this method to change the ``currentSelection`` value. If changed to a new value,
+	/// each area selection will be cleared, and all visible cells, will get assigned an appropriate
+	/// ``SheetViewCell/selection`` value.
+	///
+	/// ``SheetViewArea/fixedTop`` area cells can only be selected with a
+	/// column selection variant.
+	///
+	/// ``SheetViewArea/fixedLeft`` area cells can only be selected with a
+	/// row selection variant.
+	///
+	/// Visible cells in the ``SheetViewArea/content`` area can be assigned all possible
+	/// selection variants.
 	public func setSelection(_ selection: SheetSelection) {
 		guard currentSelection != selection else {
 			return
@@ -56,21 +95,37 @@ public class SheetView: UIView {
 		currentSelection = selection
 	}
 
+	/// Scroll the ``SheetViewArea/content`` area so that the cells in the `selection`
+	/// are visible. If the selection is already fully visible, doesn't do anything.
+	///
+	/// If scrolling to row or
+	/// column selection variants, only vertical or horizontal (respectively) scrolling will occur.
+	///
+	/// If scrolling to a cell range or set, will attempt to make the selection bounding rectangle visible.
+	/// If the bounding rectangle doesn't fit into the view, the top left corner will be guaranteed to be
+	/// visible.
+	///
+	/// Other areas will syncronize their offsets as the content area scrolls.
+	///
+	/// - Parameter animated: whether to animate the scrolling. Passing `true` might result in
+	/// a considetable amount of cells being requested and dismissed in quick succession.
 	public func scrollToSelection(_ selection: SheetSelection, animated: Bool) {
 		contentScrollView.scrollToSelection(selection, animated: animated)
 	}
 
+	/// Same as calling ``scrollToSelection(_:animated:)`` with
+	/// ``currentSelection``.
 	public func scrollToCurrentSelection(animated: Bool) {
 		contentScrollView.scrollToSelection(currentSelection, animated: animated)
 	}
 
-	public func makeIndex(_ col: Int, _ row: Int) -> SheetIndex {
-		return .init(col: col, row: row, index: row * columns.count + col)
-	}
-
+	// MARK: - Sizing
+	/// Gets a `UIView` `frame`, which a cell with the given index is expected to have when placed
+	/// within ``SheetViewArea/content``.
+	///
+	/// Returns a zero frame for invalid indices.
 	public func frameRectFor(index: SheetIndex) -> CGRect {
-		guard index.row >= 0 && index.row < rows.count
-				&& index.col >= 0 && index.col < columns.count else {
+		guard isValid(index: index) else {
 			return .zero
 		}
 
@@ -81,6 +136,18 @@ public class SheetView: UIView {
 			height: rows[index.row].height)
 	}
 
+	/// Resizes a column with given index to a given width. Affects both the content and fixed areas.
+	/// All column offsets to the right of the affected one will be recalculated. If there is an intersection
+	/// between the affected column range with the currently visible columns, then visible cells will be
+	/// reloaded, and their frames updated.
+	///
+	/// Doesn't do anything if the index is invalid.
+	///
+	/// > Affected cell reloads may be optimized in the future. Do not rely on cell reloads after calling
+	/// > this method.
+	///
+	/// > Setting individual column widths is expensive. Consider reloading the table if there's a need
+	/// > to update multiple column widths.
 	public func setWidth(_ width: CGFloat, for index: Int) {
 		guard index >= 0 && index < columns.count else {
 			return
@@ -129,11 +196,27 @@ public class SheetView: UIView {
 	}
 
 	// MARK: - Editing
+	/// Attempts to start editing a cell at a given index. An editor view will be requested
+	/// from the ``delegate``, and then placed over the currently edited cell. Call
+	/// ``endEditCell()`` to dismiss the editor.
+	///
+	/// > If an editing already began, calling this method the second time will end the previous editing.
+	///
+	/// > If called for an invalid index, nothing will happen.
 	public func editCellAt(_ index: SheetIndex) {
+		guard isValid(index: index) else {
+			return
+		}
 		contentScrollView.endEditCell()
 		contentScrollView.beginEditCell(at: index)
 	}
 
+	/// Dismiss the current cell editor, which was previously spawned by a ``editCellAt(_:)`` call.
+	/// After dismissal,
+	/// ``SheetViewDelegate/sheet(_:didEndEditingCellAt:with:)-2sxsz`` will
+	/// be called.
+	///
+	/// > If there's no current editor, nothing will happen.
 	public func endEditCell() {
 		contentScrollView.endEditCell()
 	}
@@ -282,6 +365,10 @@ extension SheetView {
 // MARK: - Cell Lifecycle
 extension SheetView {
 
+	/// Creates an internal cell reuse queue with a given identifier for a ``SheetViewCell`` subclass.
+	/// Discarded cells will be placed on this queue, and can later be recycled.
+	/// Make sure to register all identifiers before making calls to
+	/// ``dequeueReusableCell(withIdentifier:)``.
 	public func register(_ type: SheetViewCell.Type, forCellReuseIdentifier id: String) {
 		guard cellQueues[id] == nil else {
 			fatalError("\(id) is already registered in \(self)")
@@ -293,6 +380,10 @@ extension SheetView {
 		cellQueues[id] = .init(id: id, limit: limit, type: type)
 	}
 
+	/// Attempts to recycle a dismissed cell, which was placed on a reusable cell queue. If there's
+	/// no reusable cells on the queue at the moment, a new one will be instantiated. In either case,
+	/// ``SheetViewCell/prepareForReuse()`` will be called, which should be used to reset
+	/// the cell state.
 	public func dequeueReusableCell(withIdentifier reuseIdentifier: String) -> SheetViewCell {
 		guard let queue = cellQueues[reuseIdentifier] else {
 			fatalError("\(reuseIdentifier) was not registered for reuse.")
@@ -390,5 +481,15 @@ extension SheetView: UIScrollViewDelegate {
 			contentScrollView.contentOffset.y = offset.y
 			return
 		}
+	}
+}
+
+// MARK: - Misc
+extension SheetView {
+	func isValid(index: SheetIndex) -> Bool {
+		return index.row >= 0
+		&& index.row < rows.count
+		&& index.col >= 0
+		&& index.col < columns.count
 	}
 }
