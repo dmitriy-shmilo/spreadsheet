@@ -23,6 +23,10 @@ class SheetScrollView: UIScrollView {
 
 	override var contentOffset: CGPoint {
 		didSet {
+			guard contentOffset != oldValue else {
+				return
+			}
+			
 			let range = determineVisibleRange()
 			guard visibleRange != range else {
 				return
@@ -63,6 +67,7 @@ class SheetScrollView: UIScrollView {
 		releaseAllCells()
 		let oldRange = visibleRange
 		invalidateContentSize()
+		reloadVisibleCells()
 
 		if oldRange.topRow != visibleRange.topRow
 			|| oldRange.leftColumn != visibleRange.leftColumn {
