@@ -53,6 +53,9 @@ public protocol SheetViewDelegate: AnyObject {
 	///  ``SheetViewDataSource/sheet(_:editorCellFor:)-50o4m``. Use this view to retrieve the new data
 	///  and persist it if necessary. Reload the affected cell in order to display the new data.
 	func sheet(_ sheet: SheetView, didEndEditingCellAt index: SheetIndex, with editor: UIView)
+
+	// MARK: - Resizing
+	func sheet(_ sheet: SheetView, didEndResizingColumnAt index: Int, to width: CGFloat)
 }
 
 // MARK: - Default Implementation
@@ -100,5 +103,10 @@ public extension SheetViewDelegate {
 	// MARK: - Cell Editing
 	func sheet(_ sheet: SheetView, didEndEditingCellAt index: SheetIndex, with editor: UIView) {
 		// no-op
+	}
+
+	// MARK: - Resizing
+	func sheet(_ sheet: SheetView, didEndResizingColumnAt index: Int, to width: CGFloat) {
+		sheet.setWidth(width, for: index)
 	}
 }
