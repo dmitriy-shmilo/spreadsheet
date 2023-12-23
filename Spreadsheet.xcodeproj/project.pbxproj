@@ -89,6 +89,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2C45E1F52B3701B000C1AE39 /* SheetViewDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				2C59CF252B20DDA80048363D /* SheetViewDataSource.swift */,
+				2C59CF292B20DDA90048363D /* SheetViewDelegate.swift */,
+				2C45E1F32B36F4F800C1AE39 /* SheetViewResizingDelegate.swift */,
+			);
+			path = SheetViewDelegate;
+			sourceTree = "<group>";
+		};
 		2C59CF0C2B20DD790048363D = {
 			isa = PBXGroup;
 			children = (
@@ -121,9 +131,7 @@
 				2C59CF3D2B20DE050048363D /* SheetViewCell */,
 				2C59CF232B20DDA80048363D /* SheetViewCellQueue.swift */,
 				2C93907A2B2CA4500072C847 /* SheetViewColumnDefinition.swift */,
-				2C59CF252B20DDA80048363D /* SheetViewDataSource.swift */,
-				2C59CF292B20DDA90048363D /* SheetViewDelegate.swift */,
-				2C45E1F32B36F4F800C1AE39 /* SheetViewResizingDelegate.swift */,
+				2C45E1F52B3701B000C1AE39 /* SheetViewDelegate */,
 				2C93907C2B2CA46D0072C847 /* SheetViewRowDefinition.swift */,
 				2C59CF202B20DDA80048363D /* SheetViewSelectionMode.swift */,
 				2C59CF192B20DD790048363D /* Spreadsheet.h */,
