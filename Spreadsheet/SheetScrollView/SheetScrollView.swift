@@ -21,9 +21,9 @@ class SheetScrollView: UIScrollView {
 		super.init(coder: coder)
 	}
 
-	override var contentOffset: CGPoint {
+	override var bounds: CGRect {
 		didSet {
-			guard contentOffset != oldValue else {
+			guard bounds != oldValue else {
 				return
 			}
 			
