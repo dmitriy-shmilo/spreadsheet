@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C45E1F42B36F4F800C1AE39 /* SheetViewResizingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C45E1F32B36F4F800C1AE39 /* SheetViewResizingDelegate.swift */; };
 		2C59CF1A2B20DD790048363D /* Spreadsheet.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C59CF192B20DD790048363D /* Spreadsheet.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2C59CF2C2B20DDA90048363D /* SheetViewSelectionMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF202B20DDA80048363D /* SheetViewSelectionMode.swift */; };
 		2C59CF2D2B20DDA90048363D /* SheetIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C59CF212B20DDA80048363D /* SheetIndex.swift */; };
@@ -42,6 +43,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2C45E1F32B36F4F800C1AE39 /* SheetViewResizingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewResizingDelegate.swift; sourceTree = "<group>"; };
 		2C59CF162B20DD790048363D /* Spreadsheet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Spreadsheet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C59CF192B20DD790048363D /* Spreadsheet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Spreadsheet.h; sourceTree = "<group>"; };
 		2C59CF202B20DDA80048363D /* SheetViewSelectionMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetViewSelectionMode.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 				2C93907A2B2CA4500072C847 /* SheetViewColumnDefinition.swift */,
 				2C59CF252B20DDA80048363D /* SheetViewDataSource.swift */,
 				2C59CF292B20DDA90048363D /* SheetViewDelegate.swift */,
+				2C45E1F32B36F4F800C1AE39 /* SheetViewResizingDelegate.swift */,
 				2C93907C2B2CA46D0072C847 /* SheetViewRowDefinition.swift */,
 				2C59CF202B20DDA80048363D /* SheetViewSelectionMode.swift */,
 				2C59CF192B20DD790048363D /* Spreadsheet.h */,
@@ -275,6 +278,7 @@
 				2C59CF412B20DE050048363D /* SheetFixedHorizontalScrollView.swift in Sources */,
 				2C59CF2F2B20DDA90048363D /* SheetViewCellQueue.swift in Sources */,
 				2C59CF432B20DE050048363D /* SheetScrollView.swift in Sources */,
+				2C45E1F42B36F4F800C1AE39 /* SheetViewResizingDelegate.swift in Sources */,
 				2C59CF2D2B20DDA90048363D /* SheetIndex.swift in Sources */,
 				2C59CF2E2B20DDA90048363D /* SheetView.swift in Sources */,
 				2C93907D2B2CA46D0072C847 /* SheetViewRowDefinition.swift in Sources */,

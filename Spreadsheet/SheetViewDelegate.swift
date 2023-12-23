@@ -5,6 +5,7 @@ import UIKit
 /// Assign an implementation of this protocol to ``SheetView/delegate`` in order to
 /// receive various callbacks and influence the behavior of a ``SheetView``.
 public protocol SheetViewDelegate: AnyObject {
+
 	// MARK: - Interaction
 	/// Called when a cell in ``SheetViewArea/content`` is tapped or clicked.
 	/// The default implementation will mark the cell as selected, clearing any previous selections.
@@ -53,9 +54,6 @@ public protocol SheetViewDelegate: AnyObject {
 	///  ``SheetViewDataSource/sheet(_:editorCellFor:)-50o4m``. Use this view to retrieve the new data
 	///  and persist it if necessary. Reload the affected cell in order to display the new data.
 	func sheet(_ sheet: SheetView, didEndEditingCellAt index: SheetIndex, with editor: UIView)
-
-	// MARK: - Resizing
-	func sheet(_ sheet: SheetView, didEndResizingColumnAt index: Int, to width: CGFloat)
 }
 
 // MARK: - Default Implementation
@@ -103,10 +101,5 @@ public extension SheetViewDelegate {
 	// MARK: - Cell Editing
 	func sheet(_ sheet: SheetView, didEndEditingCellAt index: SheetIndex, with editor: UIView) {
 		// no-op
-	}
-
-	// MARK: - Resizing
-	func sheet(_ sheet: SheetView, didEndResizingColumnAt index: Int, to width: CGFloat) {
-		sheet.setWidth(width, for: index)
 	}
 }

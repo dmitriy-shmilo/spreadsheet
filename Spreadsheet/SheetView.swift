@@ -24,6 +24,11 @@ public class SheetView: UIView {
 	/// will be called when the user interacts with the table.
 	public weak var delegate: SheetViewDelegate?
 
+	/// Gets or sets the ``SheetViewResizingDelegate`` implementation for this view. If not
+	/// provided, resizing methods like ``beginResizingColumn(at:)`` won't have any meaningful
+	/// effect.
+	public weak var resizingDelegate: SheetViewResizingDelegate?
+
 	/// Gets the current ``SheetSelection``, ``SheetSelection/none`` by default.
 	/// Current selection will be passed to each visible ``SheetViewCell``, which might affect
 	/// their presentation. Use ``setSelection(_:)`` in order to change the current selection.
@@ -37,7 +42,11 @@ public class SheetView: UIView {
 	/// Gets whether this sheet view is in the process of resizing a column. Returns true if
 	/// ``beginResizingColumn(at:)`` was called. Is set to false after ``endResizingColumn()``
 	/// was executed.
-	private(set) public var isResizing = false
+	public var isResizing: Bool {
+		get {
+			return resizedColumnIndex != SheetIndex.invalid.col
+		}
+	}
 
 	/// Gets column inex of the currently resized column. Set by ``beginResizingColumn(at:)``.
 	/// Is invalid when not resizing a column.
@@ -59,7 +68,8 @@ public class SheetView: UIView {
 	private var contentScrollView: SheetContentScrollView!
 	private var syncContentOffsets = true
 
-	private var defaultResizerView = UIView()
+	private let defaultResizerView = UIView()
+	private var currentResizerView: UIView?
 
 	private var cellQueues = [String: SheetViewCellQueue]()
 
@@ -71,6 +81,16 @@ public class SheetView: UIView {
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
 		setup()
+	}
+
+	override public var bounds: CGRect {
+		didSet {
+			guard bounds != oldValue else {
+				return
+			}
+
+			updateResizingColumn(at: resizedColumnIndex, to: resizedColumnWidth)
+		}
 	}
 
 	/// Creates a ``SheetIndex`` instance with given column and row reference within
@@ -284,9 +304,7 @@ public class SheetView: UIView {
 
 		defaultResizerView.frame = .zero
 		defaultResizerView.isUserInteractionEnabled = false
-		defaultResizerView.isHidden = true
 		defaultResizerView.backgroundColor = .systemBlue
-		addSubview(defaultResizerView)
 	}
 }
 
@@ -488,7 +506,7 @@ extension SheetView {
 	/// Use ``updateResizingColumn(at:to:)`` to move the resizer view.
 	/// Call ``endResizingColumn()`` to stop the resizing.
 	public func beginResizingColumn(at index: Int) {
-		guard index >= 0 && index < columns.count else {
+		guard isValid(column: index) else {
 			return
 		}
 
@@ -499,16 +517,27 @@ extension SheetView {
 		let resizerOffset = contentScrollView.convert(.init(x: offset, y: 0), to: self).x
 		resizedColumnIndex = index
 		resizedColumnWidth = column.width
-		defaultResizerView.frame = .init(x: resizerOffset, y: 0, width: 1.0, height: frame.height)
-		defaultResizerView.isHidden = false
+
+		let resizer = resizingDelegate?.sheet(
+			self,
+			resizerViewForColumnAt: index)
+		?? defaultResizerView
+
+		resizer.frame = resizingDelegate?.sheet(
+			self,
+			resizerFrameForColumnAt: resizerOffset)
+		?? .init(x: resizerOffset, y: 0, width: 1.0, height: frame.height)
+
+		addSubview(resizer)
+		currentResizerView = resizer
 	}
 
 	/// Call this method after ``beginResizingColumn(at:)`` to move the resizer indicator so that it indicates
-	/// a desired `width` of the column. This method does nothing if `index` doesn't match the ``resizedColumnIndex`` or
-	/// if `width` is invalid.
-	/// Call ``endResizingColumn()`` to finilize the change.
+	/// a desired `width` of the column. This method does nothing if `index` doesn't match the
+	/// ``resizedColumnIndex`` or  if `width` is invalid. Call ``endResizingColumn()``
+	/// to finilize the change.
 	public func updateResizingColumn(at index: Int, to width: CGFloat) {
-		guard index == resizedColumnIndex else {
+		guard index == resizedColumnIndex && index != SheetIndex.invalid.col else {
 			return
 		}
 
@@ -516,24 +545,30 @@ extension SheetView {
 			return
 		}
 
+		guard let resizer = currentResizerView else {
+			return
+		}
+
 		let column = columns[index]
 		let offset = column.offset + width
 		let resizerOffset = contentScrollView.convert(.init(x: offset, y: 0), to: self).x
-		defaultResizerView.frame = .init(x: resizerOffset, y: 0, width: 1.0, height: frame.height)
+		resizer.frame = resizingDelegate?.sheet(
+			self,
+			resizerFrameForColumnAt: resizerOffset)
+		?? .init(x: resizerOffset, y: 0, width: 1.0, height: frame.height)
 	}
 
 	/// Finilizes the column resizing relaying the current ``resizedColumnIndex`` and ``resizedColumnWidth``
-	/// to ``SheetViewDelegate/sheet(_:didEndResizingColumnAt:to:)-6skv5`` and resetting the resizing state.
-	/// Doesn't do anything if resizing wasn't started with ``beginResizingColumn(at:)``.
+	/// to ``SheetViewDelegate/sheet(_:didEndResizingColumnAt:to:)-6skv5`` and resetting
+	/// the resizing state. Doesn't do anything if resizing wasn't started with ``beginResizingColumn(at:)``.
 	public func endResizingColumn() {
-		guard isResizing else {
+		guard resizedColumnIndex != SheetIndex.invalid.col else {
 			return
 		}
-		delegate?.sheet(self, didEndResizingColumnAt: resizedColumnIndex, to: resizedColumnWidth)
-		isResizing = false
+		resizingDelegate?.sheet(self, didEndResizingColumnAt: resizedColumnIndex, to: resizedColumnWidth)
 		resizedColumnIndex = SheetIndex.invalid.col
 		resizedColumnWidth = 0.0
-		defaultResizerView.isHidden = true
+		currentResizerView?.removeFromSuperview()
 	}
 }
 
@@ -543,10 +578,12 @@ extension SheetView: UIScrollViewDelegate {
 		guard syncContentOffsets else {
 			return
 		}
+
 		let offset = scrollView.contentOffset
 		if scrollView == contentScrollView {
 			topScrollView.contentOffset.x = offset.x
 			leftScrollView.contentOffset.y = offset.y
+			updateResizingColumn(at: resizedColumnIndex, to: resizedColumnWidth)
 			return
 		}
 
