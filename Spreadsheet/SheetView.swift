@@ -176,7 +176,7 @@ public class SheetView: UIView {
 	/// between the affected column range with the currently visible columns, then visible cells will be
 	/// reloaded, and their frames updated.
 	///
-	/// Doesn't do anything if the index is invalid.
+	/// Doesn't do anything if the index is invalid. Doesn't do anything if the width is not changed.
 	///
 	/// > Affected cell reloads may be optimized in the future. Do not rely on cell reloads after calling
 	/// > this method.
@@ -185,6 +185,10 @@ public class SheetView: UIView {
 	/// > to update multiple column widths.
 	public func setWidth(_ width: CGFloat, for index: Int) {
 		guard index >= 0 && index < columns.count else {
+			return
+		}
+
+		guard width != columns[index].width else {
 			return
 		}
 
@@ -202,8 +206,11 @@ public class SheetView: UIView {
 		contentScrollView.columns = columns
 		topScrollView.columns = columns
 
+		syncContentOffsets = false
+		defer {
+			syncContentOffsets = true
+		}
 		if range.rightColumn > index {
-			syncContentOffsets = false
 
 			// TODO: there's no real need to fully reload affected cells
 			// we can just shift their frames by a given amount
@@ -225,8 +232,9 @@ public class SheetView: UIView {
 			topScrollView.releaseCells(in: topRange)
 			topScrollView.addCells(in: topRange)
 			topScrollView.invalidateContentSize()
-
-			syncContentOffsets = true
+		} else {
+			contentScrollView.invalidateContentSize()
+			topScrollView.invalidateContentSize()
 		}
 	}
 
