@@ -211,27 +211,26 @@ public class SheetView: UIView {
 			syncContentOffsets = true
 		}
 		if range.rightColumn > index {
-
-			// TODO: there's no real need to fully reload affected cells
-			// we can just shift their frames by a given amount
 			let contentRange = SheetCellRange(
 				leftColumn: index,
 				rightColumn: range.rightColumn,
 				topRow: range.topRow,
 				bottomRow: range.bottomRow)
 
-			contentScrollView.releaseCells(in: contentRange)
-			contentScrollView.addCells(in: contentRange)
+			contentScrollView.layoutVisibleCells(in: contentRange)
 			contentScrollView.invalidateContentSize()
+			contentScrollView.releaseCells(outside: contentScrollView.visibleRange)
+			contentScrollView.addCells(in: contentScrollView.visibleRange)
 
 			let topRange = SheetCellRange(
 				leftColumn: index,
 				rightColumn: range.rightColumn,
 				topRow: 0,
 				bottomRow: fixedTopRows.count)
-			topScrollView.releaseCells(in: topRange)
-			topScrollView.addCells(in: topRange)
+			topScrollView.layoutVisibleCells(in: topRange)
 			topScrollView.invalidateContentSize()
+			topScrollView.releaseCells(outside: topScrollView.visibleRange)
+			topScrollView.addCells(in: topScrollView.visibleRange)
 		} else {
 			contentScrollView.invalidateContentSize()
 			topScrollView.invalidateContentSize()

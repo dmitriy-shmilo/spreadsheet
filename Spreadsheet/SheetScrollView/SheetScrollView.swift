@@ -60,6 +60,7 @@ class SheetScrollView: UIScrollView {
 		contentSize = .init(
 			width: column.offset + column.width,
 			height: row.offset + row.height)
+		visibleRange = determineVisibleRange()
 	}
 
 	// MARK: - Cell Lifecycle
@@ -132,7 +133,23 @@ class SheetScrollView: UIScrollView {
 		}
 	}
 
-	// MARK: - Column/Row Utility
+	// MARK: - Layout
+	func layoutVisibleCells(in range: SheetCellRange) {
+		for x in range.leftColumn..<range.rightColumn {
+			for y in range.topRow..<range.bottomRow {
+				let index = sheet.makeIndex(x, y)
+				if let cell = visibleCells[index] {
+					cell.frame = .init(
+						x: columns[x].offset,
+						y: rows[y].offset,
+						width: columns[x].width,
+						height: rows[y].height)
+					cell.setNeedsLayout()
+				}
+			}
+		}
+	}
+
 	func findColumnIntersecting(offset: CGFloat) -> SheetViewColumnDefinition? {
 		return columns.binarySearch {
 			if $0.offset > offset {
