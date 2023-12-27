@@ -154,89 +154,6 @@ public class SheetView: UIView {
 		contentScrollView.scrollToSelection(currentSelection, animated: animated)
 	}
 
-	// MARK: - Sizing
-	/// Gets a `UIView` `frame`, which a cell with the given index is expected to have when placed
-	/// within ``SheetViewArea/content``.
-	///
-	/// Returns a zero frame for invalid indices.
-	public func frameRectFor(index: SheetIndex) -> CGRect {
-		guard isValid(index: index) else {
-			return .zero
-		}
-
-		return .init(
-			x: columns[index.col].offset,
-			y: rows[index.row].offset,
-			width: columns[index.col].width,
-			height: rows[index.row].height)
-	}
-
-	/// Resizes a column with given index to a given width. Affects both the content and fixed areas.
-	/// All column offsets to the right of the affected one will be recalculated. If there is an intersection
-	/// between the affected column range with the currently visible columns, then visible cells will be
-	/// reloaded, and their frames updated.
-	///
-	/// Doesn't do anything if the index is invalid. Doesn't do anything if the width is not changed.
-	///
-	/// > Affected cell reloads may be optimized in the future. Do not rely on cell reloads after calling
-	/// > this method.
-	///
-	/// > Setting individual column widths is expensive. Consider reloading the table if there's a need
-	/// > to update multiple column widths.
-	public func setWidth(_ width: CGFloat, for index: Int) {
-		guard index >= 0 && index < columns.count else {
-			return
-		}
-
-		guard width != columns[index].width else {
-			return
-		}
-
-		let range = contentScrollView.visibleRange
-		columns[index].width = width
-
-		if index < columns.count - 1 {
-			var offset = columns[index].offset + columns[index].width
-			for i in (index + 1)..<columns.count {
-				columns[i].offset = offset
-				offset += columns[i].width
-			}
-		}
-
-		contentScrollView.columns = columns
-		topScrollView.columns = columns
-
-		syncContentOffsets = false
-		defer {
-			syncContentOffsets = true
-		}
-		if range.rightColumn > index {
-			let contentRange = SheetCellRange(
-				leftColumn: index,
-				rightColumn: range.rightColumn,
-				topRow: range.topRow,
-				bottomRow: range.bottomRow)
-
-			contentScrollView.layoutVisibleCells(in: contentRange)
-			contentScrollView.invalidateContentSize()
-			contentScrollView.releaseCells(outside: contentScrollView.visibleRange)
-			contentScrollView.addCells(in: contentScrollView.visibleRange)
-
-			let topRange = SheetCellRange(
-				leftColumn: index,
-				rightColumn: range.rightColumn,
-				topRow: 0,
-				bottomRow: fixedTopRows.count)
-			topScrollView.layoutVisibleCells(in: topRange)
-			topScrollView.invalidateContentSize()
-			topScrollView.releaseCells(outside: topScrollView.visibleRange)
-			topScrollView.addCells(in: topScrollView.visibleRange)
-		} else {
-			contentScrollView.invalidateContentSize()
-			topScrollView.invalidateContentSize()
-		}
-	}
-
 	// MARK: - Editing
 	/// Attempts to start editing a cell at a given index. An editor view will be requested
 	/// from the ``delegate``, and then placed over the currently edited cell. Call
@@ -576,6 +493,141 @@ extension SheetView {
 		resizedColumnIndex = SheetIndex.invalid.col
 		resizedColumnWidth = 0.0
 		currentResizerView?.removeFromSuperview()
+	}
+
+	/// Gets a `UIView` `frame`, which a cell with the given index is expected to have when placed
+	/// within ``SheetViewArea/content``.
+	///
+	/// Returns a zero frame for invalid indices.
+	public func frameRectFor(index: SheetIndex) -> CGRect {
+		guard isValid(index: index) else {
+			return .zero
+		}
+
+		return .init(
+			x: columns[index.col].offset,
+			y: rows[index.row].offset,
+			width: columns[index.col].width,
+			height: rows[index.row].height)
+	}
+
+	/// Resizes a column with given index to a given width. Affects both the content and fixed areas.
+	/// All column offsets to the right of the affected one will be recalculated. If there is an intersection
+	/// between the affected column range and the currently visible columns, then visible cells will be
+	/// reloaded, and their frames updated.
+	///
+	/// Doesn't do anything if the index is invalid. Doesn't do anything if the width is not changed.
+	///
+	/// > Setting individual column widths is expensive. Consider reloading the table if there's a need
+	/// > to update multiple column widths.
+	public func setWidth(_ width: CGFloat, for index: Int) {
+		guard index >= 0 && index < columns.count else {
+			return
+		}
+
+		guard width != columns[index].width else {
+			return
+		}
+
+		let range = contentScrollView.visibleRange
+		columns[index].width = width
+
+		if index < columns.count - 1 {
+			var offset = columns[index].offset + columns[index].width
+			for i in (index + 1)..<columns.count {
+				columns[i].offset = offset
+				offset += columns[i].width
+			}
+		}
+
+		contentScrollView.columns = columns
+		topScrollView.columns = columns
+
+		syncContentOffsets = false
+		defer {
+			syncContentOffsets = true
+		}
+		if range.rightColumn > index {
+			let contentRange = SheetCellRange(
+				leftColumn: index,
+				rightColumn: range.rightColumn,
+				topRow: range.topRow,
+				bottomRow: range.bottomRow)
+
+			layout(contentScrollView, in: contentRange)
+
+			let topRange = SheetCellRange(
+				leftColumn: index,
+				rightColumn: range.rightColumn,
+				topRow: 0,
+				bottomRow: fixedTopRows.count)
+			layout(topScrollView, in: topRange)
+		} else {
+			contentScrollView.invalidateContentSize()
+			topScrollView.invalidateContentSize()
+		}
+	}
+
+	/// Resizes a row with given index to a given height. Affects both the content and fixed areas.
+	/// All row offsets to the bottom of the affected one will be recalculated. If there is an intersection
+	/// between the affected row range and the currently visible rows, then visible cells will be re-laid out.
+	///
+	/// Doesn't do anything if the index is invalid. Doesn't do anything if the height is not changed.
+	///
+	/// > Setting individual row heights is expensive. Consider reloading the table if there's a need
+	/// > to update multiple row heights.
+	public func setHeight(_ height: CGFloat, for index: Int) {
+		guard index >= 0 && index < rows.count else {
+			return
+		}
+
+		guard height != rows[index].height else {
+			return
+		}
+
+		let range = contentScrollView.visibleRange
+		rows[index].height = height
+
+		if index < rows.count - 1 {
+			var offset = rows[index].offset + rows[index].height
+			for i in (index + 1)..<rows.count {
+				rows[i].offset = offset
+				offset += rows[i].height
+			}
+		}
+
+		contentScrollView.rows = rows
+		leftScrollView.rows = rows
+
+		syncContentOffsets = false
+		defer {
+			syncContentOffsets = true
+		}
+		if range.bottomRow > index {
+			let contentRange = SheetCellRange(
+				leftColumn: range.leftColumn,
+				rightColumn: range.rightColumn,
+				topRow: index,
+				bottomRow: range.bottomRow)
+			layout(contentScrollView, in: contentRange)
+
+			let leftRange = SheetCellRange(
+				leftColumn: 0,
+				rightColumn: fixedLeftColumns.count,
+				topRow: index,
+				bottomRow: range.bottomRow)
+			layout(leftScrollView, in: leftRange)
+		} else {
+			contentScrollView.invalidateContentSize()
+			leftScrollView.invalidateContentSize()
+		}
+	}
+
+	private func layout(_ scrollView: SheetScrollView, in range: SheetCellRange) {
+		scrollView.layoutVisibleCells(in: range)
+		scrollView.invalidateContentSize()
+		scrollView.releaseCells(outside: scrollView.visibleRange)
+		scrollView.addCells(in: scrollView.visibleRange)
 	}
 }
 
