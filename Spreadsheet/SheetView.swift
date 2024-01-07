@@ -340,7 +340,24 @@ extension SheetView {
 		let limit = clientLimit > -1
 		? clientLimit
 		: max(Int(bounds.width / Self.defaultColWidth), Self.minQueueLimit)
-		cellQueues[id] = .init(id: id, limit: limit, type: type)
+		cellQueues[id] = SheetViewTypeCellQueue(id: id, limit: limit, type: type)
+	}
+
+	/// Creates an internal cell reuse queue with a given identifier for a  xib cell.
+	/// Provided xib file must contain a single view, which can be cast to a ``SheetViewCell``.
+	/// Discarded cells will be placed on this queue, and can later be recycled.
+	/// Make sure to register all identifiers before making calls to
+	/// ``dequeueReusableCell(withIdentifier:)``.
+	public func register(_ xib: UINib, forCellReuseIdentifier id: String) {
+		guard cellQueues[id] == nil else {
+			fatalError("\(id) is already registered in \(self)")
+		}
+
+		let clientLimit = dataSource?.sheet(self, queueLimitForReuseIdentifier: id) ?? -1
+		let limit = clientLimit > -1
+		? clientLimit
+		: max(Int(bounds.width / Self.defaultColWidth), Self.minQueueLimit)
+		cellQueues[id] = SheetViewNibCellQueue(id: id, limit: limit, xib: xib)
 	}
 
 	/// Attempts to recycle a dismissed cell, which was placed on a reusable cell queue. If there's

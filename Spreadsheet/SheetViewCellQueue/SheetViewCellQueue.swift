@@ -4,14 +4,12 @@ import Foundation
 
 class SheetViewCellQueue {
 	let id: String
-	let type: SheetViewCell.Type
 	let limit: Int
 	var queue = [SheetViewCell]()
 
-	init(id: String, limit: Int, type: SheetViewCell.Type) {
+	init(id: String, limit: Int) {
 		self.id = id
 		self.limit = limit
-		self.type = type
 		queue.reserveCapacity(limit)
 	}
 
@@ -24,8 +22,6 @@ class SheetViewCellQueue {
 	}
 
 	func dequeue() -> SheetViewCell {
-		let cell = queue.popLast() ?? type.init(frame: .zero)
-		cell.reuseIdentifier = id
-		return cell
+		fatalError("dequeue has not been implemented")
 	}
 }

@@ -27,6 +27,8 @@
 		2C93907B2B2CA4500072C847 /* SheetViewColumnDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C93907A2B2CA4500072C847 /* SheetViewColumnDefinition.swift */; };
 		2C93907D2B2CA46D0072C847 /* SheetViewRowDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C93907C2B2CA46D0072C847 /* SheetViewRowDefinition.swift */; };
 		2C93907F2B2CA4890072C847 /* SheetViewArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C93907E2B2CA4890072C847 /* SheetViewArea.swift */; };
+		2CD4235D2B4B4A6000BF2520 /* SheetViewTypeCellQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD4235C2B4B4A6000BF2520 /* SheetViewTypeCellQueue.swift */; };
+		2CD4235F2B4B4A7200BF2520 /* SheetViewNibCellQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD4235E2B4B4A7200BF2520 /* SheetViewNibCellQueue.swift */; };
 		2CF6A4162B26104F004FAD45 /* Array+BinarySearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF6A4152B26104F004FAD45 /* Array+BinarySearch.swift */; };
 		2CF6A41E2B261A10004FAD45 /* BinarySearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF6A41D2B261A10004FAD45 /* BinarySearchTests.swift */; };
 		2CF6A41F2B261A10004FAD45 /* Spreadsheet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C59CF162B20DD790048363D /* Spreadsheet.framework */; platformFilter = ios; };
@@ -64,6 +66,8 @@
 		2C93907A2B2CA4500072C847 /* SheetViewColumnDefinition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewColumnDefinition.swift; sourceTree = "<group>"; };
 		2C93907C2B2CA46D0072C847 /* SheetViewRowDefinition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewRowDefinition.swift; sourceTree = "<group>"; };
 		2C93907E2B2CA4890072C847 /* SheetViewArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewArea.swift; sourceTree = "<group>"; };
+		2CD4235C2B4B4A6000BF2520 /* SheetViewTypeCellQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewTypeCellQueue.swift; sourceTree = "<group>"; };
+		2CD4235E2B4B4A7200BF2520 /* SheetViewNibCellQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetViewNibCellQueue.swift; sourceTree = "<group>"; };
 		2CF6A4152B26104F004FAD45 /* Array+BinarySearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+BinarySearch.swift"; sourceTree = "<group>"; };
 		2CF6A41B2B261A10004FAD45 /* SpreadsheetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SpreadsheetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CF6A41D2B261A10004FAD45 /* BinarySearchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinarySearchTests.swift; sourceTree = "<group>"; };
@@ -129,7 +133,7 @@
 				2C59CF222B20DDA80048363D /* SheetView.swift */,
 				2C93907E2B2CA4890072C847 /* SheetViewArea.swift */,
 				2C59CF3D2B20DE050048363D /* SheetViewCell */,
-				2C59CF232B20DDA80048363D /* SheetViewCellQueue.swift */,
+				2CD4235B2B4B4A4D00BF2520 /* SheetViewCellQueue */,
 				2C93907A2B2CA4500072C847 /* SheetViewColumnDefinition.swift */,
 				2C45E1F52B3701B000C1AE39 /* SheetViewDelegate */,
 				2C93907C2B2CA46D0072C847 /* SheetViewRowDefinition.swift */,
@@ -157,6 +161,16 @@
 				2C59CF3E2B20DE050048363D /* SheetViewLabelCell.swift */,
 			);
 			path = SheetViewCell;
+			sourceTree = "<group>";
+		};
+		2CD4235B2B4B4A4D00BF2520 /* SheetViewCellQueue */ = {
+			isa = PBXGroup;
+			children = (
+				2C59CF232B20DDA80048363D /* SheetViewCellQueue.swift */,
+				2CD4235E2B4B4A7200BF2520 /* SheetViewNibCellQueue.swift */,
+				2CD4235C2B4B4A6000BF2520 /* SheetViewTypeCellQueue.swift */,
+			);
+			path = SheetViewCellQueue;
 			sourceTree = "<group>";
 		};
 		2CF6A41C2B261A10004FAD45 /* SpreadsheetTests */ = {
@@ -284,6 +298,7 @@
 				2C59CF402B20DE050048363D /* SheetContentScrollView.swift in Sources */,
 				2C59CF422B20DE050048363D /* SheetFixedVerticalScrollView.swift in Sources */,
 				2C59CF412B20DE050048363D /* SheetFixedHorizontalScrollView.swift in Sources */,
+				2CD4235F2B4B4A7200BF2520 /* SheetViewNibCellQueue.swift in Sources */,
 				2C59CF2F2B20DDA90048363D /* SheetViewCellQueue.swift in Sources */,
 				2C59CF432B20DE050048363D /* SheetScrollView.swift in Sources */,
 				2C45E1F42B36F4F800C1AE39 /* SheetViewResizingDelegate.swift in Sources */,
@@ -296,6 +311,7 @@
 				2C6580072B28EE73004FF216 /* CGRect+Size.swift in Sources */,
 				2C59CF442B20DE050048363D /* SheetViewLabelCell.swift in Sources */,
 				2C93907F2B2CA4890072C847 /* SheetViewArea.swift in Sources */,
+				2CD4235D2B4B4A6000BF2520 /* SheetViewTypeCellQueue.swift in Sources */,
 				2CF6A4162B26104F004FAD45 /* Array+BinarySearch.swift in Sources */,
 				2C59CF322B20DDA90048363D /* SheetSelection.swift in Sources */,
 			);
