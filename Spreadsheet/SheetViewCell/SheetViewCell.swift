@@ -3,7 +3,7 @@
 import UIKit
 
 /// A base class for all cells displayed within a ``SheetView``.
-public class SheetViewCell: UIView {
+open class SheetViewCell: UIView {
 	/// Gets the reuse identifier assigned to this cell if it was instantiated by a reuse queue.
 	/// Use ``SheetView/register(_:forCellReuseIdentifier:)`` to create such queues.
 	/// Defaults to an empty string.
@@ -13,63 +13,21 @@ public class SheetViewCell: UIView {
 	/// Default value is ``SheetIndex/invalid``.
 	internal(set) public var sheetIndex = SheetIndex.invalid
 
-	/// Gets or sets a `UIColor` to be used as a cell border in the default, not selected state.
-	/// Defaults to the `systemGray2` color. Changing this property will update the border and background
-	/// of the cell.
-	public var normalBorderColor = UIColor.systemGray2 {
-		didSet {
-			refreshColors()
-		}
-	}
-
-	/// Gets or sets a `UIColor` to be used as a cell border in the  selected state.
-	/// Defaults to the `systemBlue` color. Changing this property will update the border and background
-	/// of the cell.
-	public var selectedBorderColor = UIColor.systemBlue {
-		didSet {
-			refreshColors()
-		}
-	}
-
-	/// Gets or sets a `UIColor` to be used as a cell background in the  default, not selected, state.
-	/// Defaults to the `systemBackground` color. Changing this property will update the border and background
-	/// of the cell.
-	public var normalBackgroundColor: UIColor? = .systemBackground {
-		didSet {
-			refreshColors()
-		}
-	}
-
-	/// Gets or sets a `UIColor` to be used as a cell background in the  selected state.
-	/// Defaults to the `secondarySystemBackground` color. Changing this property will update the border and background
-	/// of the cell.
-	public var selectedBackgroundColor: UIColor? = .secondarySystemBackground {
-		didSet {
-			refreshColors()
-		}
-	}
-
 	/// Gets the ``SheetSelection`` which this cell is a part of or ``SheetSelection/none``
 	/// if this cell is not currently selected. This value is assigned once the cell is placed within the spread sheet.
-	internal(set) public var selection: SheetSelection = .none {
-		didSet {
-			refreshColors()
-		}
-	}
+	internal(set) public var selection: SheetSelection = .none
 
 	public required override init(frame: CGRect) {
 		super.init(frame: frame)
-		setup()
+	}
+
+	public required init?(coder: NSCoder) {
+		super.init(coder: coder)
 	}
 
 	convenience init(index: SheetIndex) {
 		self.init(frame: .zero)
 		sheetIndex = index
-	}
-
-	/// Not implemented.
-	public required init?(coder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
 	}
 
 	// MARK: - Public Methods
@@ -80,25 +38,8 @@ public class SheetViewCell: UIView {
 	/// > When cells are reused, any stored properties are persisted in their last state. Use this method as an opportunity
 	/// to reset any cell subviews or properties to their initial values.
 	///
-	/// >  `super.prepareForReuse` must be called in subclasses, unless the default border and background
-	/// > handling is not desired.
-	public func prepareForReuse() {
-		refreshColors()
-	}
-
-	// MARK: - Private Methods
-	private func setup() {
-		isUserInteractionEnabled = false
-		layer.borderWidth = 1.0
-	}
-
-	private func refreshColors() {
-		if case .none = selection {
-			layer.borderColor = normalBorderColor.cgColor
-			backgroundColor = normalBackgroundColor
-		} else {
-			layer.borderColor = selectedBorderColor.cgColor
-			backgroundColor = selectedBackgroundColor
-		}
+	/// >  `super.prepareForReuse` must be called in subclasses.
+	open func prepareForReuse() {
+		// no-op
 	}
 }

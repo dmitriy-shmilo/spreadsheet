@@ -4,38 +4,8 @@ import UIKit
 
 /// A simple cel limplementation, which holds a single text label.
 /// Use the ``label`` property to customize the `UILabel` within this cell.
-public class SheetViewLabelCell: SheetViewCell {
+public class SheetViewLabelCell: SheetViewSimpleCell {
 	private static let spacing = 8.0
-
-	public override var normalBorderColor: UIColor {
-		didSet {
-			refreshColors()
-		}
-	}
-
-	public override var selectedBorderColor: UIColor {
-		didSet {
-			refreshColors()
-		}
-	}
-
-	public override  var normalBackgroundColor: UIColor? {
-		didSet {
-			refreshColors()
-		}
-	}
-
-	public override var selectedBackgroundColor: UIColor? {
-		didSet {
-			refreshColors()
-		}
-	}
-
-	public override var selection: SheetSelection {
-		didSet {
-			refreshColors()
-		}
-	}
 
 	/// Gets the label, which is the only subview of this cell. Assign its `text` and other properties
 	/// in order to display data within this cell.
@@ -52,22 +22,11 @@ public class SheetViewLabelCell: SheetViewCell {
 	}
 
 	public override func prepareForReuse() {
-		refreshColors()
+		super.prepareForReuse()
 		label.text = ""
 	}
 
 	// MARK: - Private Methods
-	private func refreshColors() {
-		label.textColor = .label
-		if case .none = selection {
-			layer.borderColor = normalBorderColor.cgColor
-			backgroundColor = normalBackgroundColor
-		} else {
-			layer.borderColor = selectedBorderColor.cgColor
-			backgroundColor = selectedBackgroundColor
-		}
-	}
-
 	private func setup() {
 		isUserInteractionEnabled = false
 
