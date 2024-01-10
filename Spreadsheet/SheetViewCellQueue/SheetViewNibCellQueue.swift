@@ -16,7 +16,6 @@ class SheetViewNibCellQueue: SheetViewCellQueue {
 			fatalError("\(xib) must contain a single view, which can be cast to SheetViewCell")
 		}
 		cell.reuseIdentifier = id
-		print(String(describing: cell))
 		return cell
 	}
 }
