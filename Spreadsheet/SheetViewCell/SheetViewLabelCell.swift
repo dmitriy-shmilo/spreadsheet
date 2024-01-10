@@ -34,6 +34,7 @@ public class SheetViewLabelCell: SheetViewSimpleCell {
 		label.translatesAutoresizingMaskIntoConstraints = false
 		label.numberOfLines = 0
 		label.textAlignment = .left
+		label.textColor = .label
 		
 		addSubview(label)
 		NSLayoutConstraint.activate([
