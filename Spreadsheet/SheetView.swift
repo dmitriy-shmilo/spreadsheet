@@ -314,7 +314,7 @@ extension SheetView {
 			fixedLeftColumns.reserveCapacity(count)
 			var offset = 0.0
 			for i in 0..<count {
-				let width = dataSource?.sheet(self, heightForFixedRowAt: i, in: .fixedLeft) ?? Self.defaultColWidth
+				let width = dataSource?.sheet(self, widthForFixedColumnAt: i, in: .fixedLeft) ?? Self.defaultColWidth
 				fixedLeftColumns.append(.init(index: i, width: width, offset: offset))
 				offset += width
 			}
