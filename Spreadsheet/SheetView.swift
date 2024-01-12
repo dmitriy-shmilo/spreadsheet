@@ -39,12 +39,13 @@ public class SheetView: UIView {
 	/// ``SheetViewDelegate`` methods.
 	public var allowedSelectionModes = SheetViewSelectionMode.all
 
-	/// Gets whether this sheet view is in the process of resizing a column. Returns true if
-	/// ``beginResizingColumn(at:)`` was called. Is set to false after ``endResizingColumn()``
-	/// was executed.
+	/// Gets whether this sheet view is in the process of resizing a column or a row. Returns true if
+	/// ``beginResizingColumn(at:)`` or ``beginResizingRow(at:)`` was called. Is set to false
+	/// after ``endResizingColumn()`` or ``endResizingRow()`` was executed.
 	public var isResizing: Bool {
 		get {
 			return resizedColumnIndex != SheetIndex.invalid.col
+			|| resizedRowIndex != SheetIndex.invalid.row
 		}
 	}
 
@@ -55,6 +56,14 @@ public class SheetView: UIView {
 	/// Gets the column width of the currently resized column. Set by ``updateResizingColumn(at:to:)``.
 	/// Is invalid when not resizing a column.
 	private(set) public var resizedColumnWidth: CGFloat = 0.0
+
+	/// Gets row inex of the currently resized row. Set by ``beginResizingRow(at:)``.
+	/// Is invalid when not resizing a row.
+	private(set) public var resizedRowIndex = SheetIndex.invalid.row
+
+	/// Gets the row height of the currently resized row. Set by ``updateResizingRow(at:to:)``.
+	/// Is invalid when not resizing a row.
+	private(set) public var resizedRowHeight: CGFloat = 0.0
 
 	var columns = [SheetViewColumnDefinition]()
 	var rows = [SheetViewRowDefinition]()
@@ -89,7 +98,13 @@ public class SheetView: UIView {
 				return
 			}
 
-			updateResizingColumn(at: resizedColumnIndex, to: resizedColumnWidth)
+			if resizedColumnIndex != SheetIndex.invalid.col {
+				updateResizingColumn(at: resizedColumnIndex, to: resizedColumnWidth)
+			}
+
+			if resizedRowIndex != SheetIndex.invalid.row {
+				updateResizingRow(at: resizedRowIndex, to: resizedRowHeight)
+			}
 		}
 	}
 
@@ -442,6 +457,7 @@ extension SheetView {
 // MARK: - Resizing
 extension SheetView {
 
+	// MARK: - Column Resizing
 	/// Starts resizing a column at a given index. If another column was being resized already, the previous resizing will end first.
 	/// When called, will spawn a resizer view, whose location depends on the resized column offset.
 	/// Use ``updateResizingColumn(at:to:)`` to move the resizer view.
@@ -512,22 +528,6 @@ extension SheetView {
 		currentResizerView?.removeFromSuperview()
 	}
 
-	/// Gets a `UIView` `frame`, which a cell with the given index is expected to have when placed
-	/// within ``SheetViewArea/content``.
-	///
-	/// Returns a zero frame for invalid indices.
-	public func frameRectFor(index: SheetIndex) -> CGRect {
-		guard isValid(index: index) else {
-			return .zero
-		}
-
-		return .init(
-			x: columns[index.col].offset,
-			y: rows[index.row].offset,
-			width: columns[index.col].width,
-			height: rows[index.row].height)
-	}
-
 	/// Resizes a column with given index to a given width. Affects both the content and fixed areas.
 	/// All column offsets to the right of the affected one will be recalculated. If there is an intersection
 	/// between the affected column range and the currently visible columns, then visible cells will be
@@ -585,6 +585,77 @@ extension SheetView {
 		}
 	}
 
+	// MARK: - Row Resizing
+	/// Starts resizing a row at a given index. If another riw was being resized already, the previous resizing will end first.
+	/// When called, will spawn a resizer view, whose location depends on the resized row offset.
+	/// Use ``updateResizingRow(at:to:)`` to move the resizer view.
+	/// Call ``endResizingRow()`` to stop the resizing.
+	public func beginResizingRow(at index: Int) {
+		guard isValid(row: index) else {
+			return
+		}
+
+		endResizingRow()
+
+		let row = rows[index]
+		let offset = row.offset + row.height
+		let resizerOffset = contentScrollView.convert(.init(x: 0, y: offset), to: self).y
+		resizedRowIndex = index
+		resizedRowHeight = row.height
+
+		let resizer = resizingDelegate?.sheet(
+			self,
+			resizerViewForRowAt: index)
+		?? defaultResizerView
+
+		resizer.frame = resizingDelegate?.sheet(
+			self,
+			resizerFrameForRowAt: resizerOffset)
+		?? .init(x: 0, y: resizerOffset, width: frame.width, height: 1.0)
+
+		addSubview(resizer)
+		currentResizerView = resizer
+	}
+
+	/// Call this method after ``beginResizingRow(at:)`` to move the resizer indicator so that it indicates
+	/// a desired `height` of the row. This method does nothing if `index` doesn't match the
+	/// ``resizedRowIndex`` or  if `height` is invalid. Call ``endResizingRow()``
+	/// to finilize the change.
+	public func updateResizingRow(at index: Int, to height: CGFloat) {
+		guard index == resizedRowIndex && index != SheetIndex.invalid.row else {
+			return
+		}
+
+		guard height > 0.0 else {
+			return
+		}
+
+		guard let resizer = currentResizerView else {
+			return
+		}
+
+		let row = rows[index]
+		let offset = row.offset + height
+		let resizerOffset = contentScrollView.convert(.init(x: 0, y: offset), to: self).y
+		resizer.frame = resizingDelegate?.sheet(
+			self,
+			resizerFrameForRowAt: resizerOffset)
+		?? .init(x: 0, y: resizerOffset, width: frame.width, height: 1.0)
+	}
+
+	/// Finilizes the row resizing relaying the current ``resizedRowIndex`` and ``resizedRowHeight``
+	/// to ``SheetViewResizingDelegate/sheet(_:didEndResizingRowAt:to:)-3fxe2`` and resetting
+	/// the resizing state. Doesn't do anything if resizing wasn't started with ``beginResizingRow(at:)``.
+	public func endResizingRow() {
+		guard resizedRowIndex != SheetIndex.invalid.row else {
+			return
+		}
+		resizingDelegate?.sheet(self, didEndResizingRowAt: resizedRowIndex, to: resizedRowHeight)
+		resizedRowIndex = SheetIndex.invalid.row
+		resizedRowHeight = 0.0
+		currentResizerView?.removeFromSuperview()
+	}
+
 	/// Resizes a row with given index to a given height. Affects both the content and fixed areas.
 	/// All row offsets to the bottom of the affected one will be recalculated. If there is an intersection
 	/// between the affected row range and the currently visible rows, then visible cells will be re-laid out.
@@ -638,6 +709,23 @@ extension SheetView {
 			contentScrollView.invalidateContentSize()
 			leftScrollView.invalidateContentSize()
 		}
+	}
+
+	// MARK: - Misc.
+	/// Gets a `UIView` `frame`, which a cell with the given index is expected to have when placed
+	/// within ``SheetViewArea/content``.
+	///
+	/// Returns a zero frame for invalid indices.
+	public func frameRectFor(index: SheetIndex) -> CGRect {
+		guard isValid(index: index) else {
+			return .zero
+		}
+
+		return .init(
+			x: columns[index.col].offset,
+			y: rows[index.row].offset,
+			width: columns[index.col].width,
+			height: rows[index.row].height)
 	}
 
 	private func layout(_ scrollView: SheetScrollView, in range: SheetCellRange) {
