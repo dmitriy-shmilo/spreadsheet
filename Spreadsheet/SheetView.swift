@@ -565,20 +565,8 @@ extension SheetView {
 			syncContentOffsets = true
 		}
 		if range.rightColumn > index {
-			let contentRange = SheetCellRange(
-				leftColumn: index,
-				rightColumn: range.rightColumn,
-				topRow: range.topRow,
-				bottomRow: range.bottomRow)
-
-			layout(contentScrollView, in: contentRange)
-
-			let topRange = SheetCellRange(
-				leftColumn: index,
-				rightColumn: range.rightColumn,
-				topRow: 0,
-				bottomRow: fixedTopRows.count)
-			layout(topScrollView, in: topRange)
+			layoutVisibleCells(contentScrollView)
+			layoutVisibleCells(topScrollView)
 		} else {
 			contentScrollView.invalidateContentSize()
 			topScrollView.invalidateContentSize()
@@ -692,19 +680,8 @@ extension SheetView {
 			syncContentOffsets = true
 		}
 		if range.bottomRow > index {
-			let contentRange = SheetCellRange(
-				leftColumn: range.leftColumn,
-				rightColumn: range.rightColumn,
-				topRow: index,
-				bottomRow: range.bottomRow)
-			layout(contentScrollView, in: contentRange)
-
-			let leftRange = SheetCellRange(
-				leftColumn: 0,
-				rightColumn: fixedLeftColumns.count,
-				topRow: index,
-				bottomRow: range.bottomRow)
-			layout(leftScrollView, in: leftRange)
+			layoutVisibleCells(contentScrollView)
+			layoutVisibleCells(leftScrollView)
 		} else {
 			contentScrollView.invalidateContentSize()
 			leftScrollView.invalidateContentSize()
@@ -728,9 +705,9 @@ extension SheetView {
 			height: rows[index.row].height)
 	}
 
-	private func layout(_ scrollView: SheetScrollView, in range: SheetCellRange) {
-		scrollView.layoutVisibleCells(in: range)
+	private func layoutVisibleCells(_ scrollView: SheetScrollView) {
 		scrollView.invalidateContentSize()
+		scrollView.layoutVisibleCells(in: scrollView.visibleRange)
 		scrollView.releaseCells(outside: scrollView.visibleRange)
 		scrollView.addCells(in: scrollView.visibleRange)
 	}

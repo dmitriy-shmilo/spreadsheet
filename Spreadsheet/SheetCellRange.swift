@@ -35,7 +35,7 @@ extension SheetCellRange {
 	}
 
 	func contains(index: SheetIndex) -> Bool {
-		return leftColumn <= index.col && rightColumn >= index.col
-		&& topRow <= index.row && bottomRow >= index.row
+		return leftColumn <= index.col && rightColumn > index.col
+		&& topRow <= index.row && bottomRow > index.row
 	}
 }
